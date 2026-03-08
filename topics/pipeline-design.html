@@ -1,0 +1,1247 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 5 – Designing Data Pipelines</title>
+  <link rel="stylesheet" href="../assets/css/template.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=IBM+Plex+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap"
+    rel="stylesheet">
+</head>
+
+<body>
+
+  <!-- ── HERO ── -->
+  <div class="hero">
+    <div class="hero-eyebrow">Module 05 · AWS Academy Data Engineering</div>
+    <h1>Designing<br><span>Data Pipelines</span></h1>
+    <p>Learn how to architect scalable, reliable, and cost-efficient data pipelines on AWS using the Well-Architected
+      Framework and modern design patterns.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>6</strong><span>Framework Pillars</span></div>
+      <div class="hero-stat"><strong>4</strong><span>Storage Zones</span></div>
+      <div class="hero-stat"><strong>5</strong><span>Pipeline Layers</span></div>
+    </div>
+  </div>
+
+  <!-- ── STICKY NAV ── -->
+  <nav class="anchor-nav">
+    <span>Jump to →</span>
+    <a href="#framework">Well-Architected</a>
+    <a href="#evolution">Evolution</a>
+    <a href="#modern-arch">Modern Arch</a>
+    <a href="#ingestion">Ingestion</a>
+    <a href="#storage">Storage</a>
+    <a href="#processing">Processing</a>
+    <a href="#consumption">Consumption</a>
+    <a href="#streaming">Streaming</a>
+    <a href="#quiz">Quiz</a>
+  </nav>
+
+  <div class="container">
+
+    <!-- ────────────────────────────────────────
+       SECTION 1 — WELL-ARCHITECTED FRAMEWORK
+  ──────────────────────────────────────── -->
+    <section id="framework">
+      <div class="section-label">Section 01</div>
+      <h2>AWS Well-Architected Framework</h2>
+
+      <p>Before writing a single line of pipeline code, architects need a set of guiding principles. The <strong>AWS
+          Well-Architected Framework</strong> provides exactly that — a proven set of best practices for building cloud
+        systems that are secure, reliable, and cost-efficient.</p>
+
+      <div class="info-box">
+        💡 <strong>Think of it as an architectural checklist.</strong> Before launching any AWS data system, run it
+        against the six pillars. Any gaps you find are risks — address them before they become production problems.
+      </div>
+
+      <h3><span class="icon">🏛️</span>The Six Pillars</h3>
+
+      <div class="role-grid">
+
+        <div class="role-card" style="--card-color: #ff9900">
+          <div class="role-icon">⚙️</div>
+          <div class="role-title">Operational Excellence</div>
+          <div class="role-desc">Run and monitor systems to deliver business value. Automate operations so engineers can
+            focus on improvements, not manual tasks.</div>
+          <div class="role-skills">
+            <span class="skill-tag">CloudWatch</span>
+            <span class="skill-tag">CloudFormation</span>
+            <span class="skill-tag">CodePipeline</span>
+          </div>
+        </div>
+
+        <div class="role-card" style="--card-color: #ef4444">
+          <div class="role-icon">🔐</div>
+          <div class="role-title">Security</div>
+          <div class="role-desc">Protect data and systems through encryption, access control, and continuous monitoring.
+            Only authorised users access sensitive data.</div>
+          <div class="role-skills">
+            <span class="skill-tag">IAM</span>
+            <span class="skill-tag">AWS KMS</span>
+            <span class="skill-tag">AWS WAF</span>
+            <span class="skill-tag">Shield</span>
+          </div>
+        </div>
+
+        <div class="role-card" style="--card-color: #22c55e">
+          <div class="role-icon">🛡️</div>
+          <div class="role-title">Reliability</div>
+          <div class="role-desc">Systems should continue working even when failures occur. If one server fails, another
+            takes over automatically — no downtime.</div>
+          <div class="role-skills">
+            <span class="skill-tag">Auto Scaling</span>
+            <span class="skill-tag">Multi-AZ</span>
+            <span class="skill-tag">Backups</span>
+          </div>
+        </div>
+
+        <div class="role-card" style="--card-color: #60a5fa">
+          <div class="role-icon">🚀</div>
+          <div class="role-title">Performance Efficiency</div>
+          <div class="role-desc">Use computing resources efficiently. Choose the right service for each task — not the
+            most powerful, the most appropriate.</div>
+          <div class="role-skills">
+            <span class="skill-tag">EMR</span>
+            <span class="skill-tag">Redshift</span>
+            <span class="skill-tag">Lambda</span>
+          </div>
+        </div>
+
+        <div class="role-card" style="--card-color: #facc15">
+          <div class="role-icon">💰</div>
+          <div class="role-title">Cost Optimization</div>
+          <div class="role-desc">Eliminate unnecessary expenses. Pay only for what you use, auto-scale, and delete idle
+            resources. Serverless services like Lambda reduce baseline costs dramatically.</div>
+          <div class="role-skills">
+            <span class="skill-tag">Cost Explorer</span>
+            <span class="skill-tag">Spot Instances</span>
+            <span class="skill-tag">S3 Lifecycle</span>
+          </div>
+        </div>
+
+        <div class="role-card" style="--card-color: #34d399">
+          <div class="role-icon">🌱</div>
+          <div class="role-title">Sustainability</div>
+          <div class="role-desc">Minimise environmental impact. Efficient cloud systems reduce energy consumption. AWS
+            optimises energy use across its global data centres.</div>
+          <div class="role-skills">
+            <span class="skill-tag">Efficient Design</span>
+            <span class="skill-tag">Right-Sizing</span>
+            <span class="skill-tag">Auto-Off</span>
+          </div>
+        </div>
+
+      </div>
+
+      <h3><span class="icon">🔭</span>Well-Architected Lenses</h3>
+      <p>A <strong>Lens</strong> extends the core framework with specialised guidance for specific domains. Two lenses
+        are essential for data engineers:</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Lens</th>
+            <th>Focus</th>
+            <th>Key Guidance</th>
+          </tr>
+          <tr>
+            <td><span class="badge badge-orange">Data Analytics Lens</span></td>
+            <td>Analytics pipeline workloads</td>
+            <td>Real-time analytics, big data processing, data lake design, reference architectures</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-purple">Machine Learning Lens</span></td>
+            <td>ML training and deployment</td>
+            <td>Data collection, preparation, model training, deployment, and monitoring lifecycle</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="info-box">
+        💡 <strong>Why lenses exist:</strong> Analytics workloads have fundamentally different requirements from
+        standard applications. A customer-facing app prioritises low latency and few transactions. A data pipeline
+        prioritises high throughput and massive parallel processing. Lenses give you the right advice for the right
+        context.
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Application System</th>
+            <th>Data Analytics System</th>
+          </tr>
+          <tr>
+            <td>Handles individual transactions (e.g. one order)</td>
+            <td>Processes entire datasets (e.g. all orders this month)</td>
+          </tr>
+          <tr>
+            <td>Low latency — milliseconds per request</td>
+            <td>High throughput — terabytes per hour</td>
+          </tr>
+          <tr>
+            <td>Many small, fast operations</td>
+            <td>Fewer, large batch or streaming operations</td>
+          </tr>
+          <tr>
+            <td>Optimise for user experience</td>
+            <td>Optimise for cost per query and processing speed</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ────────────────────────────────────────
+       SECTION 2 — EVOLUTION OF DATA ARCHITECTURES
+  ──────────────────────────────────────── -->
+    <section id="evolution">
+      <div class="section-label">Section 02</div>
+      <h2>Evolution of Data Architectures</h2>
+
+      <p>To understand where modern data architecture is going, it helps to understand where it came from. Data systems
+        have evolved dramatically over five decades.</p>
+
+      <h3><span class="icon">🕰️</span>Architecture Timeline</h3>
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Era</th>
+            <th>Architecture</th>
+            <th>Key Characteristic</th>
+            <th>Limitation</th>
+          </tr>
+          <tr>
+            <td><span class="badge badge-purple">1970s</span></td>
+            <td>Mainframe Systems</td>
+            <td>One central computer, many terminals. Banks stored transaction data here.</td>
+            <td>Extremely expensive. Difficult to scale. Only large organisations could afford it.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-blue">1980s</span></td>
+            <td>Client-Server</td>
+            <td>Desktop applications talking to central database servers.</td>
+            <td>Limited scalability. Server became a bottleneck as users grew.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-yellow">1990s</span></td>
+            <td>3-Tier Internet</td>
+            <td>Presentation → Application → Data layers. E-commerce websites.</td>
+            <td>Still struggled with very large analytical workloads.</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-orange">2000s+</span></td>
+            <td>Cloud Microservices</td>
+            <td>Distributed, independent services. Netflix runs separate recommendation, streaming, and billing
+              services.</td>
+            <td>Complexity of managing many independent services.</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3><span class="icon">🗄️</span>Evolution of Data Stores</h3>
+
+      <div class="pipeline">
+        <div class="pipeline-step">Hierarchical DB<br><small>1960s–70s</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Relational DB<br><small>1980s–90s</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">NoSQL<br><small>2000s</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Data Lakes<br><small>2010s</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Purpose-Built<br><small>Today</small></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Data Store Type</th>
+            <th>Description</th>
+            <th>AWS Service Today</th>
+          </tr>
+          <tr>
+            <td>Relational (RDBMS)</td>
+            <td>Tables, rows, SQL. Best for structured transactional data.</td>
+            <td>Amazon RDS, Amazon Aurora</td>
+          </tr>
+          <tr>
+            <td>NoSQL</td>
+            <td>Flexible schema. Best for high-scale apps with varied data structures.</td>
+            <td>Amazon DynamoDB</td>
+          </tr>
+          <tr>
+            <td>Data Lake</td>
+            <td>Single repository for structured, semi-structured, and unstructured data at scale.</td>
+            <td>Amazon S3</td>
+          </tr>
+          <tr>
+            <td>Data Warehouse</td>
+            <td>Columnar storage optimised for analytical queries across large datasets.</td>
+            <td>Amazon Redshift</td>
+          </tr>
+          <tr>
+            <td>Search / Log Analytics</td>
+            <td>Inverted index for full-text search and log analysis.</td>
+            <td>Amazon OpenSearch</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3><span class="icon">📐</span>Big Data Architecture Patterns</h3>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🏭</div>
+          <div class="card-title">Data Warehouse</div>
+          <div class="card-desc">Separate analytical database from transactional DB. App DB → ETL → Warehouse → Reports.
+            First mainstream analytics architecture.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">Lambda Architecture</div>
+          <div class="card-desc">Processes both batch and streaming data simultaneously — a batch layer for accuracy and
+            a speed layer for latency. Results merged at query time.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🌊</div>
+          <div class="card-title">Kappa Architecture</div>
+          <div class="card-desc">Simplification of Lambda — everything is treated as a stream. One processing layer
+            handles both real-time and historical data reprocessing.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">☁️</div>
+          <div class="card-title">Modern Cloud Architecture</div>
+          <div class="card-desc">Combines data lake + warehouse + processing + ML into one unified, governed platform on
+            AWS. The architecture covered in this module.</div>
+        </div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ────────────────────────────────────────
+       SECTION 3 — MODERN AWS DATA ARCHITECTURE
+  ──────────────────────────────────────── -->
+    <section id="modern-arch">
+      <div class="section-label">Section 03</div>
+      <h2>Modern Data Architecture on AWS</h2>
+
+      <p>Modern organisations receive data from dozens of sources simultaneously. AWS provides a <strong>unified
+          architecture</strong> that integrates purpose-built services for every stage of the data lifecycle.</p>
+
+      <div class="pipeline">
+        <div class="pipeline-step">Data Sources</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Ingestion</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Storage<br><small>Data Lake</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Processing</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Consumption<br><small>Analytics / ML</small></div>
+      </div>
+
+      <h3><span class="icon">🎯</span>Four Key Design Considerations</h3>
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Consideration</th>
+            <th>What It Means</th>
+            <th>AWS Approach</th>
+          </tr>
+          <tr>
+            <td><span class="badge badge-orange">Scalable Data Lake</span></td>
+            <td>Central storage for any data type at any volume</td>
+            <td>Amazon S3 — virtually unlimited, low-cost, durable</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-yellow">Performant &amp; Cost-Effective</span></td>
+            <td>Fast and affordable — store raw data cheaply, process only what you need</td>
+            <td>S3 for raw, Redshift only for curated analytical data</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-green">Seamless Data Movement</span></td>
+            <td>Data flows automatically between systems without manual intervention</td>
+            <td>AWS Glue, AWS DMS, AWS DataSync, Amazon AppFlow</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-blue">Unified Governance</span></td>
+            <td>Single control plane for access, cataloguing, and compliance</td>
+            <td>AWS Lake Formation + AWS Glue Data Catalog</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3><span class="icon">🔧</span>AWS Purpose-Built Data Services</h3>
+      <p>Instead of one database doing everything, AWS provides specialised services for each workload type. This is the
+        "purpose-built" philosophy.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Workload Type</th>
+            <th>AWS Service</th>
+            <th>Best For</th>
+            <th>Example Use Case</th>
+          </tr>
+          <tr>
+            <td>Relational / OLTP</td>
+            <td><span class="badge badge-orange">Amazon Aurora</span></td>
+            <td>Financial systems, e-commerce orders, structured transactions</td>
+            <td>Order management database</td>
+          </tr>
+          <tr>
+            <td>NoSQL / Key-Value</td>
+            <td><span class="badge badge-yellow">Amazon DynamoDB</span></td>
+            <td>High-speed, flexible schema apps</td>
+            <td>User sessions, gaming leaderboards, mobile apps</td>
+          </tr>
+          <tr>
+            <td>Data Lake</td>
+            <td><span class="badge badge-blue">Amazon S3</span></td>
+            <td>Raw storage for any data type</td>
+            <td>Landing zone for all ingested data</td>
+          </tr>
+          <tr>
+            <td>Analytics Warehouse</td>
+            <td><span class="badge badge-green">Amazon Redshift</span></td>
+            <td>Complex analytical queries on structured data</td>
+            <td>Sales reporting, BI dashboards</td>
+          </tr>
+          <tr>
+            <td>Big Data Processing</td>
+            <td><span class="badge badge-orange">Amazon EMR</span></td>
+            <td>Distributed Spark and Hadoop jobs on massive datasets</td>
+            <td>Processing billions of web logs</td>
+          </tr>
+          <tr>
+            <td>Log / Search Analytics</td>
+            <td><span class="badge badge-purple">Amazon OpenSearch</span></td>
+            <td>Full-text search and log monitoring</td>
+            <td>Application error log analysis</td>
+          </tr>
+          <tr>
+            <td>Machine Learning</td>
+            <td><span class="badge badge-yellow">Amazon SageMaker</span></td>
+            <td>Training, deploying, and monitoring ML models</td>
+            <td>Fraud detection, churn prediction</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ────────────────────────────────────────
+       SECTION 4 — INGESTION LAYER
+  ──────────────────────────────────────── -->
+    <section id="ingestion">
+      <div class="section-label">Section 04</div>
+      <h2>The Ingestion Layer</h2>
+
+      <p>The ingestion layer is the entry point of every pipeline — it collects data from all source systems and brings
+        it into AWS. Different sources require different ingestion methods.</p>
+
+      <h3><span class="icon">📡</span>Common Data Sources</h3>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">💼</div>
+          <div class="card-title">SaaS Applications</div>
+          <div class="card-desc">Salesforce CRM, HubSpot, Workday HR, ServiceNow — business software generating
+            operational data.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🗄️</div>
+          <div class="card-title">On-Premises Databases</div>
+          <div class="card-desc">MySQL, Oracle, SQL Server databases running in company data centres that need to be
+            migrated or replicated to AWS.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📁</div>
+          <div class="card-title">File Shares</div>
+          <div class="card-desc">Large files — CSVs, Parquet, images, documents — transferred from on-premise storage to
+            S3.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">📡</div>
+          <div class="card-title">IoT Devices &amp; Sensors</div>
+          <div class="card-desc">Factory machines, weather stations, smart meters, connected vehicles — continuous
+            time-series data streams.</div>
+        </div>
+      </div>
+
+      <h3><span class="icon">🛠️</span>AWS Ingestion Services</h3>
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>AWS Service</th>
+            <th>Purpose</th>
+            <th>Example Use Case</th>
+          </tr>
+          <tr>
+            <td><span class="badge badge-orange">Amazon AppFlow</span></td>
+            <td>Transfer data from SaaS applications to AWS</td>
+            <td>Salesforce customer data → Amazon S3</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-yellow">AWS DMS</span></td>
+            <td>Migrate or replicate databases to AWS (continuous or one-time)</td>
+            <td>On-premise Oracle → Amazon Aurora with minimal downtime</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-blue">AWS DataSync</span></td>
+            <td>Transfer large files and storage to AWS at high speed</td>
+            <td>On-premise NAS → Amazon S3</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-green">Amazon Kinesis Data Streams</span></td>
+            <td>Ingest continuous real-time streaming data</td>
+            <td>Website clickstreams, IoT sensor readings</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-purple">Amazon Kinesis Firehose</span></td>
+            <td>Automatically load streaming data into storage — no pipeline code needed</td>
+            <td>Log stream → S3 → Redshift → OpenSearch automatically</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="pipeline">
+        <div class="pipeline-step">SaaS App<br><small>Salesforce</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">AppFlow</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">S3 Landing Zone</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Glue ETL</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Redshift</div>
+      </div>
+
+      <div class="pipeline">
+        <div class="pipeline-step">IoT Sensors</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">AWS IoT Core</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Kinesis Streams</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Flink Processing</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">S3 / OpenSearch</div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ────────────────────────────────────────
+       SECTION 5 — STORAGE LAYER
+  ──────────────────────────────────────── -->
+    <section id="storage">
+      <div class="section-label">Section 05</div>
+      <h2>The Storage Layer</h2>
+
+      <p>After ingestion, data must be stored — but not all data should be stored the same way. The storage layer is
+        typically divided into <strong>zones</strong>, each representing a different stage of data maturity.</p>
+
+      <h3><span class="icon">🏗️</span>The Four Storage Zones</h3>
+
+      <div class="pipeline">
+        <div class="pipeline-step">Landing Zone<br><small>Raw arrival</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Raw Zone<br><small>Original data</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Trusted Zone<br><small>Cleaned data</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Curated Zone<br><small>Business-ready</small></div>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Zone</th>
+            <th>What It Contains</th>
+            <th>Data State</th>
+            <th>Who Accesses It</th>
+          </tr>
+          <tr>
+            <td><span class="badge badge-purple">Landing Zone</span></td>
+            <td>Raw incoming files exactly as they arrived — unprocessed</td>
+            <td>Untouched, may be invalid or incomplete</td>
+            <td>Pipeline systems only (automated)</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-blue">Raw Zone</span></td>
+            <td>Original datasets preserved unchanged for auditability</td>
+            <td>Immutable — never overwritten or deleted</td>
+            <td>Data Engineers (debugging, reprocessing)</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-yellow">Trusted Zone</span></td>
+            <td>Validated, cleaned, and standardised data</td>
+            <td>Deduplicated, nulls handled, formats consistent</td>
+            <td>Data Engineers and Scientists</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-green">Curated Zone</span></td>
+            <td>Final business-ready datasets for analytics and ML</td>
+            <td>Aggregated, joined, formatted for consumption</td>
+            <td>Analysts, Managers, ML models, Dashboards</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3><span class="icon">🗄️</span>Storage Services by Data Type</h3>
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Data Type</th>
+            <th>Typical Format</th>
+            <th>Storage Service</th>
+            <th>Notes</th>
+          </tr>
+          <tr>
+            <td><span class="badge badge-green">Structured</span></td>
+            <td>Redshift tables, RDS rows</td>
+            <td>Amazon Redshift, Amazon RDS</td>
+            <td>Schema-on-write — defined before loading</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-yellow">Semi-Structured</span></td>
+            <td>JSON, CSV, Parquet, Avro</td>
+            <td>Amazon S3</td>
+            <td>Schema-on-read — defined at query time via Glue Catalog</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-purple">Unstructured</span></td>
+            <td>Images, video, documents, audio</td>
+            <td>Amazon S3</td>
+            <td>Object storage — no schema required</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-orange">Real-Time / Cache</span></td>
+            <td>Session data, recommendations</td>
+            <td>Amazon DynamoDB, ElastiCache</td>
+            <td>Millisecond access required</td>
+          </tr>
+          <tr>
+            <td><span class="badge badge-blue">Archive</span></td>
+            <td>Old logs, compliance records</td>
+            <td>Amazon S3 Glacier</td>
+            <td>Very low cost, hours to retrieve</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3><span class="icon">📚</span>The Catalog Layer</h3>
+      <p>Alongside storage, organisations need a <strong>metadata catalog</strong> — a registry of what data exists,
+        where it is, and what its schema looks like. Without a catalog, engineers spend hours searching for datasets.
+      </p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">📖</div>
+          <div class="card-title">AWS Glue Data Catalog</div>
+          <div class="card-desc">Central metadata repository. Stores dataset name, schema, S3 location, owner, and
+            update frequency. Shared across Athena, Redshift Spectrum, and EMR.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤖</div>
+          <div class="card-title">AWS Glue Crawlers</div>
+          <div class="card-desc">Automatically scan S3 buckets and databases to detect schema. No manual schema
+            definition needed — crawlers populate the catalog for you.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔍</div>
+          <div class="card-title">Redshift Spectrum</div>
+          <div class="card-desc">Query S3 data directly using Redshift SQL — without moving data into the warehouse.
+            Reads catalog metadata to understand the S3 file structure.</div>
+        </div>
+      </div>
+
+      <pre><span class="cm">-- Redshift Spectrum: query S3 data without loading it</span>
+<span class="kw">SELECT</span>
+    region,
+    <span class="fn">SUM</span>(sales_amount) <span class="kw">AS</span> total_sales
+<span class="kw">FROM</span> s3_spectrum.sales_data   <span class="cm">-- data lives in S3, not Redshift</span>
+<span class="kw">WHERE</span> year = <span class="num">2025</span>
+<span class="kw">GROUP BY</span> region;</pre>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ────────────────────────────────────────
+       SECTION 6 — PROCESSING LAYER
+  ──────────────────────────────────────── -->
+    <section id="processing">
+      <div class="section-label">Section 06</div>
+      <h2>The Processing Layer</h2>
+
+      <p>Raw data is rarely ready for analysis. The processing layer <strong>transforms data from its raw state into
+          curated, analysis-ready datasets</strong> — cleaning, reshaping, joining, and aggregating it.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Raw Data Problem</th>
+            <th>Processing Solution</th>
+            <th>Example</th>
+          </tr>
+          <tr>
+            <td>Missing values</td>
+            <td>Fill with default or flag for review</td>
+            <td><code>age: null</code> → <code>age: 0</code> (or exclude from analysis)</td>
+          </tr>
+          <tr>
+            <td>Duplicate records</td>
+            <td>Deduplicate on primary key</td>
+            <td>CustomerID 101 appearing twice → keep one</td>
+          </tr>
+          <tr>
+            <td>Inconsistent casing</td>
+            <td>Standardise to title case</td>
+            <td>"aman", "AMAN" → "Aman"</td>
+          </tr>
+          <tr>
+            <td>Wrong data types</td>
+            <td>Cast to correct type</td>
+            <td>"850" (string) → 850 (integer)</td>
+          </tr>
+          <tr>
+            <td>Non-normalised values</td>
+            <td>Map to canonical form</td>
+            <td>"US", "U.S.A", "United States" → "United States"</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3><span class="icon">🛠️</span>Processing Services by Use Case</h3>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🔀</div>
+          <div class="card-title">SQL-Based ELT</div>
+          <div class="card-desc">Load data first, then transform using SQL inside Redshift. Best for structured data
+            with clear schemas. Amazon Redshift handles massive analytical transformations.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🐘</div>
+          <div class="card-title">Big Data (EMR)</div>
+          <div class="card-desc">Distributed Spark and Hadoop on Amazon EMR. For datasets too large to fit on one
+            machine — process billions of rows in parallel across a cluster.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚙️</div>
+          <div class="card-title">Near Real-Time ETL</div>
+          <div class="card-desc">AWS Glue for serverless ETL jobs. Processes data quickly without managing servers —
+            crawl schema, transform, and write to Redshift or S3 automatically.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">Stream Processing</div>
+          <div class="card-desc">Amazon Managed Service for Apache Flink, or Spark Streaming on EMR. For continuously
+            arriving data requiring real-time aggregation, filtering, or alerting.</div>
+        </div>
+      </div>
+
+      <pre><span class="cm"># AWS Glue PySpark ETL job — clean and transform sales data</span>
+<span class="kw">from</span> awsglue.transforms <span class="kw">import</span> *
+<span class="kw">from</span> pyspark.sql.functions <span class="kw">import</span> col, <span class="fn">initcap</span>, <span class="fn">trim</span>
+
+<span class="cm"># Load raw data from S3 via Glue Data Catalog</span>
+datasource = glueContext.<span class="fn">create_dynamic_frame</span>.from_catalog(
+    database=<span class="str">"raw_db"</span>,
+    table_name=<span class="str">"sales"</span>
+)
+
+df = datasource.<span class="fn">toDF</span>() \
+    .<span class="fn">filter</span>(col(<span class="str">"amount"</span>) > <span class="num">0</span>) \               <span class="cm"># Remove zero/negative amounts</span>
+    .<span class="fn">dropDuplicates</span>([<span class="str">"order_id"</span>]) \          <span class="cm"># Remove duplicates</span>
+    .<span class="fn">withColumn</span>(<span class="str">"city"</span>, <span class="fn">initcap</span>(<span class="fn">trim</span>(col(<span class="str">"city"</span>))))  <span class="cm"># Standardise casing</span>
+
+<span class="cm"># Write curated output to S3 in Parquet format</span>
+df.<span class="fn">write</span>.<span class="fn">mode</span>(<span class="str">"overwrite"</span>).<span class="fn">parquet</span>(<span class="str">"s3://curated/sales/"</span>)</pre>
+
+      <h3><span class="icon">🔄</span>Typical Processing Pipeline</h3>
+
+      <div class="pipeline">
+        <div class="pipeline-step">S3<br><small>Raw Zone</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">AWS Glue<br><small>ETL Job</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">S3<br><small>Trusted Zone</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">EMR / Redshift<br><small>Aggregation</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">S3 / Redshift<br><small>Curated Zone</small></div>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ────────────────────────────────────────
+       SECTION 7 — CONSUMPTION LAYER
+  ──────────────────────────────────────── -->
+    <section id="consumption">
+      <div class="section-label">Section 07</div>
+      <h2>The Consumption Layer</h2>
+
+      <p>The consumption layer is where data delivers its value — analysts query it, managers visualise it, and ML
+        models learn from it. This layer must serve very different types of users with very different needs.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Consumer Type</th>
+            <th>What They Need</th>
+            <th>AWS Service</th>
+          </tr>
+          <tr>
+            <td>Data Analyst</td>
+            <td>Ad-hoc SQL queries on processed data</td>
+            <td>Amazon Athena</td>
+          </tr>
+          <tr>
+            <td>Business Analyst / Manager</td>
+            <td>Interactive dashboards and charts</td>
+            <td>Amazon QuickSight</td>
+          </tr>
+          <tr>
+            <td>Data Scientist</td>
+            <td>Large dataset access for model training</td>
+            <td>Amazon SageMaker + Redshift</td>
+          </tr>
+          <tr>
+            <td>BI Team</td>
+            <td>Complex structured analytical queries</td>
+            <td>Amazon Redshift</td>
+          </tr>
+          <tr>
+            <td>Operations Team</td>
+            <td>Real-time monitoring and alerts</td>
+            <td>Amazon OpenSearch + Kinesis</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3><span class="icon">🔍</span>Amazon Athena — Interactive SQL on S3</h3>
+      <p>Athena lets analysts run SQL directly against files in S3 — no database server, no loading data. It reads
+        schema from the AWS Glue Data Catalog and charges per query scanned.</p>
+
+      <pre><span class="cm">-- Athena query: total revenue by region for 2025</span>
+<span class="kw">SELECT</span>
+    region,
+    <span class="fn">SUM</span>(revenue)     <span class="kw">AS</span> total_revenue,
+    <span class="fn">COUNT</span>(order_id)  <span class="kw">AS</span> total_orders
+<span class="kw">FROM</span> curated.sales_2025    <span class="cm">-- reads directly from S3 Parquet files</span>
+<span class="kw">GROUP BY</span> region
+<span class="kw">ORDER BY</span> total_revenue <span class="kw">DESC</span>;</pre>
+
+      <div class="pipeline">
+        <div class="pipeline-step">S3<br><small>Curated Zone</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Glue Catalog<br><small>Schema metadata</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Amazon Athena<br><small>SQL engine</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Analyst<br><small>Query results</small></div>
+      </div>
+
+      <h3><span class="icon">📊</span>Amazon QuickSight — Business Intelligence</h3>
+      <p>QuickSight connects to Athena, Redshift, S3, and other sources to build interactive dashboards that
+        non-technical users can explore without writing SQL.</p>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">📈</div>
+          <div class="card-title">Sales Dashboard</div>
+          <div class="card-desc">Total revenue by region, month-over-month growth, top 10 products. Drill down from
+            country → state → city → store.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">👥</div>
+          <div class="card-title">Customer Analytics</div>
+          <div class="card-desc">New vs returning customers, churn rate, lifetime value by cohort. Updated daily from
+            Redshift.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚠️</div>
+          <div class="card-title">Operational Monitoring</div>
+          <div class="card-desc">System error rates, pipeline success/failure counts, data quality score trends. Alerts
+            when thresholds are exceeded.</div>
+        </div>
+      </div>
+
+      <div class="pipeline">
+        <div class="pipeline-step">S3 Data Lake</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Glue Catalog</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Redshift<br><small>Warehouse</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">QuickSight<br><small>Dashboard</small></div>
+      </div>
+
+      <h3><span class="icon">🤖</span>Amazon SageMaker — ML Consumption</h3>
+
+      <div class="pipeline">
+        <div class="pipeline-step">S3 Data Lake</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Glue / Redshift<br><small>Feature prep</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">SageMaker<br><small>Train model</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">SageMaker<br><small>Deploy endpoint</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">API calls<br><small>Predictions</small></div>
+      </div>
+
+      <div class="success-box">
+        ✅ <strong>Athena query optimisation tip:</strong> Partition your S3 data by date (e.g.
+        <code>year=2025/month=03/day=08/</code>) and use Parquet format. This can reduce data scanned — and your Athena
+        bill — by 99% compared to unpartitioned CSV.
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ────────────────────────────────────────
+       SECTION 8 — STREAMING ANALYTICS PIPELINE
+  ──────────────────────────────────────── -->
+    <section id="streaming">
+      <div class="section-label">Section 08</div>
+      <h2>Streaming Analytics Pipelines</h2>
+
+      <p>Some business problems cannot wait for the next batch job. When milliseconds matter — fraud detection, live IoT
+        monitoring, real-time recommendations — you need a <strong>streaming analytics pipeline</strong>.</p>
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Batch Pipeline</th>
+            <th>Streaming Pipeline</th>
+          </tr>
+          <tr>
+            <td>Data collected and processed on a schedule</td>
+            <td>Data processed continuously as it arrives</td>
+          </tr>
+          <tr>
+            <td>Results available after the batch completes</td>
+            <td>Results available within seconds or milliseconds</td>
+          </tr>
+          <tr>
+            <td>Lower cost — infrastructure runs only when scheduled</td>
+            <td>Higher cost — infrastructure runs 24/7</td>
+          </tr>
+          <tr>
+            <td>Example: overnight sales report</td>
+            <td>Example: real-time fraud detection</td>
+          </tr>
+        </table>
+      </div>
+
+      <h3><span class="icon">🏗️</span>AWS Streaming Architecture</h3>
+
+      <div class="pipeline">
+        <div class="pipeline-step">Data Producers<br><small>Apps / IoT / Logs</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Kinesis<br><small>Data Streams</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Apache Flink<br><small>Stream Processing</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Results<br><small>Alerts / S3 / Redshift</small></div>
+      </div>
+
+      <h3><span class="icon">🔑</span>Core Streaming Services</h3>
+
+      <div class="card-grid">
+        <div class="card">
+          <div class="card-icon">🌊</div>
+          <div class="card-title">Amazon Kinesis Data Streams</div>
+          <div class="card-desc">Ingests continuous data from producers at any scale. Data is retained for up to 365
+            days — consumers can replay the stream from any point.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🚿</div>
+          <div class="card-title">Amazon Kinesis Firehose</div>
+          <div class="card-desc">Fully managed delivery stream — automatically buffers, compresses, and loads data into
+            S3, Redshift, or OpenSearch. Zero pipeline code required.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚡</div>
+          <div class="card-title">Apache Flink (Managed)</div>
+          <div class="card-desc">AWS-managed real-time stream processing. Run stateful computations like windowed
+            aggregations, joins across streams, and pattern detection.</div>
+        </div>
+        <div class="card">
+          <div class="card-icon">🔍</div>
+          <div class="card-title">Amazon OpenSearch</div>
+          <div class="card-desc">Real-time search and dashboards on streaming data. Ideal for log monitoring and
+            operational analytics where data arrives continuously.</div>
+        </div>
+      </div>
+
+      <h3><span class="icon">💳</span>Full Example — Real-Time Fraud Detection</h3>
+
+      <pre><span class="cm"># Apache Flink rule — flag suspicious transaction pattern</span>
+<span class="cm"># Trigger: same card used in two different countries within 5 minutes</span>
+
+<span class="kw">SELECT</span>
+    card_id,
+    <span class="fn">FIRST</span>(country)   <span class="kw">AS</span> country_1,
+    <span class="fn">LAST</span>(country)    <span class="kw">AS</span> country_2,
+    <span class="fn">DATEDIFF</span>(minute, <span class="fn">FIRST</span>(event_time), <span class="fn">LAST</span>(event_time)) <span class="kw">AS</span> minutes_apart
+<span class="kw">FROM</span> transactions
+<span class="fn">GROUP BY</span> card_id, <span class="fn">TUMBLE</span>(event_time, <span class="fn">INTERVAL</span> <span class="str">'5'</span> <span class="kw">MINUTE</span>)
+<span class="fn">HAVING</span> <span class="fn">FIRST</span>(country) <> <span class="fn">LAST</span>(country);   <span class="cm">-- different countries = alert</span></pre>
+
+      <div class="pipeline">
+        <div class="pipeline-step">Transaction Events<br><small>Bank API</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Kinesis Streams</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Apache Flink<br><small>5-min window rule</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Fraud Alert<br><small>SNS / Lambda</small></div>
+        <span class="pipeline-arrow">+</span>
+        <div class="pipeline-step">Archive<br><small>S3 / Redshift</small></div>
+      </div>
+
+      <h3><span class="icon">🏭</span>Full Example — Factory IoT Monitoring</h3>
+
+      <div class="pipeline">
+        <div class="pipeline-step">Machine Sensors<br><small>Temp / Vibration</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">AWS IoT Core</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Kinesis Streams</div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Flink<br><small>Anomaly detection</small></div>
+        <span class="pipeline-arrow">→</span>
+        <div class="pipeline-step">Alert + S3 Archive</div>
+      </div>
+
+      <h3><span class="icon">🔐</span>Security in Pipeline Design</h3>
+
+      <div class="table-wrap">
+        <table>
+          <tr>
+            <th>Security Practice</th>
+            <th>Implementation</th>
+            <th>AWS Service</th>
+          </tr>
+          <tr>
+            <td>Least Privilege Access</td>
+            <td>Each service and user gets only the permissions they need</td>
+            <td>AWS IAM roles and policies</td>
+          </tr>
+          <tr>
+            <td>Encryption at Rest</td>
+            <td>All S3 buckets, Redshift clusters, and databases encrypted</td>
+            <td>AWS KMS, SSE-S3</td>
+          </tr>
+          <tr>
+            <td>Encryption in Transit</td>
+            <td>All data movement uses TLS/SSL</td>
+            <td>Built into AWS services</td>
+          </tr>
+          <tr>
+            <td>Data Governance</td>
+            <td>Centralised access control, cataloguing, and lineage tracking</td>
+            <td>AWS Lake Formation, Glue Data Catalog</td>
+          </tr>
+          <tr>
+            <td>Audit Trails</td>
+            <td>Log every API call, data access, and pipeline execution</td>
+            <td>AWS CloudTrail, S3 access logs</td>
+          </tr>
+        </table>
+      </div>
+    </section>
+
+    <hr class="divider">
+
+    <!-- ────────────────────────────────────────
+       SECTION 9 — QUIZ
+  ──────────────────────────────────────── -->
+  <section id="quiz">
+    <div class="section-label">Module 5 Quiz</div>
+    <h2>🧠 Test Your Knowledge</h2>
+    <p>Answer all questions to see your score.</p>
+
+    <div class="quiz-question">
+      <div class="quiz-number">Q 01</div>
+      <div class="quiz-q-text">Which statement describes how data architectures evolved from 1970 to the present?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Hierarchical databases dominated the market until the explosion of data during the rise of the internet.</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Data stores evolved to adapt to increasing demands of data volume, variety, and velocity.</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Data stores evolved from relational to nonrelational structures to support demand for higher levels of connected users.</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Data warehouses evolved out of the need to process data for AI/ML applications.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Data stores evolved to adapt to increasing demands of data volume, variety, and velocity.</strong>
+        Modern data architectures evolved to handle the <strong>3Vs of big data — Volume, Variety, and Velocity</strong>. As data generated by businesses, users, and internet services increased rapidly, data storage and processing systems evolved to manage these growing demands efficiently.
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <div class="quiz-number">Q 02</div>
+      <div class="quiz-q-text">Which statement describes a key design approach for modern data architecture in the AWS Well-Architected Data Analytics Lens?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Drive data through a single ingestion point and a single access point that all consumers use.</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Prevent movement of data across individual data stores and into the data lake.</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Ingest all data into a centralized data warehouse that all consumers can query directly.</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Store data in a centralized data lake and make it available for analytics and AI/ML.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Store data in a centralized data lake</strong> so it can be accessed by analytics tools and AI/ML workloads. Modern architectures use a centralized data lake to store large volumes of structured and unstructured data.
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <div class="quiz-number">Q 03</div>
+      <div class="quiz-q-text">What is the role of Amazon Redshift in the AWS modern data architecture?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Amazon Redshift provides object storage for structured and unstructured data.</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Amazon Redshift provides a relational database engine compatible with PostgreSQL.</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Amazon Redshift provides a fully managed data warehouse service.</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Amazon Redshift provides a fully managed nonrelational database for key-value data models.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Amazon Redshift</strong> is a fully managed cloud data warehouse used for large-scale analytics and SQL queries.
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <div class="quiz-number">Q 04</div>
+      <div class="quiz-q-text">Which type or types of data movement should the modern data architecture support?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Only inside-out data movement.</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>The architecture should not support data movement between data stores.</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Only outside-in data movement.</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Both inside-out and outside-in data movement, and movement between purpose-built data stores.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Modern data architecture supports <strong>both inside-out and outside-in data movement</strong>, and also movement between different purpose-built data stores.
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <div class="quiz-number">Q 05</div>
+      <div class="quiz-q-text">What is the role of AWS Glue in the AWS modern data architecture?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Facilitate data movement and transformation between data stores.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Provide the ability to query data directly from the data lake using SQL.</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Help you to monitor and classify data.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Secure access to sensitive data.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>AWS Glue</strong> is a serverless ETL service used to extract, transform, and load data between different data sources.
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <div class="quiz-number">Q 06</div>
+      <div class="quiz-q-text">A data engineering team is building a data pipeline for batch analytics. Which resource would provide the most relevant guidance about AWS best practices?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Operational excellence pillar of the AWS Well-Architected Framework</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Scenarios section of the Data Analytics Lens of the AWS Well-Architected Framework</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Cost optimization pillar of the AWS Well-Architected Framework</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Machine learning lifecycle section of the Machine Learning Lens</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ The <strong>Data Analytics Lens</strong> provides AWS best practices and architectural guidance for building analytics pipelines.
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <div class="quiz-number">Q 07</div>
+      <div class="quiz-q-text">Which statement accurately describes design characteristics of the ingestion layer in AWS modern data architecture?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Use purpose-built services to match the connectivity, data format, data structure, and data velocity requirements for each data source.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Use Amazon AppFlow to ingest streaming data from sources such as social media.</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Use AWS DataSync to perform a one-time migration from relational databases.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Select a single ingestion service for all data sources.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Modern data architectures use <strong>purpose-built ingestion services</strong> depending on data format, structure, connectivity, and velocity.
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <div class="quiz-number">Q 08</div>
+      <div class="quiz-q-text">Which statement accurately describes design characteristics of the storage layer in AWS modern data architecture?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Amazon S3 is used to house highly structured data and requires schema first.</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Amazon S3 and Amazon Redshift are not natively integrated.</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Data arrives in a landing zone and then moves to a raw zone for Redshift querying.</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Amazon S3 objects in the data lake are organized into different buckets or prefixes representing different data states.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ In Amazon S3 data lakes, data is organized using <strong>buckets and prefixes</strong> representing stages like raw, processed, and curated data.
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <div class="quiz-number">Q 09</div>
+      <div class="quiz-q-text">The AWS modern data architecture describes three types of processing in the processing layer. What are two of those types?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Data crawling and data cataloging</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Streaming and batch</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>SQL-based extract, transform, and load (ETL) and big data processing</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Data warehouse and data lake</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Processing in modern data architectures typically includes <strong>batch processing</strong> and <strong>real-time streaming processing</strong>.
+      </div>
+    </div>
+
+    <div class="quiz-question">
+      <div class="quiz-number">Q 10</div>
+      <div class="quiz-q-text">In a stream processing pipeline, which statement describes a producer?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>An application that reads the data but does not process it</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>An application that reads and processes data from the stream</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>An integration that collects data from a source and loads it onto a stream</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Temporary storage used while processing data in the stream</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ A <strong>producer</strong> generates or sends data into the stream. This could be applications, services, or devices pushing data into the pipeline.
+      </div>
+    </div>
+
+    <!-- SCORE BAR -->
+    <div class="score-bar" id="scoreBar" style="display:none">
+      <div class="score-title">Your Score</div>
+      <div class="score-count" id="scoreCount">0 / 10</div>
+      <div class="score-sub" id="scoreMsg">Keep practising!</div>
+    </div>
+
+  </section>
+
+    <!-- ── BOTTOM NAV ── -->
+    <div class="bottom-nav">
+      <a href="data-types.html" class="btn">⬅ Module 4</a>
+      <a href="security-scaling.html" class="btn">Module 6 ➡</a>
+    </div>
+
+  </div>
+
+  <!-- GO TO TOP -->
+  <button id="topBtn">↑</button>
+
+  <script src="../assets/js/template.js"></script>
+</body>
+
+</html>

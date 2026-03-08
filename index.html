@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWS Learning Notes — Data Engineering Academy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Source+Sans+3:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Scanline overlay -->
+  <div class="scanlines"></div>
+
+  <!-- Grain texture overlay -->
+  <div class="grain"></div>
+
+  <!-- Particle Background -->
+  <div id="particles-js"></div>
+
+  <!-- Corner decorations -->
+  <div class="corner corner-tl"></div>
+  <div class="corner corner-tr"></div>
+  <div class="corner corner-bl"></div>
+  <div class="corner corner-br"></div>
+
+  <!-- HUD lines -->
+  <div class="hud-line hud-top"></div>
+  <div class="hud-line hud-bottom"></div>
+
+  <!-- Main Landing -->
+  <div class="landing">
+
+    <!-- Top status bar -->
+    <div class="status-bar" id="statusBar">
+      <div class="status-dot"></div>
+      <span class="status-text" id="statusText">INITIALIZING SYSTEM...</span>
+      <div class="status-spacer"></div>
+      <span class="status-code">v2.0.25</span>
+    </div>
+
+    <!-- AWS Logo -->
+    <div class="logo-wrapper" id="logoWrapper">
+      <div class="logo-ring ring-1"></div>
+      <div class="logo-ring ring-2"></div>
+      <div class="logo-ring ring-3"></div>
+      <img
+        src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg"
+        class="aws-logo" alt="AWS Logo" id="awsLogo">
+    </div>
+
+    <!-- Title block -->
+    <div class="title-block" id="titleBlock">
+      <div class="pre-title">
+        <span class="pre-line"></span>
+        <span class="pre-label">ACADEMY · DATA ENGINEERING</span>
+        <span class="pre-line"></span>
+      </div>
+      <h1 class="main-title">
+        <span class="title-aws" id="typedTitle"></span>
+        <span class="title-suffix">eBOOK</span>
+      </h1>
+      <p class="tagline" id="tagline">Master Cloud Infrastructure &amp; Data Engineering</p>
+    </div>
+
+    <!-- Stats row -->
+    <div class="stats-row" id="statsRow">
+      <div class="stat-pill">
+        <span class="stat-num" data-target="13">0</span>
+        <span class="stat-lbl">Modules</span>
+      </div>
+      <div class="stat-sep">◆</div>
+      <div class="stat-pill">
+        <span class="stat-num" data-target="15">0</span>
+        <span class="stat-lbl">Topics</span>
+      </div>
+      <div class="stat-sep">◆</div>
+      <div class="stat-pill">
+        <span class="stat-num" data-target="100">0</span>
+        <span class="stat-lbl">% Free</span>
+      </div>
+    </div>
+
+    <!-- CTA Button -->
+    <div class="btn-wrapper" id="btnWrapper">
+      <button id="enterBtn" class="enter-btn">
+        <span class="btn-bg"></span>
+        <span class="btn-shine"></span>
+        <span class="btn-content">
+          <span class="btn-icon">▶</span>
+          <span class="btn-text">Enter eBook</span>
+        </span>
+        <span class="btn-border-anim"></span>
+      </button>
+      <p class="btn-hint">Click to begin your journey</p>
+    </div>
+
+    <!-- Tech tags -->
+    <div class="tech-tags" id="techTags">
+      <span class="tag">EC2</span>
+      <span class="tag">S3</span>
+      <span class="tag">IAM</span>
+      <span class="tag">Lambda</span>
+      <span class="tag">RDS</span>
+      <span class="tag">CloudWatch</span>
+    </div>
+
+  </div>
+
+  <!-- Loading overlay -->
+  <div class="loading-overlay" id="loadingOverlay">
+    <div class="loading-bar-wrap">
+      <div class="loading-label">LOADING MODULE....</div>
+      <div class="loading-bar">
+        <div class="loading-fill" id="loadingFill"></div>
+      </div>
+      <div class="loading-pct" id="loadingPct">0%</div>     
+    </div>
+  </div>
+
+  <!-- Libraries -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 3 – Understanding Data-Driven Organizations</title>
+  <link rel="stylesheet" href="../assets/css/template.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=IBM+Plex+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">Module 03 · AWS Academy Data Engineering</div>
+  <h1>Understanding<br><span>Data-Driven Organizations</span></h1>
+  <p>Learn how modern companies use data to make smarter decisions — and how Data Engineers build the infrastructure that makes it all possible.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong>4</strong><span>Analytics Levels</span></div>
+    <div class="hero-stat"><strong>3</strong><span>Modern Strategies</span></div>
+    <div class="hero-stat"><strong>6</strong><span>Pipeline Layers</span></div>
+  </div>
+</div>
+
+<!-- ── STICKY NAV ── -->
+<nav class="anchor-nav">
+  <span>Jump to →</span>
+  <a href="#intro">Introduction</a>
+  <a href="#decisions">How Orgs Decide</a>
+  <a href="#analytics-vs-ai">Analytics vs AI</a>
+  <a href="#insights">Levels of Insight</a>
+  <a href="#pipeline">Data Pipeline</a>
+  <a href="#de-role">DE Role</a>
+  <a href="#strategies">Modern Strategies</a>
+  <a href="#quiz">Quiz</a>
+</nav>
+
+<div class="container">
+
+  <!-- ────────────────────────────────────────
+       SECTION 1 — INTRODUCTION
+  ──────────────────────────────────────── -->
+  <section id="intro">
+    <div class="section-label">Section 01</div>
+    <h2>What is a Data-Driven Organization?</h2>
+
+    <p>A <strong>Data-Driven Organization</strong> is a company that makes decisions based on data — not guesswork or gut feeling. In the past, businesses relied on experience and assumptions. Today, they use data, analytics, and machine learning to make smarter, faster, more accurate decisions.</p>
+
+    <div class="info-box">
+      💡 <strong>Classic example:</strong> Netflix does not guess which movie you want to watch. It analyses what you have watched, how long you watched it, what you rated, and what genres you prefer — then recommends content tailored to you. That is data-driven decision making.
+    </div>
+
+    <h3><span class="icon">🎯</span>Module Objectives</h3>
+    <p>After completing this module, you will be able to:</p>
+    <ul class="styled">
+      <li>Explain the difference between Data Analytics and AI/ML — and when to use each</li>
+      <li>Describe the layers of a data pipeline and how data moves through them</li>
+      <li>Identify the roles of Data Engineer and Data Scientist in an organisation</li>
+      <li>Understand the four levels of data insights — from descriptive to prescriptive</li>
+      <li>Explain the three modern data strategies: Modernize, Unify, and Innovate</li>
+    </ul>
+
+    <h3><span class="icon">💡</span>How Humans Make Decisions</h3>
+    <p>Every day we make decisions using experience, reviews, research, and other people's opinions. Companies face the same challenge — but at massive scale. Where a person chooses a restaurant, a company chooses a pricing strategy for millions of customers.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🍕</div>
+        <div class="card-title">Personal Decision</div>
+        <div class="card-desc">Which restaurant has the best Thai food? We use reviews, past experience, and recommendations.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏠</div>
+        <div class="card-title">Financial Decision</div>
+        <div class="card-desc">What price should I pay for a house? We use market data, comparisons, and expert opinions.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💼</div>
+        <div class="card-title">Career Decision</div>
+        <div class="card-desc">Which job should I pursue? We use salary data, growth trends, and personal skills assessment.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏢</div>
+        <div class="card-title">Business Decision</div>
+        <div class="card-desc">Companies replace personal opinion with data systems — analysing millions of records to decide automatically.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 2 — HOW ORGANISATIONS DECIDE
+  ──────────────────────────────────────── -->
+  <section id="decisions">
+    <div class="section-label">Section 02</div>
+    <h2>How Organisations Use Data to Decide</h2>
+
+    <p>Here are real-world examples of industries using data-driven decision making today:</p>
+
+    <h3><span class="icon">💳</span>Fraud Detection — Banking</h3>
+    <p>Banks cannot manually review millions of transactions. Instead, they build data systems that detect unusual patterns automatically.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Signal Analysed</th>
+          <th>Example Anomaly</th>
+          <th>Action Taken</th>
+        </tr>
+        <tr>
+          <td>Transaction location</td>
+          <td>Card used in India and UK within 1 hour</td>
+          <td>Block transaction, alert customer</td>
+        </tr>
+        <tr>
+          <td>Transaction amount</td>
+          <td>Sudden ₹50,000 purchase — never done before</td>
+          <td>Trigger OTP verification</td>
+        </tr>
+        <tr>
+          <td>Purchase history</td>
+          <td>Buying electronics when only groceries purchased before</td>
+          <td>Flag for manual review</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🖥️</span>Website Optimisation — A/B Testing</h3>
+    <p>Companies run controlled experiments to find which design decisions drive more sales. This is called <strong>A/B testing</strong>.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Version A<br><small>Blue button</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Show to<br><small>50% of users</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Track<br><small>clicks &amp; purchases</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Compare<br><small>conversion rate</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Deploy<br><small>winning version</small></div>
+    </div>
+
+    <h3><span class="icon">🏥</span>Healthcare Prediction</h3>
+    <p>Hospitals analyse patient history, age, and treatment data to predict which patients are at high risk of relapsing — allowing doctors to intervene before a crisis occurs.</p>
+
+    <h3><span class="icon">🌾</span>Agriculture &amp; IoT</h3>
+    <p>Modern farms use sensors to measure soil moisture, temperature, and crop growth — feeding that data into analytics systems to decide the optimal harvest time. This is data-driven farming at scale.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🔒</div>
+        <div class="card-title">Cybersecurity</div>
+        <div class="card-desc">Systems detect multiple failed logins, unusual IP addresses, or off-hours access — and automatically flag or block suspicious activity.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <div class="card-title">Supply Chain</div>
+        <div class="card-desc">Retailers use historical sales data and predictive models to determine exactly how much stock to order before a holiday season.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 3 — ANALYTICS vs AI/ML
+  ──────────────────────────────────────── -->
+  <section id="analytics-vs-ai">
+    <div class="section-label">Section 03</div>
+    <h2>Data Analytics vs AI / Machine Learning</h2>
+
+    <p>Organisations use two main approaches to fuel data-driven decisions. Understanding the difference helps you choose the right tool for each problem.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th></th>
+          <th>Data Analytics</th>
+          <th>AI / Machine Learning</th>
+        </tr>
+        <tr>
+          <td><strong>Definition</strong></td>
+          <td>Systematic analysis using programming logic and rules</td>
+          <td>Mathematical models that learn patterns from data automatically</td>
+        </tr>
+        <tr>
+          <td><strong>Rules</strong></td>
+          <td>Manually defined by a human</td>
+          <td>Learned automatically from training data</td>
+        </tr>
+        <tr>
+          <td><strong>Best for</strong></td>
+          <td>Structured data with defined questions</td>
+          <td>Complex, unstructured data and predictions</td>
+        </tr>
+        <tr>
+          <td><strong>Example question</strong></td>
+          <td>"Which product sold the most last month?"</td>
+          <td>"Which customers are likely to cancel their subscription?"</td>
+        </tr>
+        <tr>
+          <td><strong>AWS tool</strong></td>
+          <td>Athena, Redshift, QuickSight</td>
+          <td>Amazon SageMaker, Rekognition, Comprehend</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">📊</span>Data Analytics in Action</h3>
+    <p>A retail company wants to know which product sells most. A Data Analyst writes a SQL query:</p>
+
+<pre><span class="kw">SELECT</span> product_name, <span class="fn">SUM</span>(sales) <span class="kw">AS</span> total_sales
+<span class="kw">FROM</span> orders
+<span class="kw">GROUP BY</span> product_name
+<span class="kw">ORDER BY</span> total_sales <span class="kw">DESC</span>;
+
+<span class="cm">-- Output:</span>
+<span class="cm">-- Shoes    → 5,000 sales</span>
+<span class="cm">-- T-shirts → 3,200 sales</span>
+<span class="cm">-- Bags     → 1,200 sales</span></pre>
+
+    <p>This works perfectly — it answers a clear, structured question using logic. No machine learning needed.</p>
+
+    <h3><span class="icon">🤖</span>AI / ML in Action — Dog Image Classifier</h3>
+    <p>This same problem shows why ML is fundamentally different from traditional analytics.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Approach</th>
+          <th>How It Works</th>
+          <th>Limitation</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Traditional Analytics</span></td>
+          <td>A human manually defines rules: 4 legs, tail, fur, ear shape → dog</td>
+          <td>Breaks when dogs look unusual. Cannot generalise to new cases.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">AI / ML</span></td>
+          <td>Train model on 10,000 dog images + 10,000 non-dog images. Model learns patterns automatically.</td>
+          <td>Needs large labelled dataset. More compute required.</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">👥</span>Business Example — Customer Relationship Management</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Analytics Approach</div>
+        <div class="card-desc">Segment customers by total spend: Premium (&gt;$5,000), Regular ($1,000–5,000), Low (&lt;$1,000). Apply fixed rules to give each group a different experience.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <div class="card-title">AI/ML Approach</div>
+        <div class="card-desc">Train a model on purchase frequency, complaints, website visits, and support calls. Model predicts which customers are likely to cancel — before they do.</div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>Key insight:</strong> Analytics answers "what happened?" — ML predicts "what will happen?" Both are valuable; the right choice depends on the question you are trying to answer.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 4 — LEVELS OF INSIGHT
+  ──────────────────────────────────────── -->
+  <section id="insights">
+    <div class="section-label">Section 04</div>
+    <h2>Four Levels of Data Insights</h2>
+
+    <p>Not all analytics are equal. As you move up the four levels, the insights become more valuable — and more difficult to produce.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Level</th>
+          <th>Question Answered</th>
+          <th>Example</th>
+          <th>Value</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">1. Descriptive</span></td>
+          <td>What happened?</td>
+          <td>Sales last month = ₹10,00,000</td>
+          <td>Baseline</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">2. Diagnostic</span></td>
+          <td>Why did it happen?</td>
+          <td>Sales increased because a marketing campaign ran</td>
+          <td>Medium</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">3. Predictive</span></td>
+          <td>What will happen?</td>
+          <td>Next month's sales predicted = ₹12,00,000</td>
+          <td>High</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">4. Prescriptive</span></td>
+          <td>What should we do?</td>
+          <td>Increase marketing budget in the North region by 20%</td>
+          <td>Highest</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Descriptive<br><small>What happened?</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Diagnostic<br><small>Why did it happen?</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Predictive<br><small>What will happen?</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Prescriptive<br><small>What should we do?</small></div>
+    </div>
+
+    <h3><span class="icon">⚠️</span>More Data Does Not Always Mean More Value</h3>
+    <p>Collecting too much data creates its own problems:</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <div class="card-title">Higher Cost</div>
+        <div class="card-desc">More data requires more storage, processing power, and engineering time to maintain.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔒</div>
+        <div class="card-title">Security Risk</div>
+        <div class="card-desc">More data means a larger attack surface — higher risk of hacking, leaks, and privacy violations.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🐢</div>
+        <div class="card-title">Slower Queries</div>
+        <div class="card-desc">Querying 10 TB takes significantly longer than querying 1 GB — even on powerful cloud infrastructure.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📉</div>
+        <div class="card-title">Data Ages Quickly</div>
+        <div class="card-desc">Real-time traffic data is extremely valuable. Day-old traffic data is less useful. Month-old traffic data is nearly worthless.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">⚖️</span>The Three Trade-Offs</h3>
+    <p>Every data system requires balancing three competing factors:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Factor</th>
+          <th>Key Question</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Cost</span></td>
+          <td>Is faster processing worth the additional expense?</td>
+          <td>Real-time streaming is 10× more expensive than daily batch jobs</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Speed</span></td>
+          <td>How quickly do we need results?</td>
+          <td>Stock trading systems require millisecond responses; sales reports can wait hours</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Accuracy</span></td>
+          <td>How precise must predictions be?</td>
+          <td>Medical diagnosis requires 99%+ accuracy; ad targeting can work at 70%</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 5 — DATA PIPELINE
+  ──────────────────────────────────────── -->
+  <section id="pipeline">
+    <div class="section-label">Section 05</div>
+    <h2>The Data Pipeline — Infrastructure for Decisions</h2>
+
+    <p>A <strong>Data Pipeline</strong> is the system that moves data from its source all the way to insights and decisions. Every data-driven organisation runs on one.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Data Sources</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Ingestion</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Storage</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Processing</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Analysis &amp;<br>Visualisation</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Decisions</div>
+    </div>
+
+    <h3><span class="icon">🍕</span>Simple Real-Life Example — Food Delivery App</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Pipeline Step</th>
+          <th>What Happens</th>
+          <th>Real-World Action</th>
+        </tr>
+        <tr>
+          <td>1. Collect Data</td>
+          <td>User places an order</td>
+          <td>App receives order ID, items, address, timestamp</td>
+        </tr>
+        <tr>
+          <td>2. Store Data</td>
+          <td>Order saved in database</td>
+          <td>Record written to Amazon RDS or DynamoDB</td>
+        </tr>
+        <tr>
+          <td>3. Process Data</td>
+          <td>Check restaurant availability</td>
+          <td>System queries nearby open restaurants in real time</td>
+        </tr>
+        <tr>
+          <td>4. Use Data</td>
+          <td>Assign nearest driver</td>
+          <td>Algorithm matches driver using GPS and route data</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🏗️</span>The Six Layers of a Data Pipeline</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📡</div>
+        <div class="card-title">1. Data Sources</div>
+        <div class="card-desc">Where data originates — mobile apps, websites, IoT sensors, databases, social media, and payment systems.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📥</div>
+        <div class="card-title">2. Ingestion</div>
+        <div class="card-desc">Collecting data into the pipeline. Batch (daily reports) or Stream (live stock prices). AWS: Kinesis, IoT Core.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗄️</div>
+        <div class="card-title">3. Storage</div>
+        <div class="card-desc">Persisting data for processing. S3 for data lakes, RDS for structured, DynamoDB for NoSQL, Redshift for warehousing.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚙️</div>
+        <div class="card-title">4. Processing</div>
+        <div class="card-desc">Transforming raw data into usable format — removing duplicates, fixing nulls, converting formats. AWS: Glue, EMR, Spark.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <div class="card-title">5. Analysis &amp; Visualisation</div>
+        <div class="card-desc">Query and visualise processed data. AWS: Athena, Redshift, QuickSight. Also: Tableau, Power BI.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎯</div>
+        <div class="card-title">6. Decisions</div>
+        <div class="card-desc">Acting on insights — fraud alerts, product recommendations, demand forecasting, customer retention campaigns.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🧹</span>Data Wrangling — Preparing Data Inside the Pipeline</h3>
+    <p>As data moves through the pipeline, it undergoes <strong>data wrangling</strong> — the process of cleaning and preparing it for analysis.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Wrangling Task</th>
+          <th>What It Does</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td>Discover</td>
+          <td>Understand what data exists and its quality</td>
+          <td>Check columns, identify missing values, review data types</td>
+        </tr>
+        <tr>
+          <td>Clean</td>
+          <td>Remove errors and duplicates</td>
+          <td>Delete duplicate order records, remove nulls</td>
+        </tr>
+        <tr>
+          <td>Normalise</td>
+          <td>Standardise inconsistent values</td>
+          <td>"USA", "U.S.A", "United States" → all become "United States"</td>
+        </tr>
+        <tr>
+          <td>Transform</td>
+          <td>Convert data into a useful structure</td>
+          <td>Convert JSON logs into structured table rows</td>
+        </tr>
+        <tr>
+          <td>Enrich</td>
+          <td>Add external information to improve analysis</td>
+          <td>Add customer age group, location tier, and income level</td>
+        </tr>
+      </table>
+    </div>
+
+<pre><span class="cm"># Before wrangling — raw record</span>
+{
+  <span class="str">"name"</span>: <span class="str">"aman"</span>,
+  <span class="str">"city"</span>: <span class="str">"SURAT"</span>,
+  <span class="str">"age"</span>: <span class="kw">null</span>
+}
+
+<span class="cm"># After wrangling — clean record</span>
+{
+  <span class="str">"name"</span>: <span class="str">"Aman"</span>,
+  <span class="str">"city"</span>: <span class="str">"Surat"</span>,
+  <span class="str">"age"</span>: <span class="num">25</span>
+}</pre>
+
+    <h3><span class="icon">🔄</span>Pipelines Are Always Iterative</h3>
+    <p>A data pipeline is never "finished." It continuously improves as business requirements change and models learn from new data.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Collect Data</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Process</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Analyse Results</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Improve Model</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Repeat ↺</div>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>Netflix example:</strong> Netflix recommends a movie → you watch it (or skip it) → the system learns from your behaviour → the next recommendation improves. This cycle never stops.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 6 — ROLE OF THE DATA ENGINEER
+  ──────────────────────────────────────── -->
+  <section id="de-role">
+    <div class="section-label">Section 06</div>
+    <h2>The Role of the Data Engineer</h2>
+
+    <p>A Data Engineer designs and builds the pipeline infrastructure. In simple terms: <strong>a Data Engineer builds the roads that data travels on.</strong> Without them, Data Scientists have nothing to work with.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Website</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Kinesis</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Amazon S3</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">AWS Glue</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Redshift</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Dashboard</div>
+    </div>
+
+    <h3><span class="icon">❓</span>Questions a Data Engineer Must Ask</h3>
+    <p>Before building any pipeline, a Data Engineer investigates the data landscape:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Question</th>
+          <th>Why It Matters</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td>Does the required data exist?</td>
+          <td>You can't analyse data that was never collected</td>
+          <td>If churn data doesn't exist, build a system to collect login frequency first</td>
+        </tr>
+        <tr>
+          <td>Where is the data stored?</td>
+          <td>Different formats require different ingestion approaches</td>
+          <td>CSV in S3 vs JSON from an API vs rows in MySQL — each needs different handling</td>
+        </tr>
+        <tr>
+          <td>Does data come from multiple sources?</td>
+          <td>Multi-source data requires integration planning</td>
+          <td>Combining website logs + payment system + inventory DB into one dataset</td>
+        </tr>
+        <tr>
+          <td>What is the data quality?</td>
+          <td>Bad data produces bad insights</td>
+          <td>Missing values, duplicate records, and inconsistent formats must be handled</td>
+        </tr>
+        <tr>
+          <td>What is the source of truth?</td>
+          <td>When data conflicts across systems, one must be chosen as authoritative</td>
+          <td>Customer address exists in CRM, payments, and shipping — which is correct?</td>
+        </tr>
+        <tr>
+          <td>What are the security requirements?</td>
+          <td>Data must be protected appropriately based on sensitivity</td>
+          <td>Healthcare data → HIPAA. Payment data → PCI-DSS. Use AWS IAM + KMS.</td>
+        </tr>
+        <tr>
+          <td>How fast must data be processed?</td>
+          <td>Determines batch vs streaming architecture</td>
+          <td>Stock trading = milliseconds. Daily sales report = hours. Choose accordingly.</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🆚</span>Data Engineer vs Data Scientist</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Responsibility</th>
+          <th>Data Engineer</th>
+          <th>Data Scientist</th>
+        </tr>
+        <tr>
+          <td>Primary focus</td>
+          <td>Building pipeline infrastructure</td>
+          <td>Analysing data and building models</td>
+        </tr>
+        <tr>
+          <td>Key question</td>
+          <td>"How do we move and store this data?"</td>
+          <td>"What can this data tell us?"</td>
+        </tr>
+        <tr>
+          <td>Main tools</td>
+          <td>Spark, Glue, S3, Kinesis, Airflow</td>
+          <td>Python, SageMaker, Statistics, ML frameworks</td>
+        </tr>
+        <tr>
+          <td>Output</td>
+          <td>A reliable, scalable data pipeline</td>
+          <td>Predictions, insights, and visualisations</td>
+        </tr>
+        <tr>
+          <td>Depends on</td>
+          <td>Business requirements and source systems</td>
+          <td>Clean data produced by the Data Engineer</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="success-box">
+      ✅ <strong>Workflow example:</strong> The Data Engineer builds a pipeline that collects website logs → stores in S3 → processes with Spark. The Data Scientist then uses that clean dataset to build a customer churn prediction model. Both roles are essential — neither works without the other.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 7 — MODERN STRATEGIES
+  ──────────────────────────────────────── -->
+  <section id="strategies">
+    <div class="section-label">Section 07</div>
+    <h2>Three Modern Data Strategies</h2>
+
+    <p>Modern organisations use a <strong>three-pronged strategy</strong> to build effective data infrastructure. Each strategy builds on the previous one.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">1. Modernize<br><small>Move to cloud</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">2. Unify<br><small>Break silos</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">3. Innovate<br><small>Use AI/ML</small></div>
+    </div>
+
+    <h3><span class="icon">🚀</span>Strategy 1 — Modernize</h3>
+    <p>Modernising means replacing expensive on-premise servers with cloud infrastructure and specialised purpose-built tools.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Before (On-Premise)</th>
+          <th>After (Cloud / Modernized)</th>
+        </tr>
+        <tr>
+          <td>One large server does everything</td>
+          <td>Purpose-built tools for each job (S3 for storage, EMR for processing, Redshift for analytics)</td>
+        </tr>
+        <tr>
+          <td>Tightly coupled — changing one part breaks others</td>
+          <td>Loosely coupled — each component is independent and upgradeable</td>
+        </tr>
+        <tr>
+          <td>Months to add capacity</td>
+          <td>Minutes to scale up or down</td>
+        </tr>
+        <tr>
+          <td>Large upfront hardware investment</td>
+          <td>Pay only for what you use</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>Loosely coupled pipelines:</strong> When components are independent, you can replace or upgrade the storage layer without touching the processing layer. This is a core design principle in modern data engineering.
+    </div>
+
+    <h3><span class="icon">🔗</span>Strategy 2 — Unify</h3>
+    <p>Unifying means creating a <strong>single source of truth</strong> for all organisational data — breaking down the data silos that exist in most large companies.</p>
+
+    <div class="warn-box">
+      ⚠️ <strong>Data Silos Problem:</strong> Marketing, Sales, and Finance each store their own customer data in separate systems that cannot easily talk to each other. When a customer changes their address, it gets updated in one system but not the others.
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🗃️</div>
+        <div class="card-title">Centralised Data Lake</div>
+        <div class="card-desc">All departments feed their data into a single Amazon S3 data lake. One place — all data.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">👥</div>
+        <div class="card-title">Democratised Access</div>
+        <div class="card-desc">Modern tools like QuickSight and Athena let analysts and managers query data themselves — without needing a Data Engineer for every request.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤝</div>
+        <div class="card-title">Better Collaboration</div>
+        <div class="card-desc">When everyone works from the same data, decisions across departments are consistent and aligned.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">💡</span>Strategy 3 — Innovate</h3>
+    <p>Innovation means using AI and machine learning to move from <strong>reactive</strong> to <strong>proactive</strong> decision-making.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Reactive (Old)</th>
+          <th>Proactive (AI/ML-Powered)</th>
+        </tr>
+        <tr>
+          <td>Fix machine after it breaks</td>
+          <td>Predict failure before it happens</td>
+        </tr>
+        <tr>
+          <td>Investigate fraud after it occurs</td>
+          <td>Flag suspicious transactions in real time</td>
+        </tr>
+        <tr>
+          <td>Report on sales that already dropped</td>
+          <td>Predict and prevent the drop with targeted campaigns</td>
+        </tr>
+        <tr>
+          <td>Wait for customer to cancel</td>
+          <td>Intervene with an offer before churn happens</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🛠️</span>AWS Services for Innovation</h3>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🧠</div>
+        <div class="card-title">Amazon SageMaker</div>
+        <div class="card-desc">Build, train, and deploy machine learning models at scale — no PhD required.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">👁️</div>
+        <div class="card-title">Amazon Rekognition</div>
+        <div class="card-desc">Image and video analysis — face recognition, object detection, content moderation.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📝</div>
+        <div class="card-title">Amazon Comprehend</div>
+        <div class="card-desc">Natural language processing — sentiment analysis, entity extraction, topic modelling.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔮</div>
+        <div class="card-title">Amazon Forecast</div>
+        <div class="card-desc">Time-series forecasting for demand planning, inventory management, and financial projections.</div>
+      </div>
+    </div>
+
+    <div class="success-box">
+      ✅ <strong>True data-driven organisations</strong> treat data as a strategic asset — using it for every major decision, every product improvement, and every customer experience enhancement. The three strategies — Modernize, Unify, Innovate — are how they get there.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 8 — QUIZ
+  ──────────────────────────────────────── -->
+  <section id="quiz">
+    <div class="section-label">Module 2 Quiz</div>
+    <h2>🧠 Test Your Knowledge</h2>
+    <p>Answer all questions to see your score.</p>
+
+    <!-- Q1 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 01</div>
+      <div class="quiz-q-text">A data scientist writes a program that applies rule-based logic to customer profile data to determine which customers are likely to respond to an advertisement. How would you categorize this type of analysis?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Traditional analytics</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Machine learning (ML)</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Artificial intelligence (AI)</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Preventive analytics</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Traditional analytics.</strong> The program uses fixed rules written by humans (rule-based logic) and does not learn from data. Any approach where logic is manually defined — not learned — is traditional analytics, not machine learning.
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 02</div>
+      <div class="quiz-q-text">Which statement describes a key factor to design an effective decision-making infrastructure?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>The designer should focus on collecting data and building a pipeline that can be used for all analytics in the organization.</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>The designer should start with the business problem to be solved and then build the pipeline that suits that use case.</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Every data pipeline should follow the same pattern of tasks and move directly from ingestion to storage to processing and then to analysis and visualization, sequentially.</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>The design should prevent data from being transformed as it moves through the pipeline.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Effective data infrastructure should be <strong>designed based on the business problem</strong> or use case, not just collecting data or using a fixed pipeline structure. Start with the decision that needs to be made, then build backwards.
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 03</div>
+      <div class="quiz-q-text">A customer wants to create a website that highlights cars only. They train a model using many labeled car images so it can identify cars in unlabeled pictures. Which data science approach can do this?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Natural language processing</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Historical analysis</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Traditional analytics</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Artificial intelligence and machine learning (AI/ML)</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>AI/ML — specifically supervised learning.</strong> The model learns from labeled images to identify cars in new, unseen images. Traditional analytics would require manually coding the rules for what a car looks like, which doesn't scale.
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 04</div>
+      <div class="quiz-q-text">Which statement accurately reflects how an organization should think about using its data to make decisions?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Data becomes more valuable for decision-making over time.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>An organization should always store as much data as possible to maximize value.</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>A solution should never sacrifice accuracy for speed.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Preventive and predictive analytics promise the most value when compared to other types of analytics.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Data becomes more valuable over time.</strong> As organizations collect and analyze more data, they gain better insights and improve decision-making. Storing data without purpose or always prioritizing accuracy over speed are not universal principles.
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 05</div>
+      <div class="quiz-q-text">Which statement best describes the data scientist role in processing data through a pipeline?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>A data scientist focuses on granting the correct level of access to different types of users.</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>A data scientist focuses on the infrastructure that data passes through.</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>A data scientist works with data in the pipeline.</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>A data scientist works on moving data into the pipeline.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Data scientists work with data inside the pipeline</strong> — analysing it, building models, and extracting insights. Data engineers handle the infrastructure and data movement; access management is typically an operations or security function.
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 06</div>
+      <div class="quiz-q-text">Which statement describes how data is processed through the pipeline?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Processing should almost never be iterative.</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>After the selected data sources have been ingested into the pipeline, it would be unlikely for additional iterations to involve new data sources.</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Processing will almost always be iterative.</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>The ingestion step of the pipeline might be iterative, but after data is stored to be processed, iterations rarely occur.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Processing is almost always iterative.</strong> As requirements change, new data sources are added, and models improve, the pipeline is continuously refined. A truly "finished" pipeline is the exception, not the norm.
+      </div>
+    </div>
+
+    <!-- Q7 — MULTI-SELECT -->
+    <div class="quiz-multi" id="mq7">
+      <div class="quiz-number">Q 07</div>
+      <div class="quiz-q-text">Which statements are true regarding how data might be acted upon as it passes through a pipeline?</div>
+      <div class="select-hint">Select TWO correct answers</div>
+      <label class="checkbox-option"><input type="checkbox" value="A"><span class="opt-text">Data might need to be cleaned or normalized.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"><span class="opt-text">All data that is ingested into the pipeline will be enriched.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"><span class="opt-text">Data will probably be transformed through some type of extract, transform, and load (ETL) process.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"><span class="opt-text">Extract, transform, and load (ETL) processes are not used in analytics pipelines.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"><span class="opt-text">Data that passes through the pipeline will be transformed only once, and this will occur during the ingestion phase.</span></label>
+      <button class="check-btn" onclick="checkMulti('mq7',['A','C'])">Check Answers</button>
+      <div class="multi-explanation">
+        ✅ <strong>Correct two:</strong> (1) <em>Data might need to be cleaned or normalized</em> — raw data from sources is rarely analysis-ready; cleaning and normalisation are standard steps. (2) <em>Data will probably be transformed through ETL</em> — ETL is the backbone of almost every data pipeline. Enrichment is optional, not universal, and data is typically transformed multiple times — not just once at ingestion.
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 08</div>
+      <div class="quiz-q-text">What is the data engineer's role in processing data through a pipeline?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Evaluate the results.</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Train data analysts on analysis and visualization tools.</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Look for additional insights in the data.</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Build the infrastructure that the data passes through.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Data engineers build and maintain the pipeline infrastructure</strong> — the systems that collect, move, store, and process data. Data Scientists and Analysts work with the data that flows through that infrastructure.
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 09</div>
+      <div class="quiz-q-text">Which statement represents a strategy suggested for innovating with artificial intelligence and machine learning (AI/ML)?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Take advantage of cloud services with AI/ML features that democratize access.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Focus on structured data where you can be more certain of the outcomes.</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>To protect your investment, limit ML activities to data scientists who have significant expertise with ML.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Expect a significant investment to train analysts to use new tools and abandon older, familiar tools, such as SQL.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Cloud platforms provide built-in <strong>AI/ML tools that democratize access</strong>, making machine learning capabilities available to more users — not just specialist data scientists. Modern cloud tools often work alongside familiar tools like SQL, not replace them.
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 10</div>
+      <div class="quiz-q-text">Which statement best describes the unify part of the three-pronged strategy to build modern data infrastructures?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Use artificial intelligence and machine learning (AI/ML) to discover new insights faster.</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Break down silos and democratize access.</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Migrate to purpose-built tools and data stores.</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Centrally control access to data.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ The <strong>unify strategy</strong> focuses on breaking down data silos and democratizing access so teams across the organization can use data effectively. Modernise = migrate to purpose-built tools. Innovate = use AI/ML for new insights.
+      </div>
+    </div>
+
+    <!-- SCORE BAR -->
+    <div class="score-bar" id="scoreBar" style="display:none">
+      <div class="score-title">Your Score</div>
+      <div class="score-count" id="scoreCount">0 / 10</div>
+      <div class="score-sub" id="scoreMsg">Keep practising!</div>
+    </div>
+
+  </section>
+
+  <!-- ── BOTTOM NAV ── -->
+  <div class="bottom-nav">
+    <a href="data-engineering-intro.html" class="btn">⬅ Module 2</a>
+    <a href="data-types.html" class="btn">Module 4 ➡</a>
+  </div>
+
+</div>
+
+<!-- GO TO TOP -->
+<button id="topBtn">↑</button>
+
+<script src="../assets/js/template.js"></script>
+</body>
+</html>

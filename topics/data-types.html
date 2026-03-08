@@ -1,0 +1,1128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 4 – The Elements of Data</title>
+  <link rel="stylesheet" href="../assets/css/template.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=IBM+Plex+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">Module 04 · AWS Academy Data Engineering</div>
+  <h1>The Elements<br><span>of Data</span></h1>
+  <p>Understand the Five Vs of data — Volume, Velocity, Variety, Veracity, and Value — and how each one shapes the design of your pipeline infrastructure.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong>5</strong><span>Vs of Data</span></div>
+    <div class="hero-stat"><strong>3</strong><span>Data Types</span></div>
+    <div class="hero-stat"><strong>3</strong><span>Source Categories</span></div>
+  </div>
+</div>
+
+<!-- ── STICKY NAV ── -->
+<nav class="anchor-nav">
+  <span>Jump to →</span>
+  <a href="#five-vs">Five Vs</a>
+  <a href="#volume-velocity">Volume &amp; Velocity</a>
+  <a href="#variety">Variety</a>
+  <a href="#sources">Data Sources</a>
+  <a href="#veracity">Veracity &amp; Value</a>
+  <a href="#cleaning">Data Cleaning</a>
+  <a href="#quiz">Quiz</a>
+</nav>
+
+<div class="container">
+
+  <!-- ────────────────────────────────────────
+       SECTION 1 — THE FIVE Vs
+  ──────────────────────────────────────── -->
+  <section id="five-vs">
+    <div class="section-label">Section 01</div>
+    <h2>The Five Vs of Data</h2>
+
+    <p>Before building a data pipeline, engineers must understand the <strong>characteristics of the data itself</strong>. Data is not always the same — it can be huge, fast-moving, messy, or come from dozens of different sources at once.</p>
+
+    <p>These characteristics are described using the <strong>Five Vs of Data</strong>. They directly influence every design decision you make about storage, processing, and infrastructure.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <div class="card-title">Volume</div>
+        <div class="card-desc">How much data exists. From megabytes to petabytes — size determines storage and processing architecture.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚡</div>
+        <div class="card-title">Velocity</div>
+        <div class="card-desc">How fast data is generated and must be processed. Milliseconds (stock prices) to hours (daily reports).</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗂️</div>
+        <div class="card-title">Variety</div>
+        <div class="card-desc">The different types and formats of data — structured tables, semi-structured JSON, unstructured images and video.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">✅</div>
+        <div class="card-title">Veracity</div>
+        <div class="card-desc">How accurate and trustworthy data is. Bad data leads to bad decisions — quality must be maintained at every layer.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💎</div>
+        <div class="card-title">Value</div>
+        <div class="card-desc">The useful business insights that can be extracted. The ultimate reason for building any data pipeline.</div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>Why the Five Vs matter:</strong> Each V influences a different set of infrastructure choices. Understanding all five before writing a single line of pipeline code saves enormous time and cost later.
+    </div>
+
+    <h3><span class="icon">❓</span>Key Questions Engineers Ask Before Building</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Question</th>
+          <th>Related V</th>
+          <th>Impact on Design</th>
+        </tr>
+        <tr>
+          <td>Does the required data exist?</td>
+          <td><span class="badge badge-orange">Value</span></td>
+          <td>If not, you must build a collection system first</td>
+        </tr>
+        <tr>
+          <td>Where is the data stored?</td>
+          <td><span class="badge badge-blue">Variety</span></td>
+          <td>Different formats (CSV, JSON, SQL) need different ingestion approaches</td>
+        </tr>
+        <tr>
+          <td>How much data exists and how fast does it grow?</td>
+          <td><span class="badge badge-yellow">Volume</span></td>
+          <td>Determines whether to use distributed storage (S3, EMR) or a simple database</td>
+        </tr>
+        <tr>
+          <td>How fast must data be processed?</td>
+          <td><span class="badge badge-orange">Velocity</span></td>
+          <td>Decides between batch processing (hourly/daily) and real-time streaming</td>
+        </tr>
+        <tr>
+          <td>What is the data quality?</td>
+          <td><span class="badge badge-green">Veracity</span></td>
+          <td>Determines how much cleaning and validation the pipeline must perform</td>
+        </tr>
+        <tr>
+          <td>What are the security requirements?</td>
+          <td><span class="badge badge-purple">Veracity</span></td>
+          <td>Healthcare, finance, and PII data require encryption, IAM policies, and audit trails</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 2 — VOLUME & VELOCITY
+  ──────────────────────────────────────── -->
+  <section id="volume-velocity">
+    <div class="section-label">Section 02</div>
+    <h2>Volume and Velocity</h2>
+
+    <p>Volume and Velocity are the two most impactful characteristics on pipeline infrastructure. Together, they drive the expected <strong>throughput and scaling requirements</strong> of every layer in your pipeline.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Characteristic</th>
+          <th>Definition</th>
+          <th>Scale Example</th>
+          <th>AWS Service</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Volume</span></td>
+          <td>How much data must be stored and processed</td>
+          <td>Netflix: petabytes of viewing data daily</td>
+          <td>Amazon S3, EMR, Redshift</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Velocity</span></td>
+          <td>How quickly data enters and moves through the pipeline</td>
+          <td>Twitter: thousands of tweets per second</td>
+          <td>Amazon Kinesis, Lambda, Kafka</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">📥</span>Ingestion — Batch vs Streaming</h3>
+    <p>The ingestion method you choose depends directly on volume and velocity. There are two fundamental approaches:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th></th>
+          <th>Batch Ingestion</th>
+          <th>Streaming Ingestion</th>
+        </tr>
+        <tr>
+          <td><strong>When to use</strong></td>
+          <td>Data collected and processed periodically</td>
+          <td>Data must be processed continuously in real time</td>
+        </tr>
+        <tr>
+          <td><strong>Frequency</strong></td>
+          <td>Hourly, daily, weekly</td>
+          <td>Milliseconds to seconds</td>
+        </tr>
+        <tr>
+          <td><strong>Example</strong></td>
+          <td>Global retail stores send daily sales reports. Overnight batch job processes them. Reports sent to branches each morning.</td>
+          <td>Website clickstream: every page view, product click, and cart add is processed instantly for real-time recommendations.</td>
+        </tr>
+        <tr>
+          <td><strong>AWS services</strong></td>
+          <td>AWS Glue, AWS Batch, Amazon EMR</td>
+          <td>Amazon Kinesis, AWS Lambda, Apache Kafka</td>
+        </tr>
+        <tr>
+          <td><strong>Cost</strong></td>
+          <td>Lower — runs only when scheduled</td>
+          <td>Higher — infrastructure runs continuously</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Batch Example</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Retail Stores<br><small>Daily upload</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">S3 / Warehouse</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Overnight Job</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Morning Report</div>
+    </div>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Streaming Example</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Website Clicks<br><small>Continuous</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Kinesis</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Processing</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Live Dashboard</div>
+    </div>
+
+    <h3><span class="icon">🗄️</span>Storage Decisions — Volume &amp; Velocity</h3>
+    <p>After ingestion, where data is stored depends on how much of it there is and how fast it needs to be accessed.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Scenario</th>
+          <th>Characteristics</th>
+          <th>AWS Service</th>
+        </tr>
+        <tr>
+          <td>Long-term trend analysis (5 years of sales)</td>
+          <td>Large volume, infrequent access, archival</td>
+          <td>Amazon S3, Amazon S3 Glacier</td>
+        </tr>
+        <tr>
+          <td>Real-time product recommendations</td>
+          <td>Very fast access needed, short-term data</td>
+          <td>Amazon DynamoDB, ElastiCache (Redis)</td>
+        </tr>
+        <tr>
+          <td>Complex analytical queries</td>
+          <td>Large volume, structured, read-heavy</td>
+          <td>Amazon Redshift</td>
+        </tr>
+        <tr>
+          <td>Raw and processed data lake</td>
+          <td>Any format, any size, flexible</td>
+          <td>Amazon S3</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">⚙️</span>Processing Decisions — Volume &amp; Velocity</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🏦</div>
+        <div class="card-title">Big Data Processing</div>
+        <div class="card-desc">Analysing millions of credit card transactions across the US requires distributed computing. AWS EMR runs Apache Spark across a cluster of nodes — all in parallel.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚨</div>
+        <div class="card-title">Real-Time Fraud Detection</div>
+        <div class="card-desc">If a card is used in New York then Tokyo two minutes later — the system must flag it instantly. Kinesis + Lambda processes each transaction in milliseconds.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">📊</span>Analysis and Visualisation Decisions</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Use Case</th>
+          <th>What Users Need</th>
+          <th>AWS Tool</th>
+        </tr>
+        <tr>
+          <td>One year of sales history</td>
+          <td>Drill-down from country → state → city → store</td>
+          <td>Amazon QuickSight, Redshift</td>
+        </tr>
+        <tr>
+          <td>Factory IoT sensors</td>
+          <td>Machine temperature and error rate updated every few seconds</td>
+          <td>AWS IoT Core + Kinesis + QuickSight</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="warn-box">
+      ⚠️ <strong>Key trade-off:</strong> Real-time processing is significantly more expensive than batch. Always ask — does this use case actually <em>require</em> real time, or will hourly batch be sufficient?
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 3 — VARIETY (DATA TYPES)
+  ──────────────────────────────────────── -->
+  <section id="variety">
+    <div class="section-label">Section 03</div>
+    <h2>Variety — Data Types and Formats</h2>
+
+    <p>Variety refers to the different types and formats of data that pipelines must handle. Modern organisations deal with all three categories — often simultaneously in the same pipeline.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Data Type</th>
+          <th>Structure</th>
+          <th>Query Difficulty</th>
+          <th>Flexibility</th>
+          <th>Examples</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Structured</span></td>
+          <td>Fixed rows and columns</td>
+          <td>Easiest (SQL)</td>
+          <td>Least flexible</td>
+          <td>Database tables, spreadsheets</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Semi-Structured</span></td>
+          <td>Flexible, self-describing schema</td>
+          <td>Medium</td>
+          <td>Flexible</td>
+          <td>JSON, XML, CSV, Parquet</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">Unstructured</span></td>
+          <td>No predefined format</td>
+          <td>Hardest (AI/NLP needed)</td>
+          <td>Most flexible</td>
+          <td>Images, video, audio, emails</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">📋</span>Structured Data</h3>
+    <p>Structured data is organised in rows and columns with a fixed, predefined schema. It is the easiest to query and analyse.</p>
+
+<pre><span class="cm">-- Structured data in a relational table</span>
+CustomerID | Name  | Purchase | Price
+-----------+-------+----------+------
+101        | Aman  | Laptop   | 850
+102        | Rahul | Phone    | 450
+
+<span class="cm">-- Easy to query with standard SQL</span>
+<span class="kw">SELECT</span> name <span class="kw">FROM</span> customers <span class="kw">WHERE</span> purchase = <span class="str">'Laptop'</span>;</pre>
+
+    <p>Example systems: MySQL, PostgreSQL, Oracle, <strong>Amazon RDS</strong>, <strong>Amazon Redshift</strong>.</p>
+
+    <h3><span class="icon">📄</span>Semi-Structured Data</h3>
+    <p>Semi-structured data has some organisation but no strict table schema. It is self-describing — the structure is embedded in the data itself. This is the most common format in modern APIs and web applications.</p>
+
+<pre><span class="cm">// JSON — most common semi-structured format</span>
+{
+  <span class="str">"customer"</span>: <span class="str">"Aman"</span>,
+  <span class="str">"purchase"</span>: <span class="str">"Laptop"</span>,
+  <span class="str">"price"</span>: <span class="num">850</span>,
+  <span class="str">"tags"</span>: [<span class="str">"electronics"</span>, <span class="str">"new"</span>]
+}</pre>
+
+    <p>Common formats: JSON, XML, CSV, Parquet, Avro. Used in web APIs, application logs, and chat data. AWS services: <strong>S3 + Glue Data Catalog</strong>, <strong>Amazon Athena</strong>.</p>
+
+    <h3><span class="icon">🖼️</span>Unstructured Data</h3>
+    <p>Unstructured data has no predefined format and cannot be directly queried with SQL. It requires AI, ML, or NLP to extract meaning. Approximately <strong>80% of all data generated today is unstructured.</strong></p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📷</div>
+        <div class="card-title">Images &amp; Video</div>
+        <div class="card-desc">Product photos, CCTV footage, medical scans. Requires Amazon Rekognition or CV models to analyse.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📧</div>
+        <div class="card-title">Emails &amp; Documents</div>
+        <div class="card-desc">"The product arrived late and I am unhappy." Requires NLP (Amazon Comprehend) for sentiment analysis.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎤</div>
+        <div class="card-title">Audio &amp; Voice</div>
+        <div class="card-desc">Call centre recordings, voice commands. Amazon Transcribe converts audio to text for further analysis.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📱</div>
+        <div class="card-title">Social Media Posts</div>
+        <div class="card-desc">Customer opinions, brand mentions, trending topics. Free-form text requiring AI to understand at scale.</div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>Data Temperature:</strong> Structured data is sometimes called <strong>hot data</strong> — frequently used, easy to analyse. Unstructured data is <strong>cold data</strong> — harder to analyse but more flexible and often contains the most valuable hidden insights.
+    </div>
+
+    <h3><span class="icon">💡</span>Use Case Examples by Data Type</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Data Type</th>
+          <th>Real-World Example</th>
+          <th>Analysis Approach</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Structured</span></td>
+          <td>Query support tickets from January 2024</td>
+          <td>SQL: <code>SELECT * FROM tickets WHERE date BETWEEN '2024-01-01' AND '2024-01-31'</code></td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Semi-Structured</span></td>
+          <td>Analyse customer chat logs stored as JSON — extract intent and issue type</td>
+          <td>AWS Glue + Athena: parse JSON fields, flatten nested objects</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">Unstructured</span></td>
+          <td>Customer support emails: "I am very happy with your product"</td>
+          <td>Amazon Comprehend: Sentiment = Positive (confidence: 97%)</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 4 — DATA SOURCES
+  ──────────────────────────────────────── -->
+  <section id="sources">
+    <div class="section-label">Section 04</div>
+    <h2>Variety — Data Sources</h2>
+
+    <p>Variety does not just describe data types — it also describes where data comes from. Every pipeline starts with a data source. Understanding the three major categories helps you design the right ingestion architecture.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Data Source</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Ingestion</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Storage</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Processing</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Analysis</div>
+    </div>
+
+    <h3><span class="icon">🏢</span>Source 1 — On-Premises Databases and File Stores</h3>
+    <p>Internal systems owned and controlled by the organisation. Usually the most structured, highest-quality data — but also the most sensitive.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🐬</div>
+        <div class="card-title">Relational Databases</div>
+        <div class="card-desc">MySQL, PostgreSQL, Oracle — rows and columns, well-defined schema, transactional history.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📁</div>
+        <div class="card-title">File Stores</div>
+        <div class="card-desc">On-premise file servers, internal applications, company CRM and ERP systems.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔒</div>
+        <div class="card-title">Sensitive Data</div>
+        <div class="card-desc">Customer records, financial transactions, healthcare information — requires strong encryption and access control.</div>
+      </div>
+    </div>
+
+    <p>Pipeline design for on-premises data:</p>
+    <div class="pipeline">
+      <div class="pipeline-step">Company Database</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">AWS DMS<br><small>Data Migration</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Amazon S3</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Glue ETL</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Redshift / Athena</div>
+    </div>
+
+    <h3><span class="icon">🌍</span>Source 2 — Public Datasets</h3>
+    <p>Data collections made available by governments, research organisations, and international agencies. Freely accessible but often require significant transformation before use.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Public Dataset Type</th>
+          <th>Example</th>
+          <th>Common Format</th>
+          <th>Typical Use</th>
+        </tr>
+        <tr>
+          <td>Government / Census</td>
+          <td>Population statistics by country, state, district</td>
+          <td>CSV, JSON</td>
+          <td>Market sizing, regional targeting</td>
+        </tr>
+        <tr>
+          <td>Climate / Weather</td>
+          <td>Temperature, rainfall, disaster data</td>
+          <td>CSV, NetCDF</td>
+          <td>Agriculture planning, logistics</td>
+        </tr>
+        <tr>
+          <td>Health Statistics</td>
+          <td>Disease prevalence by age group / region</td>
+          <td>CSV, XML</td>
+          <td>Healthcare risk prediction</td>
+        </tr>
+        <tr>
+          <td>Economic Data</td>
+          <td>GDP, inflation, employment rates</td>
+          <td>JSON, CSV</td>
+          <td>Financial modelling, forecasting</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="warn-box">
+      ⚠️ <strong>Public dataset challenge:</strong> These datasets often contain far more data than you need, may use inconsistent formats, and must be merged with internal data — all of which requires careful ETL design.
+    </div>
+
+    <h3><span class="icon">📡</span>Source 3 — Events, IoT Devices, and Sensors</h3>
+    <p>Some data is generated <strong>continuously in real time</strong> from physical devices and digital events. This is called <strong>time-series data</strong> — every record has a timestamp.</p>
+
+<pre><span class="cm"># Example: Temperature sensor output (time-series)</span>
+{ <span class="str">"time"</span>: <span class="str">"10:01:00"</span>, <span class="str">"sensor_id"</span>: <span class="str">"A1"</span>, <span class="str">"temp_c"</span>: <span class="num">22</span> }
+{ <span class="str">"time"</span>: <span class="str">"10:01:30"</span>, <span class="str">"sensor_id"</span>: <span class="str">"A1"</span>, <span class="str">"temp_c"</span>: <span class="num">23</span> }
+{ <span class="str">"time"</span>: <span class="str">"10:02:00"</span>, <span class="str">"sensor_id"</span>: <span class="str">"A1"</span>, <span class="str">"temp_c"</span>: <span class="num">24</span> }</pre>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🏭</div>
+        <div class="card-title">Industrial IoT</div>
+        <div class="card-desc">Factory machines report temperature, vibration, and error codes every second. Anomalies trigger maintenance alerts.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⌚</div>
+        <div class="card-title">Wearable Devices</div>
+        <div class="card-desc">Heart rate, steps, sleep patterns from smartwatches. Continuous health monitoring with real-time alerts.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🖱️</div>
+        <div class="card-title">Website Clickstream</div>
+        <div class="card-desc">Every page view, product click, scroll depth, and add-to-cart event — generated by every user in real time.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚗</div>
+        <div class="card-title">Connected Vehicles</div>
+        <div class="card-desc">GPS location, speed, fuel level, and diagnostics streamed from vehicles for route optimisation and fleet management.</div>
+      </div>
+    </div>
+
+    <p>IoT pipeline architecture on AWS:</p>
+    <div class="pipeline">
+      <div class="pipeline-step">Sensors / Devices</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">AWS IoT Core</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Amazon Kinesis</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Lambda / EMR<br><small>Processing</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Dashboard / Alert</div>
+    </div>
+
+    <h3><span class="icon">⚠️</span>Challenges of Data Variety</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Challenge</th>
+          <th>Example</th>
+          <th>Solution</th>
+        </tr>
+        <tr>
+          <td>Format differences</td>
+          <td>Regional offices send same data but use different CSV structures</td>
+          <td>Normalise formats during ingestion with AWS Glue</td>
+        </tr>
+        <tr>
+          <td>Complex integration</td>
+          <td>Website logs + customer DB + payment system must be merged</td>
+          <td>Data integration layer with consistent join keys</td>
+        </tr>
+        <tr>
+          <td>Inconsistent values</td>
+          <td>"Surat", "SURAT", "surat" — same city, three formats</td>
+          <td>Standardise during ETL transformation</td>
+        </tr>
+        <tr>
+          <td>Duplicate records</td>
+          <td>Same customer appears twice with slightly different names</td>
+          <td>Deduplication logic using unique identifiers</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 5 — VERACITY & VALUE
+  ──────────────────────────────────────── -->
+  <section id="veracity">
+    <div class="section-label">Section 05</div>
+    <h2>Veracity and Value</h2>
+
+    <h3><span class="icon">✅</span>What is Veracity?</h3>
+    <p>Veracity means the <strong>accuracy, reliability, and trustworthiness</strong> of data. It is not enough to have large amounts of data — that data must actually be correct.</p>
+
+    <div class="warn-box">
+      ⚠️ <strong>Critical rule:</strong> Making decisions with bad data is worse than making no decision at all. A wrong business decision caused by incorrect data can cost a company far more than acting on incomplete information.
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Data Quality</th>
+          <th>What Happens</th>
+          <th>Real-World Impact</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Good Data</span></td>
+          <td>Reliable insights, accurate analysis</td>
+          <td>Correct business strategy, accurate inventory orders, effective fraud detection</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Limited Data</span></td>
+          <td>Some insights but incomplete understanding</td>
+          <td>Decisions made with partial information — risky but manageable</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">Bad Data</span></td>
+          <td>Incorrect conclusions, misleading analysis</td>
+          <td>Wrong treatment in a hospital, incorrect revenue projections, missed fraud alerts</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🔎</span>Types of Data Quality Problems</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🕰️</div>
+        <div class="card-title">Dated Information</div>
+        <div class="card-desc">Using 2020 COVID statistics in a 2025 analysis. Old data may be irrelevant or actively misleading.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">❓</div>
+        <div class="card-title">Missing Data</div>
+        <div class="card-desc">Fields like Age: null or City: (empty) reduce the accuracy of any model or analysis that depends on those fields.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔀</div>
+        <div class="card-title">Ambiguous Values</div>
+        <div class="card-desc">A field containing "10" — is it dollars, kilograms, or a rating out of 10? Without context, the value is meaningless.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Statistical Bias</div>
+        <div class="card-desc">A survey conducted only in cities will not represent rural behaviour. Biased data leads to biased conclusions.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🐛</div>
+        <div class="card-title">Software Bugs</div>
+        <div class="card-desc">Incorrect code in a pipeline can corrupt data silently — e.g. a rounding error in price calculations.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">✏️</div>
+        <div class="card-title">Human Errors</div>
+        <div class="card-desc">Manual data entry mistakes — entering ₹500 instead of ₹5,000, or typing a wrong customer ID.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🔗</span>Maintaining Veracity Across the Pipeline</h3>
+    <p>Data quality must be actively maintained at every layer — not just fixed once at the beginning.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Pipeline Layer</th>
+          <th>Veracity Action</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td>Data Sources</td>
+          <td>Validate source reliability</td>
+          <td>Is this database maintained properly? Is the API trustworthy?</td>
+        </tr>
+        <tr>
+          <td>Ingestion</td>
+          <td>Schema validation on arrival</td>
+          <td>Reject records missing required fields; flag outliers immediately</td>
+        </tr>
+        <tr>
+          <td>Storage</td>
+          <td>Prevent unauthorised modification</td>
+          <td>AWS S3 versioning, object lock, IAM access policies</td>
+        </tr>
+        <tr>
+          <td>Processing</td>
+          <td>Preserve data integrity during joins</td>
+          <td>CustomerID must match exactly across all tables being joined</td>
+        </tr>
+        <tr>
+          <td>Analysis</td>
+          <td>Audit trail for data changes</td>
+          <td>Log: "Record 101 modified by user X at 10:30 AM on 2026-03-06"</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">💎</span>What is Value?</h3>
+    <p>Value is the <strong>reason the pipeline exists</strong> — the useful business insights that can be extracted from data. Value rests entirely on veracity: if you cannot trust the data, your analysis has no value.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🛍️</div>
+        <div class="card-title">Retail Example</div>
+        <div class="card-desc">Sales data reveals customer preferences, seasonal demand patterns, and which promotions actually drive conversions.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏥</div>
+        <div class="card-title">Healthcare Example</div>
+        <div class="card-desc">Patient data combined with public health statistics identifies high-risk individuals before a health event occurs.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏦</div>
+        <div class="card-title">Finance Example</div>
+        <div class="card-desc">Transaction patterns expose fraud, predict credit risk, and identify the most profitable customer segments.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">❓</span>Questions Engineers &amp; Scientists Ask About Data Quality</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Data Engineer Asks</th>
+          <th>Data Scientist Asks</th>
+        </tr>
+        <tr>
+          <td>How is the data source managed and maintained?</td>
+          <td>How was this data collected — survey, sensor, or manual entry?</td>
+        </tr>
+        <tr>
+          <td>Who owns this data and who is accountable for its quality?</td>
+          <td>Was a scientific method used — random sampling or biased selection?</td>
+        </tr>
+        <tr>
+          <td>How frequently is the data updated?</td>
+          <td>What biases might exist in this dataset?</td>
+        </tr>
+        <tr>
+          <td>Do we need all fields, or can we reduce storage by removing unused columns?</td>
+          <td>Is the data complete — are there missing values that would affect the model?</td>
+        </tr>
+        <tr>
+          <td>Are audit trails available to track changes over time?</td>
+          <td>How recent is the data — is it still relevant to the business question?</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 6 — DATA CLEANING & BEST PRACTICES
+  ──────────────────────────────────────── -->
+  <section id="cleaning">
+    <div class="section-label">Section 06</div>
+    <h2>Data Cleaning and Best Practices</h2>
+
+    <h3><span class="icon">🧹</span>Common Cleaning Tasks</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Problem</th>
+          <th>Example</th>
+          <th>Fix</th>
+        </tr>
+        <tr>
+          <td>Missing values</td>
+          <td><code>Age: null</code></td>
+          <td>Fill with default, median, or flag for manual review</td>
+        </tr>
+        <tr>
+          <td>Duplicate records</td>
+          <td>CustomerID 101 appears twice</td>
+          <td>Deduplicate using primary key</td>
+        </tr>
+        <tr>
+          <td>Inconsistent format</td>
+          <td>"USA", "U.S.A", "United States"</td>
+          <td>Standardise to one canonical value: "United States"</td>
+        </tr>
+        <tr>
+          <td>Impossible values</td>
+          <td><code>Age: -5</code> or <code>Age: 200</code></td>
+          <td>Apply validation rules: age must be between 0 and 120</td>
+        </tr>
+        <tr>
+          <td>Wrong casing</td>
+          <td>"aman", "AMAN", "Aman"</td>
+          <td>Apply title case or lowercase standardisation</td>
+        </tr>
+      </table>
+    </div>
+
+<pre><span class="cm"># Before cleaning — raw record from ingestion</span>
+{
+  <span class="str">"name"</span>: <span class="str">"aman"</span>,
+  <span class="str">"city"</span>: <span class="str">"SURAT"</span>,
+  <span class="str">"age"</span>: <span class="kw">null</span>,
+  <span class="str">"country"</span>: <span class="str">"U.S.A"</span>
+}
+
+<span class="cm"># After cleaning — ready for analysis</span>
+{
+  <span class="str">"name"</span>: <span class="str">"Aman"</span>,
+  <span class="str">"city"</span>: <span class="str">"Surat"</span>,
+  <span class="str">"age"</span>: <span class="num">25</span>,
+  <span class="str">"country"</span>: <span class="str">"United States"</span>
+}</pre>
+
+    <h3><span class="icon">📐</span>Best Practices for Data Cleaning</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📏</div>
+        <div class="card-title">Define "Clean" First</div>
+        <div class="card-desc">Agree on rules before writing code. Example: age must be between 0 and 120; all phone numbers in E.164 format.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔍</div>
+        <div class="card-title">Trace Errors to Source</div>
+        <div class="card-desc">Fix root causes, not symptoms. If duplicates keep appearing, investigate the ingestion system — not just the output.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚠️</div>
+        <div class="card-title">Change Data Carefully</div>
+        <div class="card-desc">A value of 0 might mean zero — or it might mean missing. Never assume. Document every transformation rule.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗃️</div>
+        <div class="card-title">Always Retain Raw Data</div>
+        <div class="card-desc">Never delete the original. Store both raw and cleaned versions in S3. You may need to reprocess raw data with different rules later.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">📊</span>Aggregated vs Immutable Raw Data</h3>
+    <p>Many organisations store only <strong>aggregated data</strong> — pre-computed summaries. This seems efficient but causes problems later.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th></th>
+          <th>Aggregated Data</th>
+          <th>Immutable Raw Events</th>
+        </tr>
+        <tr>
+          <td><strong>Storage</strong></td>
+          <td>Smaller — summaries only</td>
+          <td>Larger — every event stored</td>
+        </tr>
+        <tr>
+          <td><strong>Flexibility</strong></td>
+          <td>Low — limited to pre-defined summaries</td>
+          <td>High — any question can be answered later</td>
+        </tr>
+        <tr>
+          <td><strong>Example</strong></td>
+          <td>Page X: average visit = 75 seconds</td>
+          <td>Every user + timestamp + page + exact duration stored</td>
+        </tr>
+        <tr>
+          <td><strong>Limitation</strong></td>
+          <td>Cannot answer: "Which users visit daily?" or "What time has peak activity?"</td>
+          <td>Requires more storage and a well-designed schema</td>
+        </tr>
+        <tr>
+          <td><strong>Best practice</strong></td>
+          <td>Store as a derived layer on top of raw</td>
+          <td>This is your source of truth — never overwrite</td>
+        </tr>
+      </table>
+    </div>
+
+<pre><span class="cm"># Better approach — store every raw event with timestamp</span>
+Timestamp        | User ID | Page   | Time on Page
+-----------------+---------+--------+-------------
+<span class="num">2024-01-10 01:00</span> | <span class="str">addi1</span>   | Page X | <span class="num">30</span> sec
+<span class="num">2024-01-10 04:05</span> | <span class="str">bett2</span>   | Page X | <span class="num">120</span> sec
+<span class="num">2024-01-10 06:14</span> | <span class="str">ct244</span>   | Page Y | <span class="num">600</span> sec
+
+<span class="cm"># Now you can answer ANY question about this data</span>
+<span class="cm"># — not just the ones you thought of when you designed the system</span></pre>
+
+    <h3><span class="icon">🏛️</span>Data Governance and Integrity</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Practice</th>
+          <th>What It Means</th>
+          <th>AWS Implementation</th>
+        </tr>
+        <tr>
+          <td>Least Privilege Access</td>
+          <td>Users get only the permissions they absolutely need</td>
+          <td>AWS IAM roles and policies</td>
+        </tr>
+        <tr>
+          <td>Encryption</td>
+          <td>Data protected at rest and in transit</td>
+          <td>SSE-KMS on S3, TLS on all connections</td>
+        </tr>
+        <tr>
+          <td>Audit Trails</td>
+          <td>Every data change is logged with who, what, and when</td>
+          <td>AWS CloudTrail, S3 access logs</td>
+        </tr>
+        <tr>
+          <td>Single Source of Truth</td>
+          <td>One master dataset that all other systems reference</td>
+          <td>Central S3 data lake + AWS Glue Data Catalog</td>
+        </tr>
+        <tr>
+          <td>Data Cataloguing</td>
+          <td>Metadata describing source, format, owner, and update frequency</td>
+          <td>AWS Glue Data Catalog</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="success-box">
+      ✅ <strong>Summary — The Five Vs guide every pipeline decision:</strong> Volume and Velocity determine your ingestion method and processing architecture. Variety determines your storage format and transformation logic. Veracity determines your cleaning strategy. Value determines whether you should build the pipeline at all.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 7 — QUIZ
+  ──────────────────────────────────────── -->
+  <section id="quiz">
+    <div class="section-label">Module 4 Quiz</div>
+    <h2>🧠 Test Your Knowledge</h2>
+    <p>Answer all questions to see your score.</p>
+
+    <!-- Q1 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 01</div>
+      <div class="quiz-q-text">Which data characteristic describes how accurate, precise, and trusted the data is?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>Volume</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Velocity</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Variety</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Veracity</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Veracity</strong> refers to the quality, accuracy, and trustworthiness of data. Volume = size, Velocity = speed, Variety = format diversity, Value = business usefulness.
+      </div>
+    </div>
+
+    <!-- Q2 — MULTI-SELECT (SELECT THREE) -->
+    <div class="quiz-multi" id="mq2">
+      <div class="quiz-number">Q 02</div>
+      <div class="quiz-q-text">Which statements describe volume and velocity in a data pipeline?</div>
+      <div class="select-hint">Select THREE correct answers</div>
+      <label class="checkbox-option"><input type="checkbox" value="A"><span class="opt-text">Only volume drives the expected throughput and scaling requirements of your pipeline.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"><span class="opt-text">Volume is about how much data you need to process.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"><span class="opt-text">Velocity is about how much data you need to process.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"><span class="opt-text">Velocity is about how quickly data enters and moves through a pipeline.</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"><span class="opt-text">Volume and velocity together drive the expected throughput and scaling requirements of a pipeline.</span></label>
+      <button class="check-btn" onclick="checkMulti('mq2',['B','D','E'])">Check Answers</button>
+      <div class="multi-explanation">
+        ✅ <strong>Correct three:</strong> (1) <em>Volume is about how much data</em> — the sheer size of data that must be stored and processed. (2) <em>Velocity is about how quickly data enters and moves</em> — the speed of data flow through the pipeline. (3) <em>Both together drive throughput and scaling requirements</em> — neither alone determines the right architecture. Volume alone does not drive scaling; velocity is not about quantity.
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 03</div>
+      <div class="quiz-q-text">Which data type best describes CSV, JSON, and XML files?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Structured</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Relational</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Semistructured</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Unstructured</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Semistructured.</strong> CSV, JSON, and XML have a defined format but a flexible schema — not the rigid rows/columns of a relational table (structured), and not completely free-form like an image (unstructured).
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 04</div>
+      <div class="quiz-q-text">Which statement about data types is correct?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Unstructured data is the hardest to query but the most flexible. Structured data is the easiest to query but the least flexible.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Unstructured data and structured data are equally difficult to query.</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Unstructured data is the hardest to query and the least flexible. Structured data is the easiest to query and the most flexible.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Unstructured data is the easiest to query but the most flexible. Structured data is the hardest to query but the least flexible.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Structured data (tables, SQL) is the <strong>easiest to query but least flexible</strong> — it cannot store free-form content. Unstructured data (images, video, text) is the <strong>hardest to query</strong> (requires AI/NLP) but the <strong>most flexible</strong> — you can store anything.
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 05</div>
+      <div class="quiz-q-text">Which type of data source includes data that is generated continuously by events with a time-based component?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>File stores</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>On-premises databases</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>Public datasets</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Events, Internet of Things (IoT) devices, and sensors</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>IoT devices, sensors, and events</strong> generate continuous time-based data streams — temperature readings every second, website clicks as they happen, GPS coordinates from moving vehicles. This is called time-series data.
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 06</div>
+      <div class="quiz-q-text">How could a healthcare company use data to support the most valuable personalized experience for their customers?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Combine disparate data of different types from on-premises databases, public datasets, and customer devices to alert customers who might be at risk for a health event.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Provide summary reports of health trends based on an internal customer database.</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Give customers access to full public health datasets through a mobile app.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Collect heart rate data from customers' personal devices and automatically add it to their healthcare records.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Combining <strong>multiple data types from multiple sources</strong> — internal records, public data, and real-time device data — enables proactive, personalised health alerts. This is the highest-value use of all Five Vs working together.
+      </div>
+    </div>
+
+    <!-- Q7 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 07</div>
+      <div class="quiz-q-text">What is an example of structured data?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Clickstream data</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>CSV, JSON, or XML file</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Relational database table</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Image</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Relational database tables</strong> are the classic example of structured data — organised in rows and columns with a fixed schema, queryable using SQL. JSON/CSV = semistructured. Images = unstructured. Clickstream = semistructured depending on format.
+      </div>
+    </div>
+
+    <!-- Q8 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 08</div>
+      <div class="quiz-q-text">Which scenario could benefit from batch ingestion or processing?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Sales transaction data from a retailer's website is sent to a central location periodically. Data is analyzed overnight with reports sent to branches in the morning.</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>A dashboard is populated with real-time error rates of sensors in a factory.</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Real-time alerts are produced based on log data to identify potential fraud as soon as it occurs.</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Clickstream data from a retailer's website sends a large volume of small bits of data at a continuous pace. Analysis must be performed immediately.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Batch processing</strong> handles data collected over a period and processed together — overnight report generation is the classic example. Real-time dashboards, fraud detection, and live recommendations all require streaming, not batch.
+      </div>
+    </div>
+
+    <!-- Q9 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 09</div>
+      <div class="quiz-q-text">Which scenario describes a challenge to velocity?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Regional offices send the same type of data but use different CSV formats.</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>A sales department wants to use a data source but lacks information about its lineage.</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Clickstream data is collected for personalized recommendations, but when the website is busy there is a delay in returning results.</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Data is ingested from regional sales sites, and the overnight batch job fails because it runs out of disk space.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Velocity challenge.</strong> The system cannot process data fast enough to return real-time recommendations during peak load. Different CSV formats = a Variety problem. Missing lineage = a Veracity problem. Running out of disk space = a Volume problem.
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 10</div>
+      <div class="quiz-q-text">Which statement about data veracity is true?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>The first point where veracity is addressed is during cleaning and transformation in ingestion.</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>The data analytics field shares a common definition of clean data.</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>All veracity issues can be fixed by cleansing data during ingestion.</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Value rests on veracity. If you can't trust the data, then your analysis will not have much value.</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Value rests on veracity.</strong> If data is not accurate or trustworthy, the analysis and decisions based on it become unreliable. Veracity must be maintained across every pipeline layer — not just ingestion — and "clean data" has no universal definition; it depends on the use case.
+      </div>
+    </div>
+
+    <!-- SCORE BAR -->
+    <div class="score-bar" id="scoreBar" style="display:none">
+      <div class="score-title">Your Score</div>
+      <div class="score-count" id="scoreCount">0 / 10</div>
+      <div class="score-sub" id="scoreMsg">Keep practising!</div>
+    </div>
+
+  </section>
+
+  <!-- ── BOTTOM NAV ── -->
+  <div class="bottom-nav">
+    <a href="data-driven-orgs.html" class="btn">⬅ Module 3</a>
+    <a href="pipeline-design.html" class="btn">Module 5 ➡</a>
+  </div>
+
+</div>
+
+<!-- GO TO TOP -->
+<button id="topBtn">↑</button>
+
+<script src="../assets/js/template.js"></script>
+</body>
+</html>

@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 6 – Securing and Scaling the Data Pipeline</title>
+  <link rel="stylesheet" href="../assets/css/template.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=IBM+Plex+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">Module 06 · AWS Academy Data Engineering</div>
+  <h1>Securing and Scaling<br><span>the Data Pipeline</span></h1>
+  <p>Learn how to protect every layer of a data pipeline using AWS security best practices, and how to scale infrastructure automatically to handle any workload.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong>7</strong><span>Security Principles</span></div>
+    <div class="hero-stat"><strong>6</strong><span>ML Security Phases</span></div>
+    <div class="hero-stat"><strong>3</strong><span>Scaling Policies</span></div>
+  </div>
+</div>
+
+<!-- ── STICKY NAV ── -->
+<nav class="anchor-nav">
+  <span>Jump to →</span>
+  <a href="#shared-responsibility">Shared Responsibility</a>
+  <a href="#access">Access &amp; IAM</a>
+  <a href="#data-security">Data Security</a>
+  <a href="#analytics-security">Analytics Security</a>
+  <a href="#ml-security">ML Security</a>
+  <a href="#scaling">Scaling</a>
+  <a href="#iac">IaC &amp; CloudFormation</a>
+  <a href="#quiz">Quiz</a>
+</nav>
+
+<div class="container">
+
+  <!-- ────────────────────────────────────────
+       SECTION 1 — SHARED RESPONSIBILITY
+  ──────────────────────────────────────── -->
+  <section id="shared-responsibility">
+    <div class="section-label">Section 01</div>
+    <h2>Cloud Security and the Shared Responsibility Model</h2>
+
+    <p>Data pipelines handle some of the most sensitive data in any organisation — financial transactions, healthcare records, personal user information, and business analytics. Because of this, <strong>security must be built into every layer of the pipeline</strong>, not added as an afterthought.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Data Source<br><small>🔐 Secure</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Ingestion<br><small>🔐 Encrypt</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Storage<br><small>🔐 Control</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Processing<br><small>🔐 Validate</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Analytics<br><small>🔐 Audit</small></div>
+    </div>
+
+    <h3><span class="icon">🤝</span>The AWS Shared Responsibility Model</h3>
+    <p>Security in AWS is a <strong>shared responsibility</strong> between AWS and the customer. Understanding exactly where AWS's responsibility ends and yours begins is one of the most important concepts in cloud security.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th></th>
+          <th>AWS Responsibility<br><small>"Security OF the Cloud"</small></th>
+          <th>Customer Responsibility<br><small>"Security IN the Cloud"</small></th>
+        </tr>
+        <tr>
+          <td><strong>What</strong></td>
+          <td>Protecting the underlying cloud infrastructure</td>
+          <td>Configuring and protecting your workloads on that infrastructure</td>
+        </tr>
+        <tr>
+          <td><strong>Examples</strong></td>
+          <td>Physical data centres, hardware, networking, storage hardware, global infrastructure (Regions, AZs, Edge Locations)</td>
+          <td>Customer data, application code, IAM policies, OS configuration, network firewalls, encryption, S3 bucket permissions</td>
+        </tr>
+        <tr>
+          <td><strong>Key point</strong></td>
+          <td>You don't have to worry about someone physically accessing AWS servers</td>
+          <td>If you make an S3 bucket public by mistake — that is YOUR responsibility, not AWS's</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="warn-box">
+      ⚠️ <strong>Critical real-world example:</strong> Hundreds of data breaches occur every year because customers accidentally make S3 buckets public. AWS's infrastructure is secure — the misconfiguration is the customer's responsibility to fix.
+    </div>
+
+    <h3><span class="icon">🏛️</span>Seven Security Design Principles</h3>
+    <p>AWS recommends seven principles when designing secure cloud systems:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>#</th>
+          <th>Principle</th>
+          <th>What It Means</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td><span class="badge badge-orange">Strong Identity Foundation</span></td>
+          <td>Every user and service must have a verified identity</td>
+          <td>IAM users, roles, and MFA for all access</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td><span class="badge badge-yellow">Enable Traceability</span></td>
+          <td>Track all actions — who accessed what, when, and from where</td>
+          <td>CloudTrail logs every API call; detect suspicious activity</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td><span class="badge badge-blue">Security at All Layers</span></td>
+          <td>Apply protection at network, application, data, and infrastructure level</td>
+          <td>Encrypt storage + secure APIs + control network + audit code</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td><span class="badge badge-green">Automate Security</span></td>
+          <td>Reduce human error with automated checks and alerts</td>
+          <td>AWS Config rules, CloudWatch alarms, security policy automation</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td><span class="badge badge-orange">Protect Data in Transit and at Rest</span></td>
+          <td>Encrypt data whether it is stored or moving between systems</td>
+          <td>S3 encryption at rest (KMS), HTTPS/TLS for all data transfers</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td><span class="badge badge-purple">Keep People Away from Data</span></td>
+          <td>Limit direct access to sensitive data — use dashboards instead</td>
+          <td>Analysts view QuickSight dashboards; never touch raw S3 data</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td><span class="badge badge-yellow">Prepare for Security Events</span></td>
+          <td>Have an incident response plan ready before attacks happen</td>
+          <td>Runbooks for data breach, compromised IAM keys, ransomware</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 2 — ACCESS MANAGEMENT & IAM
+  ──────────────────────────────────────── -->
+  <section id="access">
+    <div class="section-label">Section 02</div>
+    <h2>Access Management and AWS IAM</h2>
+
+    <h3><span class="icon">🔑</span>Authentication vs Authorisation</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Concept</th>
+          <th>Question It Answers</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Authentication</span></td>
+          <td><em>Who are you?</em></td>
+          <td>Username + password + MFA code = identity confirmed</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Authorisation</span></td>
+          <td><em>What are you allowed to do?</em></td>
+          <td>Data analyst = can run queries and view dashboards, but cannot delete data or change system settings</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🎭</span>Access Control Models</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Model</th>
+          <th>How It Works</th>
+          <th>Best For</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">RBAC</span><br><small>Role-Based Access Control</small></td>
+          <td>Permissions assigned to roles; users inherit role permissions</td>
+          <td>Stable organisational structures with clear job functions</td>
+          <td>Admin = full access. Data Engineer = S3 + Glue. Analyst = Athena + QuickSight only.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">ABAC</span><br><small>Attribute-Based Access Control</small></td>
+          <td>Permissions depend on attributes (department, location, project tag)</td>
+          <td>Dynamic environments where access depends on context</td>
+          <td>Finance team members can access datasets tagged <code>department=finance</code></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>Principle of Least Privilege:</strong> Every user and service should have only the minimum permissions required to do their job — nothing more. Start minimal and grant additional permissions only when genuinely needed. Remove permissions when they are no longer required.
+    </div>
+
+    <h3><span class="icon">🛡️</span>AWS Identity and Access Management (IAM)</h3>
+    <p>IAM is the foundational AWS service for access control. It manages users, groups, roles, and policies across every AWS service.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">👤</div>
+        <div class="card-title">IAM Users &amp; Groups</div>
+        <div class="card-desc">Individual identities for people. Group users by function (data-engineers, analysts) and attach permissions to the group — not individual users.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎭</div>
+        <div class="card-title">IAM Roles</div>
+        <div class="card-desc">Temporary identities assumed by services (EC2, Lambda, Glue). Roles are the AWS-recommended way to grant services access to other services — no hard-coded credentials.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📋</div>
+        <div class="card-title">IAM Policies</div>
+        <div class="card-desc">JSON documents defining allowed or denied actions. Can be attached to users, groups, or roles. Support fine-grained conditions (e.g. allow S3 read but not delete).</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔐</div>
+        <div class="card-title">MFA</div>
+        <div class="card-desc">Multi-Factor Authentication adds a second verification step. Password + time-based mobile code. Essential for all human users, especially those with admin access.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔗</div>
+        <div class="card-title">Federated Identity</div>
+        <div class="card-desc">Company SSO login → AWS access. Users authenticate with their existing corporate credentials (Active Directory, Okta, Google Workspace) without separate AWS passwords.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔍</div>
+        <div class="card-title">Granular Permissions</div>
+        <div class="card-desc">Fine-grained control down to individual S3 objects, specific DynamoDB tables, or particular Redshift schemas. User can read one bucket but not delete anything.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 3 — DATA SECURITY, KMS, LOGGING
+  ──────────────────────────────────────── -->
+  <section id="data-security">
+    <div class="section-label">Section 03</div>
+    <h2>Data Security, KMS, and Monitoring</h2>
+
+    <h3><span class="icon">🔒</span>Data at Rest vs Data in Transit</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th></th>
+          <th>Data at Rest</th>
+          <th>Data in Transit</th>
+        </tr>
+        <tr>
+          <td><strong>Definition</strong></td>
+          <td>Data stored in databases, S3, data lakes, or any storage system</td>
+          <td>Data moving between systems — application to database, server to server, browser to web server</td>
+        </tr>
+        <tr>
+          <td><strong>Encryption method</strong></td>
+          <td>AES-256 encryption managed by AWS KMS</td>
+          <td>HTTPS / TLS 1.2+ for all data movement</td>
+        </tr>
+        <tr>
+          <td><strong>AWS implementation</strong></td>
+          <td>S3 SSE-KMS, Redshift encryption, DynamoDB encryption</td>
+          <td>All AWS APIs enforce HTTPS; VPC traffic can use TLS</td>
+        </tr>
+        <tr>
+          <td><strong>Example</strong></td>
+          <td>Patient records in S3 bucket — encrypted with hospital's KMS key</td>
+          <td>Credit card data sent from browser to checkout server — encrypted with TLS (HTTPS padlock)</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🗝️</span>AWS Key Management Service (KMS)</h3>
+    <p>KMS is the central service for creating, managing, and controlling cryptographic encryption keys across all AWS services.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🔑</div>
+        <div class="card-title">Create &amp; Manage Keys</div>
+        <div class="card-desc">Generate symmetric (AES-256) and asymmetric (RSA, ECC) keys. Set key policies that control who can use or manage each key.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔄</div>
+        <div class="card-title">Automatic Key Rotation</div>
+        <div class="card-desc">KMS can automatically rotate encryption keys annually — old data remains decryptable, new data uses the fresh key. No manual key management needed.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🖥️</div>
+        <div class="card-title">Hardware Security Modules</div>
+        <div class="card-desc">Keys are stored in FIPS 140-2 validated HSMs — specialised tamper-resistant hardware. Keys never leave AWS KMS unencrypted.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📝</div>
+        <div class="card-title">Audit Key Usage</div>
+        <div class="card-desc">Every key usage is logged in CloudTrail — who decrypted what data, when, and from which service. Essential for compliance.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">📋</span>AWS CloudTrail — Traceability</h3>
+    <p>CloudTrail records every API call and user action in your AWS account. It is the primary tool for answering: <em>"Who did what, when, and from where?"</em></p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Scenario</th>
+          <th>CloudTrail Captures</th>
+        </tr>
+        <tr>
+          <td>Security investigation</td>
+          <td>User X deleted S3 object at 2:14 AM from IP 198.51.100.42</td>
+        </tr>
+        <tr>
+          <td>Compliance audit</td>
+          <td>Complete history of who accessed sensitive data and when</td>
+        </tr>
+        <tr>
+          <td>Incident response</td>
+          <td>Which IAM user modified the production security group</td>
+        </tr>
+        <tr>
+          <td>Change management</td>
+          <td>All CloudFormation stack changes with timestamps and actors</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">📊</span>Amazon CloudWatch — Monitoring</h3>
+    <p>CloudWatch provides continuous monitoring of AWS resources and applications — collecting metrics, creating alarms, and triggering automated responses.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>CloudWatch Feature</th>
+          <th>Example Use Case</th>
+        </tr>
+        <tr>
+          <td>Metrics collection</td>
+          <td>CPU utilisation, memory usage, network throughput, Kinesis shard iterator age</td>
+        </tr>
+        <tr>
+          <td>Alarms</td>
+          <td>If CPU &gt; 90% for 5 minutes → trigger Auto Scaling + send SNS notification</td>
+        </tr>
+        <tr>
+          <td>Log aggregation</td>
+          <td>Collect application logs, VPC flow logs, and Lambda execution logs in one place</td>
+        </tr>
+        <tr>
+          <td>Dashboards</td>
+          <td>Real-time operational dashboard showing pipeline health metrics</td>
+        </tr>
+        <tr>
+          <td>Anomaly detection</td>
+          <td>ML-powered detection of unusual metric patterns (e.g. sudden traffic spike)</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 4 — ANALYTICS WORKLOAD SECURITY
+  ──────────────────────────────────────── -->
+  <section id="analytics-security">
+    <div class="section-label">Section 04</div>
+    <h2>Security of Analytics Workloads</h2>
+
+    <p>Analytics pipelines process large volumes of business-critical data — financial transactions, customer records, medical data, and proprietary reports. AWS recommends <strong>three security layers</strong> for analytics workloads.</p>
+
+    <h3><span class="icon">🏷️</span>Layer 1 — Classify and Protect Data</h3>
+    <p>Before securing data, you must know how sensitive it is. <strong>Data classification</strong> assigns a sensitivity level to every dataset.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Data Type</th>
+          <th>Sensitivity</th>
+          <th>Protection Required</th>
+          <th>Example</th>
+        </tr>
+        <tr>
+          <td>Public data</td>
+          <td><span class="badge badge-green">Low</span></td>
+          <td>Basic access control</td>
+          <td>Published company blog posts, public API data</td>
+        </tr>
+        <tr>
+          <td>Internal business data</td>
+          <td><span class="badge badge-yellow">Medium</span></td>
+          <td>Encryption + role-based access</td>
+          <td>Internal reports, website analytics logs</td>
+        </tr>
+        <tr>
+          <td>Customer personal data</td>
+          <td><span class="badge badge-orange">High</span></td>
+          <td>Strong encryption + audit trails + access logging</td>
+          <td>Names, email addresses, purchase history</td>
+        </tr>
+        <tr>
+          <td>Financial / Medical data</td>
+          <td><span class="badge badge-purple">Very Sensitive</span></td>
+          <td>Maximum protection + compliance (HIPAA, PCI-DSS)</td>
+          <td>Credit card numbers, patient records, bank statements</td>
+        </tr>
+      </table>
+    </div>
+
+    <p>Classification metadata is stored in the <strong>AWS Glue Data Catalog</strong> so every team knows the sensitivity level of every dataset. <strong>Data retention policies</strong> define how long each classification is kept — for example, financial records for 7 years, session logs for 30 days.</p>
+
+    <div class="info-box">
+      💡 <strong>Downstream classification:</strong> If a dataset is classified as Sensitive at the source, it must remain classified as Sensitive through every stage of the pipeline — ingestion, storage, processing, and analytics. Security cannot be stripped away mid-pipeline.
+    </div>
+
+    <h3><span class="icon">🚪</span>Layer 2 — Control Data Access</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">👑</div>
+        <div class="card-title">Data Owner Authority</div>
+        <div class="card-desc">Each dataset has a designated owner who decides who can read, modify, or delete it. Finance data = Finance team owns it. HR data = HR team controls it.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🪪</div>
+        <div class="card-title">User Identity Solutions</div>
+        <div class="card-desc">Users must authenticate before accessing data. IAM, federated SSO, MFA — all enforced before any data access is granted.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔐</div>
+        <div class="card-title">Authorisation Models</div>
+        <div class="card-desc">RBAC for stable roles (Engineer, Analyst, Admin). ABAC for dynamic access based on tags, department, or project attribute.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚨</div>
+        <div class="card-title">Emergency Access Process</div>
+        <div class="card-desc">Pre-defined "break-glass" procedures for system failures or security incidents. Temporary elevated access is granted, fully logged, and revoked immediately after resolution.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🏗️</span>Layer 3 — Control Access to Infrastructure</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Risk</th>
+          <th>Solution</th>
+          <th>AWS Tool</th>
+        </tr>
+        <tr>
+          <td>Public S3 buckets</td>
+          <td>S3 Block Public Access enabled by default + bucket policies</td>
+          <td>S3 Block Public Access, IAM policies</td>
+        </tr>
+        <tr>
+          <td>Open network ports</td>
+          <td>VPC security groups — allow only required ports from required sources</td>
+          <td>VPC, Security Groups, Network ACLs</td>
+        </tr>
+        <tr>
+          <td>Unmonitored infrastructure changes</td>
+          <td>Every change to security groups, IAM policies, or databases is logged</td>
+          <td>CloudTrail, AWS Config, CloudWatch</td>
+        </tr>
+        <tr>
+          <td>Tampered audit logs</td>
+          <td>Write-once audit log storage — nobody can delete or modify logs</td>
+          <td>S3 Object Lock, CloudTrail log file validation</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🌊</span>Securing the Streaming Data Pipeline</h3>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Data Sources<br><small>🔐 TLS</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Kinesis Streams<br><small>🔐 KMS encrypt</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Stream Processing<br><small>🔐 IAM roles</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">S3 / Redshift<br><small>🔐 Encrypted</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Analytics<br><small>🔐 Audit logs</small></div>
+    </div>
+
+    <p>Sensitive data classification must follow the stream from source to destination. If an IoT health sensor sends sensitive patient data, that classification must be preserved through Kinesis, through processing, and into the S3 output — with encryption and access control enforced at every hop.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 5 — ML PIPELINE SECURITY
+  ──────────────────────────────────────── -->
+  <section id="ml-security">
+    <div class="section-label">Section 05</div>
+    <h2>Machine Learning Pipeline Security</h2>
+
+    <p>ML pipelines process training datasets, user data, and prediction outputs — all of which may be sensitive. The <strong>AWS Well-Architected ML Lens</strong> provides security guidance for each phase of the ML lifecycle.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Identify<br>Business Goal</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Frame<br>ML Problem</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Process<br>Data</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Train / Tune /<br>Evaluate</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Deploy<br>Model</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Monitor<br>System</div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>ML Phase</th>
+          <th>Key Security Action</th>
+          <th>Example Threat / Risk</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Phase 1: Identify Goal</span></td>
+          <td>Validate privacy rules, licensing terms, and legal use of data before starting</td>
+          <td>Using a public dataset that contains personal data without consent</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Phase 2: Frame Problem</span></td>
+          <td>Apply least privilege access — only ML engineers can access training data</td>
+          <td>Analyst accidentally modifies training labels, corrupting the model</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Phase 3: Process Data</span></td>
+          <td>Encrypt sensitive data, enforce data lineage, remove unnecessary fields, anonymise PII</td>
+          <td>Training dataset contains unencrypted customer names and credit card numbers</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Phase 4: Train &amp; Evaluate</span></td>
+          <td>Encrypt inter-node communications in distributed training, validate training data, protect against data poisoning</td>
+          <td>Attacker injects fake fraud transactions labelled as "normal" — model learns wrong behaviour</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">Phase 5: Deploy Model</span></td>
+          <td>Protect against adversarial attacks, restrict API access with IAM authentication</td>
+          <td>Attacker modifies transaction by $1 to bypass fraud detection threshold</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Phase 6: Monitor</span></td>
+          <td>Restrict access to authorised users, monitor for anomalous data access, track model performance degradation</td>
+          <td>Insider threat downloads training data; model accuracy drifts as input data distribution changes</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">☠️</span>Key ML Security Threats</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">💉</div>
+        <div class="card-title">Data Poisoning</div>
+        <div class="card-desc">Attackers inject malicious training examples. A fraud model trained on poisoned data learns to classify real fraud as "normal". Prevention: validate sources, monitor anomalies in training data.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎭</div>
+        <div class="card-title">Adversarial Attacks</div>
+        <div class="card-desc">Carefully crafted inputs designed to fool a deployed model. A $999 transaction instead of $1000 to bypass a fraud threshold. Prevention: input validation, model monitoring, adversarial testing.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔗</div>
+        <div class="card-title">Transfer Learning Risks</div>
+        <div class="card-desc">Pre-trained models from external sources may contain hidden vulnerabilities or backdoors. Always verify model provenance and test before deploying in production.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">💧</div>
+        <div class="card-title">Data Leakage</div>
+        <div class="card-desc">Sensitive data included unnecessarily in training sets. Customer names, addresses, or IDs should be anonymised or removed — ML models only need the features relevant to prediction.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 6 — SCALING
+  ──────────────────────────────────────── -->
+  <section id="scaling">
+    <div class="section-label">Section 06</div>
+    <h2>Scaling Data Pipelines</h2>
+
+    <p>Scaling means increasing system capacity to handle more workload. An e-commerce platform normally processing 1,000 users per hour may need to handle 100,000 during a festival sale. The pipeline must scale automatically — without human intervention.</p>
+
+    <h3><span class="icon">↔️</span>Horizontal vs Vertical Scaling</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th></th>
+          <th>Horizontal Scaling (Scale Out)</th>
+          <th>Vertical Scaling (Scale Up)</th>
+        </tr>
+        <tr>
+          <td><strong>Definition</strong></td>
+          <td>Add more machines to share the workload</td>
+          <td>Increase the resources of an existing machine</td>
+        </tr>
+        <tr>
+          <td><strong>Example</strong></td>
+          <td>1 server → 4 servers, each handling 25% of traffic</td>
+          <td>Upgrade server: 8 GB RAM → 64 GB RAM, 4 CPU → 16 CPU</td>
+        </tr>
+        <tr>
+          <td><strong>Limit</strong></td>
+          <td>Virtually unlimited — just keep adding nodes</td>
+          <td>Hardware limit exists — you can't upgrade forever</td>
+        </tr>
+        <tr>
+          <td><strong>Fault tolerance</strong></td>
+          <td>High — if one node fails, others continue</td>
+          <td>Low — single point of failure</td>
+        </tr>
+        <tr>
+          <td><strong>Cloud preference</strong></td>
+          <td>✅ Preferred — Kinesis, EMR, DynamoDB all scale horizontally</td>
+          <td>Limited use — good for quick short-term fixes</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">⚙️</span>AWS Auto Scaling</h3>
+    <p>AWS Auto Scaling automatically adjusts capacity based on real-time demand — adding resources when load is high, removing them when load drops. This optimises both <strong>performance and cost</strong>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Scaling Policy</th>
+          <th>How It Works</th>
+          <th>Best For</th>
+          <th>Example Rule</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Target Tracking</span></td>
+          <td>Maintain a specific metric at a target value — scale up or down as needed</td>
+          <td>Steady workloads where you want to maintain consistent performance</td>
+          <td>Keep CPU at 50% — add instances if above, remove if below</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">Step Scaling</span></td>
+          <td>Scale in steps based on threshold breaches</td>
+          <td>Workloads with variable but predictable spikes</td>
+          <td>CPU 70% → +1 instance; CPU 85% → +2 instances; CPU 95% → +4 instances</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Scheduled Scaling</span></td>
+          <td>Scale at specific times of day or week</td>
+          <td>Predictable patterns — business hours, end-of-month reporting</td>
+          <td>8 PM daily → increase capacity; 2 AM → reduce to minimum</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🌊</span>Scaling Streaming Pipelines with Kinesis</h3>
+    <p>Kinesis Data Streams uses <strong>shards</strong> to scale. Each shard provides 1 MB/s write throughput and 2 MB/s read throughput. Adding shards increases pipeline capacity horizontally.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">CloudWatch<br><small>Monitors metrics</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Alarm Triggered<br><small>Threshold breached</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Lambda Function<br><small>Auto-executed</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Kinesis Shards<br><small>Count increased</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">SNS Notification<br><small>Team alerted</small></div>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>Why buffer with Kinesis before S3?</strong> Sending high-velocity event data directly to S3 creates too many small write requests — this is expensive and can cause throttling. Kinesis buffers the stream and Firehose batches it into efficient S3 writes. This improves reliability, scalability, and cost.
+    </div>
+
+    <h3><span class="icon">⚖️</span>Scaling Trade-offs</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Scenario</th>
+          <th>Speed</th>
+          <th>Cost</th>
+          <th>Architecture Choice</th>
+        </tr>
+        <tr>
+          <td>Fraud detection (real-time)</td>
+          <td>Milliseconds</td>
+          <td>High (always-on)</td>
+          <td>Streaming: Kinesis + Flink</td>
+        </tr>
+        <tr>
+          <td>Daily sales reports</td>
+          <td>Hours</td>
+          <td>Low (runs once daily)</td>
+          <td>Batch: Glue + Redshift</td>
+        </tr>
+        <tr>
+          <td>Weekly analytics</td>
+          <td>Hours</td>
+          <td>Very low (scheduled)</td>
+          <td>Batch: EMR + Spark</td>
+        </tr>
+        <tr>
+          <td>Interactive ad-hoc queries</td>
+          <td>Seconds</td>
+          <td>Medium (pay per query)</td>
+          <td>Serverless: Athena</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 7 — IaC & CLOUDFORMATION
+  ──────────────────────────────────────── -->
+  <section id="iac">
+    <div class="section-label">Section 07</div>
+    <h2>Infrastructure as Code and AWS CloudFormation</h2>
+
+    <p>Traditional infrastructure deployment is manual — engineers click through consoles or run commands to create servers, databases, and networks. This is slow, error-prone, and produces inconsistent environments. <strong>Infrastructure as Code (IaC)</strong> solves this by defining infrastructure in code files that can be version-controlled, reviewed, and automated.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th></th>
+          <th>Manual Infrastructure</th>
+          <th>Infrastructure as Code</th>
+        </tr>
+        <tr>
+          <td><strong>Speed</strong></td>
+          <td>Hours or days of clicking through consoles</td>
+          <td>Minutes — run a template, resources appear</td>
+        </tr>
+        <tr>
+          <td><strong>Consistency</strong></td>
+          <td>Dev, Test, and Prod environments differ — bugs from inconsistency</td>
+          <td>Identical environments every time from the same template</td>
+        </tr>
+        <tr>
+          <td><strong>Change tracking</strong></td>
+          <td>No record of who changed what</td>
+          <td>Git history shows every infrastructure change with author and reason</td>
+        </tr>
+        <tr>
+          <td><strong>Disaster recovery</strong></td>
+          <td>Rebuilding from scratch takes days</td>
+          <td>Re-run the template — infrastructure rebuilt in minutes</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">📝</span>Declarative vs Imperative IaC</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th></th>
+          <th>Declarative</th>
+          <th>Imperative</th>
+        </tr>
+        <tr>
+          <td><strong>Approach</strong></td>
+          <td>Define <em>what</em> the end state should be — the tool figures out how</td>
+          <td>Define <em>how</em> to build it step by step</td>
+        </tr>
+        <tr>
+          <td><strong>Example</strong></td>
+          <td>"I want: 2 EC2 instances, 1 S3 bucket, 1 RDS database"</td>
+          <td>"Step 1: create VPC. Step 2: create subnet. Step 3: launch EC2..."</td>
+        </tr>
+        <tr>
+          <td><strong>AWS tool</strong></td>
+          <td>AWS CloudFormation, AWS CDK</td>
+          <td>Shell scripts, Ansible, AWS CLI scripts</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">☁️</span>AWS CloudFormation</h3>
+    <p>CloudFormation is AWS's native IaC service. You define all your infrastructure in a <strong>template file</strong> (YAML or JSON). CloudFormation creates, updates, and deletes all the resources defined — grouped into a <strong>Stack</strong>.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Template Section</th>
+          <th>Required?</th>
+          <th>Purpose</th>
+          <th>Example Content</th>
+        </tr>
+        <tr>
+          <td><code>AWSTemplateFormatVersion</code></td>
+          <td>No</td>
+          <td>Template version declaration</td>
+          <td><code>2010-09-09</code></td>
+        </tr>
+        <tr>
+          <td><code>Description</code></td>
+          <td>No</td>
+          <td>Human-readable explanation of template</td>
+          <td>"Data pipeline infrastructure for sales analytics"</td>
+        </tr>
+        <tr>
+          <td><code>Parameters</code></td>
+          <td>No</td>
+          <td>Input values passed at deployment time</td>
+          <td>Environment (dev/prod), instance type, bucket name</td>
+        </tr>
+        <tr>
+          <td><code>Mappings</code></td>
+          <td>No</td>
+          <td>Static lookup values (region-to-AMI mappings)</td>
+          <td>AMI IDs per region</td>
+        </tr>
+        <tr>
+          <td><code>Conditions</code></td>
+          <td>No</td>
+          <td>Conditional resource creation</td>
+          <td>Create Multi-AZ RDS only in production</td>
+        </tr>
+        <tr>
+          <td><code>Resources</code></td>
+          <td><strong>✅ YES</strong></td>
+          <td>AWS resources to create — the ONLY required section</td>
+          <td>EC2 instances, S3 buckets, RDS databases, IAM roles</td>
+        </tr>
+        <tr>
+          <td><code>Outputs</code></td>
+          <td>No</td>
+          <td>Values returned after stack creation</td>
+          <td>S3 bucket ARN, load balancer DNS name, database endpoint</td>
+        </tr>
+      </table>
+    </div>
+
+<pre><span class="cm"># CloudFormation template — ensure EC2 is created before RDS</span>
+<span class="kw">Resources:</span>
+  <span class="fn">WebServer:</span>
+    <span class="kw">Type:</span> <span class="str">AWS::EC2::Instance</span>
+    <span class="kw">Properties:</span>
+      <span class="kw">InstanceType:</span> <span class="str">t3.medium</span>
+      <span class="kw">ImageId:</span> <span class="str">ami-0abcdef1234567890</span>
+
+  <span class="fn">Database:</span>
+    <span class="kw">Type:</span> <span class="str">AWS::RDS::DBInstance</span>
+    <span class="kw">DependsOn:</span> <span class="str">WebServer</span>    <span class="cm"># RDS waits for EC2 to be ready first</span>
+    <span class="kw">Properties:</span>
+      <span class="kw">DBInstanceClass:</span> <span class="str">db.t3.medium</span>
+      <span class="kw">Engine:</span> <span class="str">mysql</span>
+      <span class="kw">MasterUsername:</span> <span class="str">admin</span></pre>
+
+    <h3><span class="icon">🛠️</span>AWS Cloud Development Kit (CDK)</h3>
+    <p>CDK allows developers to define infrastructure using familiar programming languages — Python, TypeScript, Java, C#, or Go — instead of YAML templates. CDK synthesises into CloudFormation templates automatically.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🐍</div>
+        <div class="card-title">CDK App → Stack → Constructs</div>
+        <div class="card-desc">CDK Apps contain Stacks (equivalent to CloudFormation stacks). Stacks contain Constructs (individual AWS resources). Write once in Python, deploy anywhere.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔁</div>
+        <div class="card-title">Reusable Patterns</div>
+        <div class="card-desc">Package common patterns as reusable CDK constructs — e.g. a "secure S3 data lake" construct that always enables versioning, encryption, and block-public-access.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 8 — QUIZ
+  ──────────────────────────────────────── -->
+  <section id="quiz">
+    <div class="section-label">Module 6 Quiz</div>
+    <h2>🧠 Test Your Knowledge</h2>
+    <p>Some questions require multiple answers — select all that apply, then click <strong>Check Answers</strong>.</p>
+
+    <!-- Q1 ── MULTI-SELECT (SELECT THREE) -->
+    <div class="quiz-multi" id="mq1">
+      <div class="quiz-number">Q 01</div>
+      <div class="quiz-q-text">A data engineer wants to improve overall data security after detecting suspicious activity. Which principles should they apply?</div>
+      <div class="select-hint">Select THREE correct answers</div>
+      <label class="checkbox-option"><input type="checkbox" value="A"><span class="opt-text">Protect data in transit and at rest</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"><span class="opt-text">Implement a strong identity foundation</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"><span class="opt-text">Process data manually to reduce automation errors</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"><span class="opt-text">Enable traceability through logging and monitoring</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"><span class="opt-text">Apply security only at the network ACL layer</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="F"><span class="opt-text">Implement security best practices manually without automation</span></label>
+      <button class="check-btn" onclick="checkMulti('mq1',['A','B','D'])">Check Answers</button>
+      <div class="multi-explanation">
+        ✅ <strong>Correct three:</strong> (1) <em>Protect data in transit and at rest</em> — encryption is a core security principle. (2) <em>Implement a strong identity foundation</em> — IAM and MFA verify every user and service. (3) <em>Enable traceability</em> — CloudTrail and logging let you detect and investigate suspicious activity. Manual processes and single-layer security both contradict AWS security best practices.
+      </div>
+    </div>
+
+    <!-- Q2 ── SINGLE ANSWER -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 02</div>
+      <div class="quiz-q-text">A system administrator creates cryptographic keys, but as the organisation grows it becomes difficult to audit and manage them. Which AWS service should be used?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>AWS CloudTrail</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>AWS Auto Scaling</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>AWS Key Management Service (AWS KMS)</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>AWS CloudFormation</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>AWS KMS</strong> is the central service for creating, managing, rotating, and auditing encryption keys. It uses hardware security modules (HSMs), integrates with CloudTrail for key usage logging, and supports automatic annual rotation — solving the management and auditability problem at scale.
+      </div>
+    </div>
+
+    <!-- Q3 ── SINGLE ANSWER -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 03</div>
+      <div class="quiz-q-text">An administrator needs to identify which IAM user terminated a production EC2 instance. Which AWS service should be used?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>AWS CloudTrail</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>AWS Auto Scaling</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>AWS CloudFormation</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Amazon CloudWatch</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>AWS CloudTrail</strong> logs every API call — including exactly which IAM user (or role) called <code>TerminateInstances</code>, from which IP, at what time. CloudWatch monitors metrics and performance; it does not log identity-level API actions.
+      </div>
+    </div>
+
+    <!-- Q4 ── MULTI-SELECT (SELECT THREE) -->
+    <div class="quiz-multi" id="mq4">
+      <div class="quiz-number">Q 04</div>
+      <div class="quiz-q-text">A data engineer wants to control access to workload infrastructure. Which security best practices should they implement?</div>
+      <div class="select-hint">Select THREE correct answers</div>
+      <label class="checkbox-option"><input type="checkbox" value="A"><span class="opt-text">Use a public subnet for all resources to simplify connectivity</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"><span class="opt-text">Implement least privilege policies for all users and services</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"><span class="opt-text">Prevent unintended access by restricting open ports and public exposure</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"><span class="opt-text">Allow SSH access from any IP address for operational convenience</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"><span class="opt-text">Monitor infrastructure changes and user activities continuously</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="F"><span class="opt-text">Grant all data owners unrestricted admin access to their datasets</span></label>
+      <button class="check-btn" onclick="checkMulti('mq4',['B','C','E'])">Check Answers</button>
+      <div class="multi-explanation">
+        ✅ <strong>Correct three:</strong> (1) <em>Least privilege policies</em> — every user and service gets only the minimum permissions needed. (2) <em>Prevent unintended access</em> — close open ports, disable public S3 access, use private VPCs. (3) <em>Monitor infrastructure changes</em> — CloudTrail and AWS Config track every modification. Public subnets, open SSH, and unrestricted admin access all create security vulnerabilities.
+      </div>
+    </div>
+
+    <!-- Q5 ── MULTI-SELECT (SELECT THREE) -->
+    <div class="quiz-multi" id="mq5">
+      <div class="quiz-number">Q 05</div>
+      <div class="quiz-q-text">A data engineer wants to improve the security of the data processing phase of a machine learning pipeline. Which best practices should they implement?</div>
+      <div class="select-hint">Select THREE correct answers</div>
+      <label class="checkbox-option"><input type="checkbox" value="A"><span class="opt-text">Keep only the relevant data needed for the ML task — remove unnecessary fields</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"><span class="opt-text">Enable resource tagging for cost allocation purposes</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"><span class="opt-text">Enforce data lineage to track where data came from and how it was transformed</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"><span class="opt-text">Choose a larger Amazon EC2 instance type for faster processing</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"><span class="opt-text">Add metadata tags to datasets for discoverability</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="F"><span class="opt-text">Protect the privacy of sensitive data through encryption and anonymisation</span></label>
+      <button class="check-btn" onclick="checkMulti('mq5',['A','C','F'])">Check Answers</button>
+      <div class="multi-explanation">
+        ✅ <strong>Correct three:</strong> (1) <em>Keep only relevant data</em> — minimising stored data reduces exposure; unused customer fields shouldn't be in ML training sets. (2) <em>Enforce data lineage</em> — knowing data provenance helps detect misuse or corruption in the pipeline. (3) <em>Protect sensitive data privacy</em> — encrypt and anonymise PII before it enters training pipelines. Resource tagging and instance sizing are operational concerns, not ML security practices.
+      </div>
+    </div>
+
+    <!-- Q6 ── MULTI-SELECT (SELECT TWO) -->
+    <div class="quiz-multi" id="mq6">
+      <div class="quiz-number">Q 06</div>
+      <div class="quiz-q-text">Which statements are TRUE regarding horizontal and vertical scaling?</div>
+      <div class="select-hint">Select TWO correct answers</div>
+      <label class="checkbox-option"><input type="checkbox" value="A"><span class="opt-text">Adding more Amazon EC2 instances to your resource pool is an example of horizontal scaling</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"><span class="opt-text">Upgrading to a higher Amazon EC2 instance type (more CPU and RAM) is an example of vertical scaling</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"><span class="opt-text">Adding more Amazon EC2 instances is an example of vertical scaling</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"><span class="opt-text">Upgrading instance type and adding more instances are both examples of horizontal scaling</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"><span class="opt-text">Upgrading to a higher EC2 instance type is an example of horizontal scaling</span></label>
+      <button class="check-btn" onclick="checkMulti('mq6',['A','B'])">Check Answers</button>
+      <div class="multi-explanation">
+        ✅ <strong>Correct two:</strong> (1) <em>Adding more EC2 instances</em> = <strong>horizontal scaling</strong> (scale out) — you distribute the workload across more machines. (2) <em>Upgrading instance type</em> = <strong>vertical scaling</strong> (scale up) — you make one machine more powerful. Cloud architecture prefers horizontal scaling for its fault tolerance and virtually unlimited ceiling.
+      </div>
+    </div>
+
+    <!-- Q7 ── SINGLE ANSWER -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 07</div>
+      <div class="quiz-q-text">A data engineer wants to create and deploy infrastructure as code to automate infrastructure deployment. Which AWS service should be used?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>AWS Key Management Service (AWS KMS)</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>AWS Auto Scaling</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>AWS CloudFormation</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>AWS CloudTrail</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>AWS CloudFormation</strong> is the native IaC service. You define all infrastructure in template files (YAML/JSON), and CloudFormation creates, updates, and deletes resources automatically — enabling repeatable, version-controlled deployments.
+      </div>
+    </div>
+
+    <!-- Q8 ── SINGLE ANSWER -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 08</div>
+      <div class="quiz-q-text">Which section of an AWS CloudFormation template is the only required section and specifies AWS resources such as EC2 instances or S3 buckets?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Resources</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Mappings</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Metadata</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Parameters</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ The <strong>Resources</strong> section is the only mandatory section in a CloudFormation template. It defines every AWS resource to be created (EC2, S3, RDS, IAM roles, etc.) along with their properties and dependencies. All other sections — Parameters, Mappings, Conditions, Outputs — are optional.
+      </div>
+    </div>
+
+    <!-- Q9 ── MULTI-SELECT (SELECT THREE) -->
+    <div class="quiz-multi" id="mq9">
+      <div class="quiz-number">Q 09</div>
+      <div class="quiz-q-text">What are reasons a data engineer might use AWS CloudFormation instead of manually setting up AWS resources?</div>
+      <div class="select-hint">Select THREE correct answers</div>
+      <label class="checkbox-option"><input type="checkbox" value="A"><span class="opt-text">Secure AWS IAM policies automatically without manual configuration</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="B"><span class="opt-text">Simplify infrastructure management — define everything in one reusable template</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="C"><span class="opt-text">Quickly replicate identical infrastructure across multiple environments (dev, test, prod)</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="D"><span class="opt-text">Manage and reduce AWS costs automatically without configuration</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="E"><span class="opt-text">Easily control and track changes to infrastructure through version-controlled templates</span></label>
+      <label class="checkbox-option"><input type="checkbox" value="F"><span class="opt-text">Allow real-time application performance monitoring and alerting</span></label>
+      <button class="check-btn" onclick="checkMulti('mq9',['B','C','E'])">Check Answers</button>
+      <div class="multi-explanation">
+        ✅ <strong>Correct three:</strong> (1) <em>Simplify management</em> — one template defines all infrastructure; no clicking through consoles. (2) <em>Quickly replicate</em> — spin up identical dev, test, and prod environments from the same template in minutes. (3) <em>Control and track changes</em> — templates in Git give full history of who changed what and why. CloudFormation does not auto-create IAM policies or manage costs; CloudWatch handles monitoring.
+      </div>
+    </div>
+
+    <!-- Q10 ── SINGLE ANSWER -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 10</div>
+      <div class="quiz-q-text">In an AWS CloudFormation template, how can an engineer ensure that an EC2 instance is created before an Amazon RDS database?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Use the DependsOn attribute in the RDS resource definition to declare that it depends on the EC2 instance</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Add a separate template section to define the creation order for EC2 properties</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>Use a wait condition in the Outputs section for the EC2 instance</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Place the EC2 resource block earlier in the template file than the RDS block</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>DependsOn</strong> is the correct CloudFormation attribute. Add <code>DependsOn: WebServer</code> to the RDS resource definition, and CloudFormation will wait for the EC2 instance to reach a CREATE_COMPLETE state before beginning the RDS creation. CloudFormation processes resources in parallel by default — position in the file does not determine creation order.
+      </div>
+    </div>
+
+    <!-- SCORE BAR -->
+    <div class="score-bar" id="scoreBar" style="display:none">
+      <div class="score-title">Your Score</div>
+      <div class="score-count" id="scoreCount">0 / 10</div>
+      <div class="score-sub" id="scoreMsg">Keep practising!</div>
+    </div>
+
+  </section>
+
+  <!-- ── BOTTOM NAV ── -->
+  <div class="bottom-nav">
+    <a href="pipeline-design.html" class="btn">⬅ Module 5</a>
+    <a href="data-ingestion.html" class="btn">Module 7 ➡</a>
+  </div>
+
+</div>
+
+<!-- GO TO TOP -->
+<button id="topBtn">↑</button>
+
+<!-- ── Single script tag — all quiz logic lives in template.js ── -->
+<script src="../assets/js/template.js"></script>
+
+</body>
+</html>

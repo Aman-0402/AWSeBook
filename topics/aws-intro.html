@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 1 – Introduction to AWS Data Engineering</title>
+  <link rel="stylesheet" href="../assets/css/template.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=IBM+Plex+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">Module 01 · AWS Academy Data Engineering</div>
+  <h1>Introduction to<br><span>AWS Data Engineering</span></h1>
+  <p>Understand what Data Engineering is, why it matters, and how AWS gives you the tools to build real-world data systems at scale.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong>14</strong><span>Modules</span></div>
+    <div class="hero-stat"><strong>7</strong><span>Core AWS Services</span></div>
+    <div class="hero-stat"><strong>6</strong><span>Quiz Questions</span></div>
+  </div>
+</div>
+
+<!-- ── STICKY NAV ── -->
+<nav class="anchor-nav">
+  <span>Jump to →</span>
+  <a href="#what-is-de">What is DE?</a>
+  <a href="#why-important">Why It Matters</a>
+  <a href="#history">History</a>
+  <a href="#foundation">Foundation</a>
+  <a href="#aws-services">AWS Services</a>
+  <a href="#cloud-basics">Cloud Basics</a>
+  <a href="#aws-structure">AWS Structure</a>
+  <a href="#practical">Get Started</a>
+  <a href="#quiz">Quiz</a>
+</nav>
+
+<div class="container">
+
+  <!-- ────────────────────────────────────────
+       SECTION 1 — WHAT IS DATA ENGINEERING
+  ──────────────────────────────────────── -->
+  <section id="what-is-de">
+    <div class="section-label">Section 01</div>
+    <h2>What is Data Engineering?</h2>
+
+    <p>Data Engineering is about building systems that <strong>collect, clean, store, and deliver data</strong>. In simple terms — you take raw, messy data and turn it into something analysts and AI systems can actually use.</p>
+
+    <div class="info-box">
+      💡 <strong>One-line definition:</strong> Data Engineering = Making raw data → usable for analysis &amp; AI.
+    </div>
+
+    <h3><span class="icon">🔄</span>The Core Flow</h3>
+    <div class="pipeline">
+      <div class="pipeline-step">Raw Data</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Clean</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Store</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Analyze</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Report / AI</div>
+    </div>
+
+    <p>AWS gives you cloud-based tools to run this entire flow at massive scale — without owning a single physical server.</p>
+
+    <h3><span class="icon">🛒</span>Real-Life Example — Amazon Shopping App</h3>
+    <p>Every time you use the Amazon app, you generate data. Here is what gets captured and what the Data Engineer does with it:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>User Action</th>
+          <th>Data Captured</th>
+          <th>Business Outcome</th>
+        </tr>
+        <tr>
+          <td>Search for a product</td>
+          <td>Search terms, timestamp</td>
+          <td>Improve search rankings</td>
+        </tr>
+        <tr>
+          <td>Buy something</td>
+          <td>Order ID, amount, item</td>
+          <td>Revenue reporting</td>
+        </tr>
+        <tr>
+          <td>Browse without buying</td>
+          <td>Session duration, clicks</td>
+          <td>Retargeting &amp; recommendations</td>
+        </tr>
+        <tr>
+          <td>Location detected</td>
+          <td>GPS / IP coordinates</td>
+          <td>Optimise delivery routes</td>
+        </tr>
+      </table>
+    </div>
+
+    <p>A Data Engineer builds the system that:</p>
+    <ul class="styled">
+      <li>Stores all of this data reliably</li>
+      <li>Cleans and removes corrupt or duplicate records</li>
+      <li>Processes it so analysts and AI models can consume it</li>
+      <li>Delivers it to the right team at the right time</li>
+    </ul>
+
+    <div class="success-box">
+      ✅ The result: Amazon can recommend products, detect fraud, and improve delivery — all powered by data pipelines built by Data Engineers.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 2 — WHY IT MATTERS
+  ──────────────────────────────────────── -->
+  <section id="why-important">
+    <div class="section-label">Section 02</div>
+    <h2>Why Data Engineering Matters</h2>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Without Data Engineers</th>
+          <th>With Data Engineers</th>
+        </tr>
+        <tr>
+          <td>❌ No reliable reports</td>
+          <td>✅ Business grows on real insights</td>
+        </tr>
+        <tr>
+          <td>❌ AI models have no clean data</td>
+          <td>✅ AI works accurately</td>
+        </tr>
+        <tr>
+          <td>❌ No data-driven decisions</td>
+          <td>✅ Profits increase</td>
+        </tr>
+        <tr>
+          <td>❌ Analysts waste time cleaning</td>
+          <td>✅ Analysts focus on insights</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>Think of it this way:</strong><br>
+      Data Scientist = the Brain 🧠<br>
+      Data Engineer = the Backbone 🏛️<br><br>
+      No backbone → no body. AI is useless without clean, well-structured data.
+    </div>
+
+    <h3><span class="icon">📊</span>Facts About the Industry</h3>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🧹</div>
+        <div class="card-title">70% Time = Cleaning</div>
+        <div class="card-desc">Most data engineers spend the majority of their time fixing bad data, not building features.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">☁️</div>
+        <div class="card-title">Cloud is the Future</div>
+        <div class="card-desc">On-premise servers are shrinking. Every major company is migrating workloads to AWS and other clouds.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🤖</div>
+        <div class="card-title">AI Depends on You</div>
+        <div class="card-desc">Machine learning models are only as good as the data pipelines feeding them.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⚙️</div>
+        <div class="card-title">Automation is Key</div>
+        <div class="card-desc">The best engineers automate repetitive tasks — scheduled pipelines, alerts, and self-healing workflows.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 3 — HISTORY
+  ──────────────────────────────────────── -->
+  <section id="history">
+    <div class="section-label">Section 03</div>
+    <h2>A Brief History of Data Engineering</h2>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Era</th>
+          <th>How It Worked</th>
+          <th>The Problem</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">Before Cloud (1990–2005)</span></td>
+          <td>Companies owned physical servers in their own buildings</td>
+          <td>Extremely expensive. Slow to scale. Only large corporations could afford it.</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">AWS Launch (2006)</span></td>
+          <td>Amazon launched S3 and EC2 — rent servers over the internet</td>
+          <td>—</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Cloud Era (2006 → Now)</span></td>
+          <td>Anyone can build big data systems. Pay only for what you use.</td>
+          <td>New challenge: too much data, need skilled engineers to manage it.</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>AWS said in 2006:</strong> "Use our servers on rent." That one idea created the Big Data industry, the AI boom, and millions of Data Engineering jobs.
+    </div>
+
+    <h3><span class="icon">🚀</span>Who Uses AWS Today?</h3>
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">🎬</div><div class="card-title">Netflix</div><div class="card-desc">Runs 100% on AWS. Every stream, recommendation, and playback.</div></div>
+      <div class="card"><div class="card-icon">🍕</div><div class="card-title">Zomato &amp; Swiggy</div><div class="card-desc">Order routing, delivery tracking, and demand forecasting.</div></div>
+      <div class="card"><div class="card-icon">🚗</div><div class="card-title">Ola &amp; Uber</div><div class="card-desc">Real-time surge pricing and driver-rider matching.</div></div>
+      <div class="card"><div class="card-icon">🏦</div><div class="card-title">Banks &amp; Fintech</div><div class="card-desc">Fraud detection, transaction processing, and compliance reporting.</div></div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 4 — FOUNDATION
+  ──────────────────────────────────────── -->
+  <section id="foundation">
+    <div class="section-label">Section 04</div>
+    <h2>Foundation You Need</h2>
+    <p>You don't need to be an expert before starting. But comfort with these three areas will help you a lot.</p>
+
+    <h3><span class="icon">💻</span>1 — Basic Computer Knowledge</h3>
+    <ul class="styled">
+      <li>Working with files and folders</li>
+      <li>Understanding how the internet works</li>
+      <li>Running basic terminal / command-line commands</li>
+    </ul>
+
+    <h3><span class="icon">🐍</span>2 — Basic Python (Preferred)</h3>
+    <p>Python is the language of data. AWS services like Glue use PySpark (Python + Spark). You don't need to be advanced — just comfortable with the basics.</p>
+    <p>Why Python?</p>
+    <ul class="styled">
+      <li>Easy to read and write</li>
+      <li>Used across all AWS data tools</li>
+      <li>Used in data cleaning, transformation, and ML</li>
+    </ul>
+
+<pre><span class="cm"># Your first line of Data Engineering code</span>
+<span class="fn">print</span>(<span class="str">"Hello, Data Engineer!"</span>)</pre>
+
+    <h3><span class="icon">🗃️</span>3 — Basic SQL (Very Important)</h3>
+    <p>SQL is how you talk to databases. You will use it every single day as a Data Engineer — in Athena, Redshift, Glue, and more.</p>
+
+<pre><span class="cm">-- Get all sales records</span>
+<span class="kw">SELECT</span> * <span class="kw">FROM</span> sales;
+
+<span class="cm">-- Get total revenue by region</span>
+<span class="kw">SELECT</span> region, <span class="fn">SUM</span>(amount) <span class="kw">AS</span> total_revenue
+<span class="kw">FROM</span> orders
+<span class="kw">GROUP BY</span> region
+<span class="kw">ORDER BY</span> total_revenue <span class="kw">DESC</span>;</pre>
+
+    <div class="warn-box">
+      ⚠️ <strong>Don't worry if you're not there yet.</strong> This course teaches everything step by step. SQL and Python basics will be introduced as you need them.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 5 — CORE AWS SERVICES & PIPELINE
+  ──────────────────────────────────────── -->
+  <section id="aws-services">
+    <div class="section-label">Section 05</div>
+    <h2>Core AWS Services for Data Engineering</h2>
+
+    <p>These are the seven AWS tools you will use in almost every data project. Learn their purpose now — you will go deep on each one in later modules.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Purpose</th>
+          <th>AWS Service</th>
+          <th>Simple Explanation</th>
+        </tr>
+        <tr>
+          <td>Storage</td>
+          <td><span class="badge badge-orange">Amazon S3</span></td>
+          <td>Online hard disk — stores all your raw and processed files</td>
+        </tr>
+        <tr>
+          <td>ETL / Transform</td>
+          <td><span class="badge badge-yellow">AWS Glue</span></td>
+          <td>Serverless service that cleans and transforms data automatically</td>
+        </tr>
+        <tr>
+          <td>Query</td>
+          <td><span class="badge badge-blue">Amazon Athena</span></td>
+          <td>Run SQL directly on S3 files — no server needed</td>
+        </tr>
+        <tr>
+          <td>Data Warehouse</td>
+          <td><span class="badge badge-purple">Amazon Redshift</span></td>
+          <td>Powerful analytics database for billions of rows</td>
+        </tr>
+        <tr>
+          <td>Big Data</td>
+          <td><span class="badge badge-green">Amazon EMR</span></td>
+          <td>Run Spark and Hadoop clusters for massive datasets</td>
+        </tr>
+        <tr>
+          <td>Automation</td>
+          <td><span class="badge badge-orange">AWS Lambda</span></td>
+          <td>Run code automatically when an event happens (e.g. file uploaded)</td>
+        </tr>
+        <tr>
+          <td>Workflow</td>
+          <td><span class="badge badge-blue">Step Functions</span></td>
+          <td>Orchestrate multi-step pipelines with visual workflows</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🏗️</span>A Typical AWS Data Pipeline</h3>
+    <p>This is the pattern you will build throughout this course. Every company uses a variation of this.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">User / App</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">S3<br><small>Raw Data</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">AWS Glue<br><small>Clean &amp; Transform</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">S3<br><small>Processed</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Athena / Redshift<br><small>Query</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Dashboard / AI</div>
+    </div>
+
+    <h3><span class="icon">📦</span>Example Project — Online Sales Analytics</h3>
+    <p>Here is a real project you will build in this course:</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">1️⃣</div>
+        <div class="card-title">Upload Data</div>
+        <div class="card-desc">Upload orders, customers, and payments CSV files to Amazon S3.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">2️⃣</div>
+        <div class="card-title">Clean with Glue</div>
+        <div class="card-desc">Use AWS Glue to remove duplicates, fix nulls, and reshape the data.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">3️⃣</div>
+        <div class="card-title">Store Processed Data</div>
+        <div class="card-desc">Write the clean data back to S3 in Parquet format.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">4️⃣</div>
+        <div class="card-title">Query with Athena</div>
+        <div class="card-desc">Run SQL on the processed files directly — no database server needed.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">5️⃣</div>
+        <div class="card-title">Create Reports</div>
+        <div class="card-desc">Visualise results in Amazon QuickSight and share with stakeholders.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">💼</span>Career &amp; Salary — Data Engineering in India</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Level</th>
+          <th>Experience</th>
+          <th>Approx. Salary (India)</th>
+        </tr>
+        <tr>
+          <td>Fresher</td>
+          <td>0–2 years</td>
+          <td><span class="badge badge-green">₹6 – 10 LPA</span></td>
+        </tr>
+        <tr>
+          <td>Mid-level</td>
+          <td>2–5 years</td>
+          <td><span class="badge badge-yellow">₹12 – 20 LPA</span></td>
+        </tr>
+        <tr>
+          <td>Senior</td>
+          <td>5+ years</td>
+          <td><span class="badge badge-orange">₹25+ LPA</span></td>
+        </tr>
+        <tr>
+          <td>Remote / Global</td>
+          <td>Any</td>
+          <td><span class="badge badge-purple">Even higher</span></td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 6 — CLOUD COMPUTING BASICS
+  ──────────────────────────────────────── -->
+  <section id="cloud-basics">
+    <div class="section-label">Section 06</div>
+    <h2>Cloud Computing Fundamentals</h2>
+
+    <p>Before you touch any AWS service, you need to understand what cloud computing actually is — and why it changed everything.</p>
+
+    <h3><span class="icon">🏢</span>Old Way — Traditional Servers</h3>
+    <p>Before the cloud, companies had to:</p>
+    <ul class="styled">
+      <li>Buy and maintain their own physical servers</li>
+      <li>Rent large buildings to house them</li>
+      <li>Pay for electricity and cooling 24/7</li>
+      <li>Hire teams just to maintain hardware</li>
+    </ul>
+    <p>This was extremely expensive. Only large corporations could afford serious data infrastructure.</p>
+
+    <h3><span class="icon">☁️</span>New Way — Cloud Computing</h3>
+    <p>Cloud computing means: <strong>you rent computers from the internet and pay only for what you use.</strong></p>
+
+    <div class="info-box">
+      💡 <strong>Simple analogy:</strong> Instead of buying DVDs, you use Netflix. Instead of buying servers, you use AWS. Same idea — rent instead of own.
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Traditional</th>
+          <th>Cloud (AWS)</th>
+        </tr>
+        <tr>
+          <td>Buy servers upfront (huge cost)</td>
+          <td>Pay per minute / per GB used</td>
+        </tr>
+        <tr>
+          <td>Takes months to set up</td>
+          <td>Ready in minutes</td>
+        </tr>
+        <tr>
+          <td>Fixed capacity — can't scale fast</td>
+          <td>Scales up or down instantly</td>
+        </tr>
+        <tr>
+          <td>You maintain hardware</td>
+          <td>AWS maintains everything</td>
+        </tr>
+        <tr>
+          <td>Only big companies could afford it</td>
+          <td>Students and startups can build at scale</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 7 — AWS STRUCTURE
+  ──────────────────────────────────────── -->
+  <section id="aws-structure">
+    <div class="section-label">Section 07</div>
+    <h2>How AWS is Structured</h2>
+
+    <p>Understanding how AWS organises its infrastructure is fundamental — it affects cost, performance, and reliability of everything you build.</p>
+
+    <h3><span class="icon">🌍</span>Regions</h3>
+    <p>A <strong>Region</strong> is a geographic area where AWS has data centres. Each region is completely independent.</p>
+
+    <div class="card-grid">
+      <div class="card"><div class="card-icon">🇮🇳</div><div class="card-title">Mumbai</div><div class="card-desc">ap-south-1 — the region to use for India-based projects.</div></div>
+      <div class="card"><div class="card-icon">🇸🇬</div><div class="card-title">Singapore</div><div class="card-desc">ap-southeast-1 — popular for South-East Asia workloads.</div></div>
+      <div class="card"><div class="card-icon">🇺🇸</div><div class="card-title">US East (N. Virginia)</div><div class="card-desc">us-east-1 — the largest AWS region, home to many global services.</div></div>
+      <div class="card"><div class="card-icon">🇬🇧</div><div class="card-title">London</div><div class="card-desc">eu-west-2 — used for EU compliance and GDPR workloads.</div></div>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>For students in India:</strong> Always select <strong>Mumbai (ap-south-1)</strong> as your region. It gives you the lowest latency and is easiest to manage for practice projects.
+    </div>
+
+    <h3><span class="icon">🏗️</span>Availability Zones (AZs)</h3>
+    <p>Inside each Region, AWS has multiple <strong>Availability Zones</strong> — physically separate data centres connected by high-speed links.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Mumbai Region<br><small>ap-south-1</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">AZ: ap-south-1a</div>
+      <span class="pipeline-arrow">+</span>
+      <div class="pipeline-step">AZ: ap-south-1b</div>
+      <span class="pipeline-arrow">+</span>
+      <div class="pipeline-step">AZ: ap-south-1c</div>
+    </div>
+
+    <p>If one building loses power or has a hardware failure, the others keep running. This is how AWS guarantees high availability.</p>
+
+    <div class="info-box">
+      💡 <strong>Formula to remember:</strong><br>
+      Country → Region → Availability Zones
+    </div>
+
+    <h3><span class="icon">🔐</span>Shared Responsibility Model</h3>
+    <p>Security in AWS is a <strong>shared job</strong> between you and AWS. Understanding who owns what is critical — and it comes up in certification exams.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>AWS Handles</th>
+          <th>You Handle</th>
+        </tr>
+        <tr>
+          <td>Physical server security</td>
+          <td>Your passwords and access keys</td>
+        </tr>
+        <tr>
+          <td>Network infrastructure</td>
+          <td>Your IAM roles and permissions</td>
+        </tr>
+        <tr>
+          <td>Hardware maintenance</td>
+          <td>Your data and its encryption</td>
+        </tr>
+        <tr>
+          <td>Data centre facilities</td>
+          <td>Your application security</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>Analogy:</strong> AWS gives you a house and locks the front gate. You are responsible for locking your own door inside.
+    </div>
+
+    <h3><span class="icon">🎁</span>AWS Free Tier</h3>
+    <p>AWS offers a <strong>free tier for 12 months</strong> after account creation. This is enough to complete all the practice projects in this course.</p>
+
+    <ul class="styled">
+      <li><strong>Amazon S3</strong> — 5 GB storage, 20,000 GET requests</li>
+      <li><strong>Amazon EC2</strong> — 750 hours/month of t2.micro instance</li>
+      <li><strong>AWS Glue</strong> — 1 million objects in the Data Catalog</li>
+      <li><strong>Amazon Athena</strong> — first 1 TB of queries per month is free for new accounts</li>
+    </ul>
+
+    <div class="warn-box">
+      ⚠️ <strong>Important:</strong> Always stay within free tier limits. Set up <strong>billing alerts</strong> as soon as you create your account to avoid unexpected charges.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 8 — PRACTICAL FIRST STEPS
+  ──────────────────────────────────────── -->
+  <section id="practical">
+    <div class="section-label">Section 08</div>
+    <h2>Your First Practical Steps</h2>
+
+    <p>Follow these steps to get your AWS environment ready before moving to Module 2.</p>
+
+    <h3><span class="icon">📋</span>Step 1 — Create Your AWS Account</h3>
+    <p>Go to <strong>aws.amazon.com</strong> and click <em>Create a Free Account</em>. You will need:</p>
+    <ul class="styled">
+      <li>A valid email address</li>
+      <li>A phone number for OTP verification</li>
+      <li>A debit or credit card (only ₹2 is charged for verification — refunded immediately)</li>
+    </ul>
+
+    <h3><span class="icon">🖥️</span>Step 2 — Explore the AWS Console</h3>
+    <p>After login, you land on the <strong>AWS Management Console</strong> — your central control panel for all AWS services. Take a few minutes to explore the layout.</p>
+
+    <h3><span class="icon">🌏</span>Step 3 — Set Your Region</h3>
+    <p>Look at the <strong>top-right corner</strong> of the console. Click the region dropdown and select:</p>
+
+    <div class="info-box">
+      💡 <strong>Asia Pacific (Mumbai) — ap-south-1</strong><br>
+      Always practice in this region. It gives the lowest latency for Indian students and is the most common region used in India-based job roles.
+    </div>
+
+    <h3><span class="icon">🪣</span>Step 4 — Create Your First S3 Bucket</h3>
+    <p>S3 (Simple Storage Service) is your online hard disk. Data Engineers use it every single day. Think of it as Google Drive — but for companies and pipelines.</p>
+
+    <ul class="styled">
+      <li>Go to the S3 service in the console</li>
+      <li>Click <strong>Create Bucket</strong></li>
+      <li>Give it a unique name (e.g. <code>my-first-de-bucket-2026</code>)</li>
+      <li>Keep all defaults, click Create</li>
+      <li>Upload a small CSV file and explore the interface</li>
+    </ul>
+
+    <div class="success-box">
+      ✅ <strong>You are now a cloud user.</strong> That bucket is stored across multiple AWS data centres — more reliable than any local hard drive.
+    </div>
+
+    <h3><span class="icon">📊</span>Important Facts to Remember</h3>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🌐</div>
+        <div class="card-title">30+ Regions</div>
+        <div class="card-desc">AWS operates in over 30 geographic regions worldwide.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🧹</div>
+        <div class="card-title">Most Data = Bad Data</div>
+        <div class="card-desc">In real companies, most raw data has errors. Cleaning is your most important skill.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎬</div>
+        <div class="card-title">Netflix on AWS</div>
+        <div class="card-desc">Netflix runs 100% on AWS — every stream, subtitle, and recommendation engine.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📦</div>
+        <div class="card-title">S3 + Glue + Athena</div>
+        <div class="card-desc">The three most-used services by Data Engineers. Master these first.</div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 9 — QUIZ
+  ──────────────────────────────────────── -->
+  <section id="quiz">
+    <div class="section-label">Module 1 Quiz</div>
+    <h2>🧠 Test Your Knowledge</h2>
+    <p>Answer all questions to see your score.</p>
+
+    <!-- Q1 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 01</div>
+      <div class="quiz-q-text">In simple terms, what does a Data Engineer do?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Builds AI and machine learning models</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Builds systems that collect, clean, store, and deliver data</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Creates dashboards and reports for business users</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Manages the physical servers in a data centre</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Data Engineering = building systems that make raw data usable for analysis and AI. Analysts create reports and data scientists build models — but both depend on what the Data Engineer provides.
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 02</div>
+      <div class="quiz-q-text">In what year did AWS launch, changing the data industry forever?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>1999</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>2001</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>2006</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>2012</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ AWS launched in <strong>2006</strong> with S3 and EC2. This made cloud infrastructure available to everyone — not just large corporations — and triggered the Big Data and AI boom.
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 03</div>
+      <div class="quiz-q-text">Which AWS region should Indian students use for practice projects?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','D')"><span class="opt-label">A</span>New Delhi (N. Virginia) — us-east-1</button>
+        <button class="option-btn" onclick="answer(this,'B','D')"><span class="opt-label">B</span>Vadodara — ap-southwest-1</button>
+        <button class="option-btn" onclick="answer(this,'C','D')"><span class="opt-label">C</span>London — eu-west-2</button>
+        <button class="option-btn" onclick="answer(this,'D','D')"><span class="opt-label">D</span>Mumbai — ap-south-1</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Mumbai (ap-south-1)</strong> offers the lowest latency for India-based users and is the most commonly used region in Indian data engineering roles.
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 04</div>
+      <div class="quiz-q-text">In the Shared Responsibility Model, which of the following is YOUR responsibility — not AWS's?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Physical data centre security</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Network hardware maintenance</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Managing your IAM roles and access permissions</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Server cooling and power supply</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ AWS secures the physical infrastructure. <strong>You</strong> are responsible for your passwords, IAM roles, data encryption, and application-level security.
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 05</div>
+      <div class="quiz-q-text">Which AWS service is used to store raw data files like CSV, JSON, and Parquet?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','A')"><span class="opt-label">A</span>Amazon S3</button>
+        <button class="option-btn" onclick="answer(this,'B','A')"><span class="opt-label">B</span>Amazon Redshift</button>
+        <button class="option-btn" onclick="answer(this,'C','A')"><span class="opt-label">C</span>AWS Lambda</button>
+        <button class="option-btn" onclick="answer(this,'D','A')"><span class="opt-label">D</span>Amazon EC2</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Amazon S3</strong> is the primary storage service for data lakes. It stores any file type — CSV, JSON, Parquet, images, logs — at virtually unlimited scale.
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 06</div>
+      <div class="quiz-q-text">What does the term "Availability Zone" refer to in AWS?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>The time zone in which an AWS region operates</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>A physically separate data centre inside a region, providing fault tolerance</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>The geographic country where an AWS office is located</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>A virtual partition inside a single server</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ An <strong>Availability Zone</strong> is a separate physical data centre within a region. Multiple AZs ensure that if one fails, your application keeps running on the others.
+      </div>
+    </div>
+
+    <!-- SCORE BAR -->
+    <div class="score-bar" id="scoreBar" style="display:none">
+      <div class="score-title">Your Score</div>
+      <div class="score-count" id="scoreCount">0 / 6</div>
+      <div class="score-sub" id="scoreMsg">Keep practising!</div>
+    </div>
+
+  </section>
+
+  <!-- ── BOTTOM NAV ── -->
+  <div class="bottom-nav">
+    <a href="../index.html" class="btn">⬅ Back to Modules</a>
+    <a href="data-engineering-intro.html" class="btn">Module 2 ➡</a>
+  </div>
+
+</div>
+
+<!-- GO TO TOP -->
+<button id="topBtn">↑</button>
+
+<script src="../assets/js/template.js"></script>
+</body>
+</html>

@@ -1,0 +1,914 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Module 2 – Introduction to AWS Data Engineering</title>
+  <link rel="stylesheet" href="../assets/css/template.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=IBM+Plex+Mono:wght@400;500&family=Nunito:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-eyebrow">Module 02 · AWS Academy Data Engineering</div>
+  <h1>Introduction to<br><span>AWS Data Engineering</span></h1>
+  <p>Discover what this course covers, the roles it prepares you for, and the full set of skills you will build across all 13 modules.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><strong>13</strong><span>Modules</span></div>
+    <div class="hero-stat"><strong>5</strong><span>Job Roles</span></div>
+    <div class="hero-stat"><strong>12</strong><span>Objectives</span></div>
+  </div>
+</div>
+
+<!-- ── STICKY NAV ── -->
+<nav class="anchor-nav">
+  <span>Jump to →</span>
+  <a href="#about">About This Course</a>
+  <a href="#prerequisites">Prerequisites</a>
+  <a href="#roles">Job Roles</a>
+  <a href="#objectives">Objectives</a>
+  <a href="#outline">Course Outline</a>
+  <a href="#industry">Industry Reality</a>
+  <a href="#quiz">Quiz</a>
+</nav>
+
+<div class="container">
+
+  <!-- ────────────────────────────────────────
+       SECTION 1 — WHAT IS THIS COURSE ABOUT
+  ──────────────────────────────────────── -->
+  <section id="about">
+    <div class="section-label">Section 01</div>
+    <h2>What is This Course About?</h2>
+
+    <p>This course teaches you how to <strong>collect, store, process, and analyse data</strong> using AWS cloud services. In modern companies, data is one of the most valuable assets — and businesses collect it from dozens of sources every second.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🛒</div>
+        <div class="card-title">Amazon</div>
+        <div class="card-desc">Collects customer clicks, purchases, search terms, and delivery data — millions of events per minute.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎬</div>
+        <div class="card-title">Netflix</div>
+        <div class="card-desc">Tracks every play, pause, skip, and rating to power its recommendation engine.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚗</div>
+        <div class="card-title">Uber</div>
+        <div class="card-desc">Processes real-time ride data, driver locations, surge pricing, and payment records.</div>
+      </div>
+    </div>
+
+    <p>All of this data must go through the same four stages — no matter the company or industry:</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">1. Collect</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">2. Store</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">3. Process</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">4. Analyse</div>
+    </div>
+
+    <p>This end-to-end system is called a <strong>Data Pipeline</strong>. AWS provides a full suite of managed services to build these pipelines — at any scale, for any company size.</p>
+
+    <div class="info-box">
+      💡 <strong>What you will build:</strong> By the end of this course, you will be able to design, build, and deploy a real AWS data pipeline — from raw data ingestion all the way to a queryable analytics layer.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 2 — PREREQUISITES
+  ──────────────────────────────────────── -->
+  <section id="prerequisites">
+    <div class="section-label">Section 02</div>
+    <h2>Course Prerequisites</h2>
+
+    <p>You do not need to be an expert before starting. But having a basic understanding of these five areas will make learning much smoother.</p>
+
+    <h3><span class="icon">☁️</span>1 — AWS Cloud Foundations</h3>
+    <p>You should already be comfortable with core AWS concepts from the Cloud Foundations course:</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">⚙️</div>
+        <div class="card-title">EC2</div>
+        <div class="card-desc">Virtual servers in the cloud. The compute backbone of AWS.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🗄️</div>
+        <div class="card-title">S3</div>
+        <div class="card-desc">Object storage service. Used to store files of any type at scale.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🔐</div>
+        <div class="card-title">IAM</div>
+        <div class="card-desc">Identity and Access Management. Controls who can do what in AWS.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🌐</div>
+        <div class="card-title">VPC &amp; Regions</div>
+        <div class="card-desc">Virtual network isolation and understanding of global AWS infrastructure.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🗃️</span>2 — SQL Knowledge</h3>
+    <p>SQL (Structured Query Language) is used to work with databases. Data Engineers write SQL every single day — in Athena, Redshift, Glue, and more.</p>
+
+    <p>You should be comfortable reading queries like this:</p>
+
+<pre><span class="cm">-- Find all students who scored above 80</span>
+<span class="kw">SELECT</span> name
+<span class="kw">FROM</span> students
+<span class="kw">WHERE</span> marks > <span class="num">80</span>;
+
+<span class="cm">-- Output:</span>
+<span class="str">Aman</span>
+<span class="str">Rahul</span></pre>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>SQL Concept</th>
+          <th>What It Does</th>
+          <th>Where Used in AWS</th>
+        </tr>
+        <tr>
+          <td>SELECT / FROM</td>
+          <td>Retrieve rows from a table</td>
+          <td>Athena, Redshift</td>
+        </tr>
+        <tr>
+          <td>WHERE</td>
+          <td>Filter rows by condition</td>
+          <td>Athena, Glue</td>
+        </tr>
+        <tr>
+          <td>GROUP BY / SUM</td>
+          <td>Aggregate and summarise data</td>
+          <td>Redshift, Athena</td>
+        </tr>
+        <tr>
+          <td>JOIN</td>
+          <td>Combine rows from multiple tables</td>
+          <td>Redshift, Glue</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">📦</span>3 — Database Experience</h3>
+    <p>A database is a structured system for storing and retrieving data. You should have some exposure to at least one database system.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🐬</div>
+        <div class="card-title">MySQL / PostgreSQL</div>
+        <div class="card-desc">Relational databases — tables, rows, columns, and relationships. Widely used in web applications.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🍃</div>
+        <div class="card-title">MongoDB</div>
+        <div class="card-desc">NoSQL document database — stores data as JSON-like objects. Great for flexible schemas.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛍️</div>
+        <div class="card-title">Real-World Example</div>
+        <div class="card-desc">A shopping website database contains tables for Users, Products, Orders, and Payments — all linked together.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🌐</span>4 — Basic Networking</h3>
+    <p>Data pipelines run across servers connected over networks. A basic understanding of how this works is essential.</p>
+
+    <ul class="styled">
+      <li><strong>IP Address</strong> — unique identifier for every device on a network</li>
+      <li><strong>Client → Server model</strong> — your browser sends a request; a server responds with data</li>
+      <li><strong>HTTP / HTTPS</strong> — protocols used to transfer data between systems</li>
+      <li><strong>Ports</strong> — channels through which specific types of traffic flow (e.g. port 443 for HTTPS)</li>
+    </ul>
+
+    <div class="info-box">
+      💡 <strong>Example:</strong> When you open <code>amazon.com</code>, your browser sends an HTTP request to Amazon's servers. In AWS, this same concept applies when your pipeline calls an API or writes to a database.
+    </div>
+
+    <h3><span class="icon">📊</span>5 — Basic Math, Probability &amp; Statistics</h3>
+    <p>You don't need advanced calculus. But a working understanding of these concepts helps you make sense of data:</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Concept</th>
+          <th>Why It Matters</th>
+        </tr>
+        <tr>
+          <td>Mean &amp; Median</td>
+          <td>Understanding average values and spotting data skew</td>
+        </tr>
+        <tr>
+          <td>Growth Rate</td>
+          <td>Measuring how metrics change over time (e.g. sales growth)</td>
+        </tr>
+        <tr>
+          <td>Probability</td>
+          <td>Foundation for ML model predictions and fraud detection</td>
+        </tr>
+        <tr>
+          <td>Distributions</td>
+          <td>Choosing the right partitioning and sampling strategy</td>
+        </tr>
+        <tr>
+          <td>Standard Deviation</td>
+          <td>Setting thresholds for anomaly detection in pipelines</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="warn-box">
+      ⚠️ <strong>Not there yet?</strong> That is perfectly fine. These prerequisites will be reinforced as you progress through the modules — you will learn by doing.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 3 — JOB ROLES
+  ──────────────────────────────────────── -->
+  <section id="roles">
+    <div class="section-label">Section 03</div>
+    <h2>Related Job Roles</h2>
+    <p>This course prepares you for a range of data-related careers. Here is where each role sits in the data ecosystem — and how they connect.</p>
+
+    <div class="role-grid">
+
+      <div class="role-card" style="--card-color: #ff9900">
+        <div class="role-icon">🔧</div>
+        <div class="role-title">Data Engineer</div>
+        <div class="role-desc">Builds and maintains the pipelines that move, clean, and store data. Everyone else depends on what the Data Engineer produces.</div>
+        <div class="role-skills">
+          <span class="skill-tag">AWS Glue</span>
+          <span class="skill-tag">S3</span>
+          <span class="skill-tag">Spark</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">Python</span>
+        </div>
+      </div>
+
+      <div class="role-card" style="--card-color: #22c55e">
+        <div class="role-icon">📈</div>
+        <div class="role-title">Data Analyst</div>
+        <div class="role-desc">Analyses processed data to answer business questions — which product sells most, which city has the highest customers, which campaign works best.</div>
+        <div class="role-skills">
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">QuickSight</span>
+          <span class="skill-tag">Tableau</span>
+          <span class="skill-tag">Power BI</span>
+        </div>
+      </div>
+
+      <div class="role-card" style="--card-color: #a78bfa">
+        <div class="role-icon">🤖</div>
+        <div class="role-title">Data Scientist</div>
+        <div class="role-desc">Uses clean data to build predictive models — customer churn prediction, fraud detection, product recommendation engines.</div>
+        <div class="role-skills">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">SageMaker</span>
+          <span class="skill-tag">Statistics</span>
+          <span class="skill-tag">ML</span>
+        </div>
+      </div>
+
+      <div class="role-card" style="--card-color: #facc15">
+        <div class="role-icon">🔄</div>
+        <div class="role-title">ETL Developer</div>
+        <div class="role-desc">Specialises in Extract → Transform → Load workflows. Focuses on moving and reshaping data between systems and warehouses.</div>
+        <div class="role-skills">
+          <span class="skill-tag">AWS Glue</span>
+          <span class="skill-tag">dbt</span>
+          <span class="skill-tag">SSIS</span>
+          <span class="skill-tag">SQL</span>
+        </div>
+      </div>
+
+      <div class="role-card" style="--card-color: #fb923c">
+        <div class="role-icon">🧠</div>
+        <div class="role-title">ML Practitioner</div>
+        <div class="role-desc">Builds, trains, and deploys ML models for applications like face recognition, chatbots, fraud detection, and recommendation systems.</div>
+        <div class="role-skills">
+          <span class="skill-tag">SageMaker</span>
+          <span class="skill-tag">TensorFlow</span>
+          <span class="skill-tag">Feature Eng.</span>
+          <span class="skill-tag">MLflow</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="info-box">
+      💡 <strong>Key insight:</strong> ML models need <em>clean, well-structured data</em> — which comes from Data Engineering pipelines. Without the Data Engineer, the ML Practitioner has nothing to work with.
+    </div>
+
+    <h3><span class="icon">🔄</span>How Data Engineer Workflows Look</h3>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Website / App</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Collect<br><small>Kinesis</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Store<br><small>S3</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Process<br><small>Spark / Glue</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Analyse<br><small>Athena</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Analyst / AI</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 4 — COURSE OBJECTIVES
+  ──────────────────────────────────────── -->
+  <section id="objectives">
+    <div class="section-label">Section 04</div>
+    <h2>Course Objectives — What You Will Learn</h2>
+
+    <h3><span class="icon">🎯</span>Obj 1 — Data Science in Organisations</h3>
+    <p>Learn how real companies use data to make decisions. Amazon tracks what you search and buy. Using that data they recommend products, optimise pricing, and improve marketing. You will understand how to design systems that enable this kind of decision-making.</p>
+
+    <h3><span class="icon">🎯</span>Obj 2 — Understand Data Pipelines</h3>
+    <p>A Data Pipeline moves data from its source all the way to analysis. You will understand every stage and the AWS service responsible for it.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Data Source</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Ingest</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Store</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Process</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Analyse</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Visualise</div>
+    </div>
+
+    <p>A real AWS example:</p>
+    <div class="pipeline">
+      <div class="pipeline-step">Mobile App</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Kinesis</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">S3</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Glue / Spark</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Athena</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">QuickSight</div>
+    </div>
+
+    <h3><span class="icon">🎯</span>Obj 3 — Build Pipelines Using AWS</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>AWS Service</th>
+          <th>Role in the Pipeline</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Amazon S3</span></td>
+          <td>Store raw and processed data files</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">AWS Glue</span></td>
+          <td>Serverless ETL — clean, transform, and catalogue data</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Amazon Kinesis</span></td>
+          <td>Ingest real-time streaming data</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Amazon EMR</span></td>
+          <td>Run Spark and Hadoop for large-scale processing</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">Amazon Redshift</span></td>
+          <td>Data warehouse for complex analytical queries</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Amazon Athena</span></td>
+          <td>Serverless SQL queries directly on S3 data</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🎯</span>Obj 4 — Data Security and Governance</h3>
+    <p>Data must be protected — especially when handling customer information, financial records, or medical data.</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🔐</div>
+        <div class="card-title">Encryption</div>
+        <div class="card-desc">At-rest (SSE-KMS) and in-transit (TLS) encryption for all data moving through your pipeline.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">👤</div>
+        <div class="card-title">IAM Permissions</div>
+        <div class="card-desc">Least-privilege access — every service and user gets only the permissions they absolutely need.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎭</div>
+        <div class="card-title">Data Masking</div>
+        <div class="card-desc">Hiding or tokenising PII (Personally Identifiable Information) so only authorised users can see sensitive fields.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📋</div>
+        <div class="card-title">Compliance</div>
+        <div class="card-desc">Meeting regulations like GDPR, HIPAA, and PCI-DSS by controlling who accesses what data and when.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🎯</span>Obj 5 — Scaling for Big Data</h3>
+    <p>Some companies process petabytes of data daily. Netflix processes billions of viewing records. You will learn how to design systems that scale automatically.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Scaling Strategy</th>
+          <th>What It Means</th>
+          <th>AWS Tool</th>
+        </tr>
+        <tr>
+          <td>Horizontal Scaling</td>
+          <td>Add more nodes to share the workload</td>
+          <td>EMR Auto Scaling</td>
+        </tr>
+        <tr>
+          <td>Partitioning</td>
+          <td>Split data by date, region, or key to speed up queries</td>
+          <td>S3 + Glue prefix layout</td>
+        </tr>
+        <tr>
+          <td>Parallel Processing</td>
+          <td>Run many tasks at the same time across multiple workers</td>
+          <td>Spark on EMR</td>
+        </tr>
+        <tr>
+          <td>Serverless</td>
+          <td>Pay only when code runs — zero idle cost</td>
+          <td>AWS Glue / Lambda</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🎯</span>Obj 6 — Data Collection Considerations</h3>
+    <p>When ingesting data, you must balance four key factors:</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">💰</div>
+        <div class="card-title">Cost</div>
+        <div class="card-desc">How much does it cost to collect and store this data? Can you afford it at 10× the current volume?</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📈</div>
+        <div class="card-title">Scalability</div>
+        <div class="card-desc">Will your ingestion layer handle sudden spikes in traffic — like a product launch or viral event?</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">⏱️</div>
+        <div class="card-title">Latency</div>
+        <div class="card-desc">How fast does the data need to arrive? Milliseconds (streaming) or hours (batch)?</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🛡️</div>
+        <div class="card-title">Fault Tolerance</div>
+        <div class="card-desc">What happens if a data source goes down? Can your pipeline recover automatically?</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🎯</span>Obj 7 — Choosing the Right Storage</h3>
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Use Case</th>
+          <th>AWS Service</th>
+          <th>Best Format</th>
+        </tr>
+        <tr>
+          <td>Data lake — raw &amp; processed files</td>
+          <td>Amazon S3</td>
+          <td>Parquet, JSON, CSV</td>
+        </tr>
+        <tr>
+          <td>Structured / OLTP applications</td>
+          <td>Amazon RDS</td>
+          <td>Row-based tables</td>
+        </tr>
+        <tr>
+          <td>NoSQL / key-value apps</td>
+          <td>Amazon DynamoDB</td>
+          <td>JSON documents</td>
+        </tr>
+        <tr>
+          <td>Analytics warehouse</td>
+          <td>Amazon Redshift</td>
+          <td>Columnar</td>
+        </tr>
+      </table>
+    </div>
+
+    <h3><span class="icon">🎯</span>Obj 8 — Processing Different Data Types</h3>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">📋</div>
+        <div class="card-title">Structured</div>
+        <div class="card-desc">Rows and columns with a fixed schema. Example: database tables, spreadsheets.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📄</div>
+        <div class="card-title">Semi-Structured</div>
+        <div class="card-desc">Flexible schema, machine-readable. Example: JSON, XML, Parquet files.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🖼️</div>
+        <div class="card-title">Unstructured</div>
+        <div class="card-desc">No fixed format. Example: images, videos, audio, and raw text documents.</div>
+      </div>
+    </div>
+
+<pre><span class="cm">// Example: Semi-Structured JSON record</span>
+{
+  <span class="str">"name"</span>: <span class="str">"Aman"</span>,
+  <span class="str">"age"</span>: <span class="num">25</span>,
+  <span class="str">"orders"</span>: [<span class="num">101</span>, <span class="num">204</span>, <span class="num">317</span>]
+}</pre>
+
+    <h3><span class="icon">🎯</span>Obj 9 — MapReduce and Amazon EMR</h3>
+    <p>MapReduce is the fundamental programming model behind big data processing. It breaks a large problem into small pieces, processes them in parallel, then combines the results.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Input Data<br><small>Millions of records</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">MAP<br><small>Split into key/value</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">SHUFFLE<br><small>Group by key</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">REDUCE<br><small>Aggregate results</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Output</div>
+    </div>
+
+<pre><span class="cm"># MapReduce example — count orders by region</span>
+
+<span class="cm">## MAP — emit key/value pairs from each record</span>
+<span class="str">"order_id=101, region=IN"</span>  → (<span class="str">"IN"</span>, <span class="num">1</span>)
+<span class="str">"order_id=102, region=US"</span>  → (<span class="str">"US"</span>, <span class="num">1</span>)
+<span class="str">"order_id=103, region=IN"</span>  → (<span class="str">"IN"</span>, <span class="num">1</span>)
+
+<span class="cm">## REDUCE — aggregate by key</span>
+(<span class="str">"IN"</span>, [<span class="num">1</span>, <span class="num">1</span>]) → (<span class="str">"IN"</span>, <span class="num">2</span>)
+(<span class="str">"US"</span>, [<span class="num">1</span>])    → (<span class="str">"US"</span>, <span class="num">1</span>)</pre>
+
+    <p><strong>Amazon EMR</strong> is the managed AWS service that runs MapReduce, Apache Spark, and Hadoop on auto-scaling clusters.</p>
+
+    <h3><span class="icon">🎯</span>Obj 10 — Machine Learning Pipelines</h3>
+    <p>Before an ML model can be trained, the data must go through a structured preparation pipeline. You will build the foundation for this.</p>
+
+    <div class="pipeline">
+      <div class="pipeline-step">Raw Data</div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Cleaning<br><small>Remove nulls, fix errors</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Feature Eng.<br><small>Select &amp; transform columns</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Training<br><small>SageMaker</small></div>
+      <span class="pipeline-arrow">→</span>
+      <div class="pipeline-step">Deploy<br><small>API Endpoint</small></div>
+    </div>
+
+    <div class="info-box">
+      💡 <strong>Example:</strong> A spam detection model cannot work until someone has collected email data, cleaned it, labelled it, and formatted it correctly. That preparation work is Data Engineering.
+    </div>
+
+    <h3><span class="icon">🎯</span>Obj 11 &amp; 12 — Data Analysis and Visualisation</h3>
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🔍</div>
+        <div class="card-title">Amazon Athena</div>
+        <div class="card-desc">Query S3 data files using standard SQL — fully serverless, pay per query scanned.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏢</div>
+        <div class="card-title">Amazon Redshift</div>
+        <div class="card-desc">Run complex analytical queries across billions of rows in a managed columnar warehouse.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">📊</div>
+        <div class="card-title">Amazon QuickSight</div>
+        <div class="card-desc">Build interactive dashboards and share visual insights with business stakeholders.</div>
+      </div>
+    </div>
+
+    <div class="success-box">
+      ✅ <strong>Key takeaway:</strong> Visualisation is the last mile. Raw data means nothing to a business. A well-designed dashboard makes insights clear, actionable, and shareable.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 5 — COURSE OUTLINE
+  ──────────────────────────────────────── -->
+  <section id="outline">
+    <div class="section-label">Section 05</div>
+    <h2>Full Course Outline — 13 Modules</h2>
+    <p>Here is every module you will complete in this course. Each one builds on the previous.</p>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Module</th>
+          <th>Title</th>
+          <th>Focus</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">01</span></td>
+          <td>Introduction to AWS &amp; Cloud Computing</td>
+          <td>Cloud fundamentals, AWS structure, Free Tier setup</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">02</span></td>
+          <td>Introduction to AWS Data Engineering</td>
+          <td>Course overview, roles, objectives ← <em>You are here</em></td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">03</span></td>
+          <td>Understanding Data-Driven Organizations</td>
+          <td>How companies use data to drive decisions</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">04</span></td>
+          <td>Understanding Data Types and Data Elements</td>
+          <td>Structured, semi-structured, unstructured data</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">05</span></td>
+          <td>Designing Data Pipelines</td>
+          <td>Architecture patterns and design principles</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">06</span></td>
+          <td>Security and Scaling of Pipelines</td>
+          <td>IAM, encryption, auto-scaling strategies</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">07</span></td>
+          <td>Data Ingestion</td>
+          <td>Collecting data from APIs, streams, and databases</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">08</span></td>
+          <td>Batch vs Streaming Data</td>
+          <td>Daily reports (batch) vs live stock prices (streaming)</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">09</span></td>
+          <td>Storing and Organizing Data</td>
+          <td>S3, Redshift, DynamoDB, RDS — when to use each</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">10</span></td>
+          <td>Processing Big Data</td>
+          <td>Spark, Hadoop, and Amazon EMR at scale</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">11</span></td>
+          <td>Processing Data for Machine Learning</td>
+          <td>Feature engineering, SageMaker, ML pipelines</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">12</span></td>
+          <td>Data Analysis and Visualization</td>
+          <td>Athena, Redshift, QuickSight dashboards</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">13</span></td>
+          <td>Automating Data Pipelines</td>
+          <td>AWS Glue workflows, Step Functions, EventBridge</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">14</span></td>
+          <td>Preparing for AWS Certification</td>
+          <td>Exam strategy, key concepts review, practice questions</td>
+        </tr>
+      </table>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 6 — INDUSTRY REALITY
+  ──────────────────────────────────────── -->
+  <section id="industry">
+    <div class="section-label">Section 06</div>
+    <h2>Industry Reality — How Big This Is</h2>
+
+    <p>Data Engineering is one of the fastest-growing fields in technology. Here is the scale of what top companies handle every single day:</p>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="card-icon">🔍</div>
+        <div class="card-title">Google</div>
+        <div class="card-desc">Processes over 20 petabytes of data every single day across its search, ads, and analytics platforms.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🚗</div>
+        <div class="card-title">Uber</div>
+        <div class="card-desc">Ingests ride data, GPS locations, payment transactions, and driver ratings in real time — across every city simultaneously.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🎬</div>
+        <div class="card-title">Netflix</div>
+        <div class="card-desc">Uses AWS heavily for its data infrastructure. Every recommendation, subtitle, and streaming quality decision is powered by data pipelines.</div>
+      </div>
+      <div class="card">
+        <div class="card-icon">🏦</div>
+        <div class="card-title">Banks &amp; Fintech</div>
+        <div class="card-desc">Real-time fraud detection systems analyse thousands of transactions per second to flag suspicious activity before it causes harm.</div>
+      </div>
+    </div>
+
+    <h3><span class="icon">🔑</span>Key Terms to Know</h3>
+
+    <div class="table-wrap">
+      <table>
+        <tr>
+          <th>Term</th>
+          <th>Definition</th>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Data Pipeline</span></td>
+          <td>An automated system that moves and transforms data from source to destination</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-yellow">ETL</span></td>
+          <td>Extract, Transform, Load — the classic pattern for moving data between systems</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-green">Big Data</span></td>
+          <td>Datasets too large to process on a single machine — requires distributed systems</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-blue">Data Lake</span></td>
+          <td>A centralised repository (usually S3) that stores raw data in any format</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-purple">Data Warehouse</span></td>
+          <td>A structured store (like Redshift) optimised for analytical queries</td>
+        </tr>
+        <tr>
+          <td><span class="badge badge-orange">Streaming</span></td>
+          <td>Processing data in real-time as it arrives, rather than in scheduled batches</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="success-box">
+      ✅ <strong>You are entering one of the most in-demand technical fields in the world.</strong> Every company that collects data needs Data Engineers — and that is every company.
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ────────────────────────────────────────
+       SECTION 7 — QUIZ
+  ──────────────────────────────────────── -->
+  <section id="quiz">
+    <div class="section-label">Module 2 Quiz</div>
+    <h2>🧠 Test Your Knowledge</h2>
+    <p>Answer all questions to see your score.</p>
+
+    <!-- Q1 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 01</div>
+      <div class="quiz-q-text">What are the four stages that all data must go through in a data pipeline?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Build, Deploy, Monitor, Scale</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Collect, Store, Process, Analyse</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Extract, Transform, Load, Report</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Ingest, Clean, Visualise, Predict</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ Every data pipeline — regardless of company or industry — goes through <strong>Collect → Store → Process → Analyse</strong>. ETL and other patterns are implementations of these same four stages.
+      </div>
+    </div>
+
+    <!-- Q2 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 02</div>
+      <div class="quiz-q-text">Which role is primarily responsible for building data pipelines that analysts and data scientists depend on?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Data Analyst</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Data Scientist</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Data Engineer</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>ML Practitioner</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ The <strong>Data Engineer</strong> builds and maintains the infrastructure. Analysts explore the data, Scientists build models — but both depend entirely on what the Data Engineer provides.
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 03</div>
+      <div class="quiz-q-text">What does ETL stand for?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Export, Transfer, Launch</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Extract, Transform, Load</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Encode, Test, Link</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Exchange, Track, Label</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Extract, Transform, Load</strong> — the classic data integration pattern. You extract data from sources, transform it (clean, reshape, validate), then load it into a target system.
+      </div>
+    </div>
+
+    <!-- Q4 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 04</div>
+      <div class="quiz-q-text">Which AWS service is used to ingest real-time streaming data from mobile apps and IoT devices?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Amazon RDS</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>AWS Glue</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Amazon Kinesis</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Amazon Redshift</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Amazon Kinesis</strong> is built for real-time data streaming — ingesting continuous flows of data from apps, devices, and logs. Glue handles ETL, RDS is transactional, and Redshift is a warehouse.
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 05</div>
+      <div class="quiz-q-text">A JSON file with flexible fields is an example of which type of data?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','B')"><span class="opt-label">A</span>Structured data</button>
+        <button class="option-btn" onclick="answer(this,'B','B')"><span class="opt-label">B</span>Semi-structured data</button>
+        <button class="option-btn" onclick="answer(this,'C','B')"><span class="opt-label">C</span>Unstructured data</button>
+        <button class="option-btn" onclick="answer(this,'D','B')"><span class="opt-label">D</span>Binary data</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ <strong>Semi-structured data</strong> has a flexible, self-describing format (like JSON and XML) — not the rigid rows/columns of a relational table, but not completely free-form like an image or video either.
+      </div>
+    </div>
+
+    <!-- Q6 -->
+    <div class="quiz-question">
+      <div class="quiz-number">Q 06</div>
+      <div class="quiz-q-text">In MapReduce, what does the REDUCE phase do?</div>
+      <div class="options">
+        <button class="option-btn" onclick="answer(this,'A','C')"><span class="opt-label">A</span>Splits the input data into smaller files</button>
+        <button class="option-btn" onclick="answer(this,'B','C')"><span class="opt-label">B</span>Sends data to Amazon S3 for storage</button>
+        <button class="option-btn" onclick="answer(this,'C','C')"><span class="opt-label">C</span>Aggregates and combines key/value pairs produced by the MAP phase</button>
+        <button class="option-btn" onclick="answer(this,'D','C')"><span class="opt-label">D</span>Removes duplicate records from the dataset</button>
+      </div>
+      <div class="explanation correct-exp">
+        ✅ The <strong>REDUCE</strong> phase takes all the key/value pairs emitted by the MAP phase, groups them by key, and aggregates them — for example, summing counts per region or totalling sales per product.
+      </div>
+    </div>
+
+    <!-- SCORE BAR -->
+    <div class="score-bar" id="scoreBar" style="display:none">
+      <div class="score-title">Your Score</div>
+      <div class="score-count" id="scoreCount">0 / 6</div>
+      <div class="score-sub" id="scoreMsg">Keep practising!</div>
+    </div>
+
+  </section>
+
+  <!-- ── BOTTOM NAV ── -->
+  <div class="bottom-nav">
+    <a href="aws-intro.html" class="btn">⬅ Module 1</a>
+    <a href="data-driven-orgs.html" class="btn">Module 3 ➡</a>
+  </div>
+
+</div>
+
+<!-- GO TO TOP -->
+<button id="topBtn">↑</button>
+
+<script src="../assets/js/template.js"></script>
+</body>
+</html>
